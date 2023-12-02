@@ -1,3 +1,98 @@
-body {
-  margin: 0;
-}
+/* Global stylesheet */
+.banner { /* Banner on all pages: Fake Stack Overflow' + searchBar */
+    /* Moving the search bar to the right */
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    text-align: center;
+    background: #dadbdbe9;
+    color : rgb(30, 21, 21);
+    font-size: 20px;
+    border-width: 5px;
+    border-color: black;
+    border-style : solid;
+    /* moving banner to accomodate side nav bar */
+    margin-left : 200px;
+    margin-bottom: 20px;
+  }
+
+  .banner #searchBar {
+    /* float: right; */
+    padding: 30px;
+    border: none;
+    /* margin-top: 8px;
+    margin-right: 8px; */
+    font-size: 20px;
+  }
+
+  /* Styling for the question header and buttons */
+  header {
+    position: relative;
+    display: block;
+    justify-content: space-between;
+    color: white;
+    background-color: #eaeae0;
+    padding: 10px 20px;
+  }
+
+  header #pageTitle {
+    font-size: 15px;
+    color: rgb(0, 0, 0);
+  }
+  
+  header #askButton {
+    background-color: #007bff;
+    color: white;
+    border: solid;
+    border-color : black;
+    cursor: pointer;
+    padding: 20px;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 85%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+  
+  header #askButton:hover {
+    background-color: #0056b3;;
+  }
+  
+
+  #sideBarNav {
+    height: 100%;
+    /*  can change with JS to create pop out animation: */
+    width: 200px; 
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #f3f1f1;
+    overflow-x: hidden;
+    padding-top: 20px;
+    border-width: 2px;
+    border-color: black;
+    border-style: dotted;
+  }
+
+  #sideBarNav a {
+    padding-top: 150px;
+    padding-left: 6px;
+    padding-bottom: 20px;
+    padding-right: 0px;
+    text-decoration: none;
+    font-size: 40px;
+    color: #093f80;
+    display: block;
+  }
+
+  #sideBarNav a.active{
+    background-color: #ccc;
+  }
+
+  .main {
+    /* moving main page to accomodate side nav bar */
+    margin-left: 200px; 
+  }
+

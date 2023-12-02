@@ -1,0 +1,27 @@
+/* Styling for the tags page */
+/* Styling tag container */
+.tagsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+}
+
+/* Tags Row */
+.tagRow {
+    display: block;
+    width: 80%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+/* Tag Node */
+.tagNode {
+    border: 2px dotted #000;
+    border-spacing: 4px;
+    margin: 10px;
+    padding: 5px;
+    display: inline-block;
+}
