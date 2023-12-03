@@ -7,6 +7,8 @@ import AnswersPage from './answers/answersPage';
 import AddAnswerPage from './addAnswer/addAnswerPage'
 import NotFound from './404';
 import { SearchTextContextProvider } from './searchTextContext';
+import PropTypes from 'prop-types';
+import Login from "../components/pages/Login.jsx";
 
 const LocationContext = createContext();
 
@@ -39,6 +41,9 @@ export function LocationContextProvider({ children }) {
         if (page === "addAnswer") {
             return <AddAnswerPage />
         }
+        if (page === "login") {
+            return <Login />
+        }
     }
 
     return (
@@ -55,3 +60,7 @@ export function LocationContextProvider({ children }) {
 export function useLocationContext() {
     return useContext(LocationContext);
 }
+
+LocationContextProvider.propTypes = {
+    children: PropTypes.node.isRequired,
+  };
