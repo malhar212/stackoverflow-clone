@@ -242,4 +242,23 @@ export class DataDao {
     }
     return [];
   }
+
+    // Login method
+    async login(credentials) {
+      try {
+        // const response = await this.instance.post('login', credentials, {
+        //   withCredentials: true,
+        // });
+        // const { success, data } = response.data
+        console.log(credentials)
+        const response = await this.instance.get('answers');
+        const { success, data } = response.data
+        if (success) {
+          return data;
+        }
+      } catch (error) {
+        console.error('Error logging in:', error);
+      }
+      return null;
+    }
 }

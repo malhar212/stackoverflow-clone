@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useLocationContext } from '../locationContext';
 import { ToastContainer, toast } from "react-toastify";
 import MainContent from '../mainContent.js';
 import '../../stylesheets/form.css'
+import { DataDao } from '../../models/ModelDAO';
 
 const Login = () => {
   const { page, params } = useLocationContext();
@@ -35,33 +35,25 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const { data } = await axios.post(
-        "http://localhost:8000/login",
-        {
-          ...inputValue,
-        },
-        { withCredentials: true }
-      );
-      console.log(data);
-      const { success, message } = data;
-      if (success) {
-        handleSuccess(message);
-        setTimeout(() => {
-          {setPageAndParams('/', '')}
-        }, 1000);
-      } else {
-        handleError(message);
-      }
-    } catch (error) {
-      console.log(error);
+    const credentials = {
+      username: 'your_username',
+      password: 'your_password',
+    };
+
+    const userData = await DataDao.getInstance().login(credentials);
+
+    if (userData) {
+      // Handle successful login (e.g., update state, redirect, etc.)
+      handleSuccess("Success!")
+      console.log('Login successful:', userData);
+      setTimeout(() => {
+        {setPageAndParams('/', '')}
+      }, 1000);
+    } else {
+      // Handle login failure
+      handleError("login failed");
     }
-    setInputValue({
-      ...inputValue,
-      username: "",
-      password: "",
-    });
-  };
+  }
 
   return (
     <MainContent>
