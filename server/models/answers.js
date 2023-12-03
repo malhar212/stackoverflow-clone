@@ -16,6 +16,10 @@ const Answer = new Schema({
         type: Date, 
         default: Date.now 
     },
+    votes: { 
+        type: Number,
+        default : 0,
+    },
 });
 
 
