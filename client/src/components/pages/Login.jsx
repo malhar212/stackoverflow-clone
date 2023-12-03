@@ -37,7 +37,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:4000/login",
+        "http://localhost:8000/login",
         {
           ...inputValue,
         },
@@ -48,7 +48,7 @@ const Login = () => {
       if (success) {
         handleSuccess(message);
         setTimeout(() => {
-          {setPageAndParams('/')}
+          {setPageAndParams('/', '')}
         }, 1000);
       } else {
         handleError(message);
@@ -89,7 +89,7 @@ const Login = () => {
         </div>
         <button type="submit">Submit</button>
         <span>
-        <a id='askButton' href='' onClick={(e)=> { e.preventDefault(); setPageAndParams('addQuestion')}}>Ask a Question</a>
+        <a id='signupButton' href='' onClick={(e)=> { e.preventDefault(); setPageAndParams('signup')}}>Need to Signup?</a>
         </span>
       </form>
       <ToastContainer />

@@ -9,6 +9,7 @@ import NotFound from './404';
 import { SearchTextContextProvider } from './searchTextContext';
 import PropTypes from 'prop-types';
 import Login from "../components/pages/Login.jsx";
+import Signup from "../components/pages/Signup.jsx";
 
 const LocationContext = createContext();
 
@@ -43,6 +44,9 @@ export function LocationContextProvider({ children }) {
         }
         if (page === "login") {
             return <Login />
+        }
+        if (page === "signup") {
+            return <Signup />
         }
     }
 
