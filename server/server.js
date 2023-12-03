@@ -2,10 +2,15 @@
 // The server should run on localhost port 8000.
 // This is where you should start writing server-side code for this application.
 const express = require('express');
+// const mongoose = require("mongoose");
+require("dotenv").config();
 const app = express();
 const port = 8000;
 var cors = require('cors');
+const cookieParser = require("cookie-parser");
 var bodyParser = require('body-parser');
+const authRoute = require("./routes/AuthRoute");
+// const { MONGO_URL, PORT } = process.env;
 
 require("dotenv").config();
 
@@ -21,9 +26,12 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.json());
 
+app.use(cookieParser());
+
 app.use('/questions', questionRoutes);
 app.use('/answers', answerRoutes);
 app.use('/tags', tagRoutes);
+app.use("/", authRoute);
 
 // When the server starts 
 app.listen(port, ()=> {
