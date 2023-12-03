@@ -1,14 +1,11 @@
-// User Document Schema
-// https://www.mongodb.com/blog/post/password-authentication-with-mongoose-part-1
-
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt'); 
-const SALT_WORK_FACTOR = 10;
-const Schema = mongoose.Schema;
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var bcrypt = require('bcrypt');
+var SALT_WORK_FACTOR = 10;
 
 var UserSchema = new Schema({
     username: { type: String, required: true, index: { unique: true } },
-    email: { type: String, required: true, index: { unique: true } },
+    email: { type: String, required: true, index: {unique: true }},
     password: { type: String, required: true }
 });
 
@@ -41,3 +38,4 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
 };
 
 module.exports = mongoose.model('User', UserSchema);
+
