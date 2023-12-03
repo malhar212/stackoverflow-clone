@@ -11,6 +11,7 @@ if (!userArgs[0].startsWith('mongodb')) {
 let Tag = require('./models/tags')
 let Answer = require('./models/answers')
 let Question = require('./models/questions')
+let User = require('./models/users');
 
 
 let mongoose = require('mongoose');
@@ -20,8 +21,10 @@ mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-let tags = [];
-let answers = [];
+// let tags = [];
+// let answers = [];
+// let users = [];
+
 function tagCreate(name) {
   let tag = new Tag({ name: name });
   return tag.save();
@@ -51,6 +54,16 @@ function questionCreate(title, text, tags, answers, asked_by, ask_date_time, vie
   return qstn.save();
 }
 
+
+function userCreate(username, email, password) {
+  let newUser = new User({
+    username: username,
+    email: email,
+    password: password,
+  })
+  return newUser.save();
+}
+
 const populate = async () => {
   let t1 = await tagCreate('react');
   let t2 = await tagCreate('javascript');
@@ -63,6 +76,10 @@ const populate = async () => {
   let a5 = await answerCreate('I just found all the above examples just too confusing, so I wrote my own. ', 'sana', new Date('2023-11-01T15:24:19'));
   await questionCreate('Programmatically navigate using React router', 'the alert shows the proper index for the li clicked, and when I alert the variable within the last function I\'m calling, moveToNextImage(stepClicked), the same value shows but the animation isn\'t happening. This works many other ways, but I\'m trying to pass the index value of the list item clicked to use for the math to calculate.', [t1, t2], [a1, a2], 'Joji John', new Date('2022-01-20T03:24:00'), false);
   await questionCreate('android studio save string shared preference, start activity and load the saved string', 'I am using bottom navigation view but am using custom navigation, so my fragments are not recreated every time i switch to a different view. I just hide/show my fragments depending on the icon selected. The problem i am facing is that whenever a config change happens (dark/light theme), my app crashes. I have 2 fragments in this activity and the below code is what i am using to refrain them from being recreated.', [t3, t4, t2], [a3, a4, a5], 'saltyPeter', new Date('2023-10-01T11:24:30'), 121);
+  let userOne = await userCreate("samZ", "samZ@gmail.com", 'examplePass');
+  let userTwo = await userCreate("newGuy", "newGuy@gmail.com", 'passwordExample');
+  console.log("userOne" + userOne)
+  console.log("userTwo" + userTwo);
   if(db) db.close();
   console.log('done');
 }
