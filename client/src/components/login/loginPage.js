@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react';
 import '../../stylesheets/form.css'
 import MainContent from '../mainContent.js';
-import { DataDao } from '../../models/ModelDAO';
+// import { DataDao } from '../../models/ModelDAO';
 import { useLocationContext } from '../locationContext';
-import { validateLinks } from '../hyperlinkParser';
+// import { validateLinks } from '../hyperlinkParser';
 import { SearchTextContext } from '../searchTextContext.js';
 
 
@@ -63,23 +63,14 @@ function LoginPage() {
         <MainContent>
             <h1>Login</h1>
             <form id='loginForm' onSubmit={handleSubmit}>
-                <label htmlFor='formTitleInput'>Question Title*:</label>
+                <label htmlFor='formUsernameInput'>Username</label>
                 <span className='limits'>Maximum 100 characters</span>
-                <input type='text' id='formTitleInput' name='title' value={formData.title} onChange={handleChange} />
-                <span id='titleError' className='error'>{formErrors.titleError}</span>
-
-                <label htmlFor='formTextInput'>Question Text*:</label>
-                <textarea id='formTextInput' name='text' rows='4' value={formData.text} onChange={handleChange}></textarea>
-                <span id='textError' className='error'>{formErrors.textError}</span>
-
-                <label htmlFor='formTagInput'>Tags (up to 5, separated by spaces):</label>
-                <span className='limits'>Add tags separated by whitespace</span>
-                <input type='text' id='formTagInput' name='tags' value={formData.tags} onChange={handleChange} />
-                <span id='tagsError' className='error'>{formErrors.tagsError}</span>
-
-                <label htmlFor='formUsernameInput'>Your Username*:</label>
                 <input type='text' id='formUsernameInput' name='username' value={formData.username} onChange={handleChange} />
                 <span id='usernameError' className='error'>{formErrors.usernameError}</span>
+
+                <label htmlFor='formPasswordInput'>Password</label>
+                <textarea id='formPasswordInput' name='password' rows='1' value={formData.password} onChange={handleChange}></textarea>
+                <span id='passwordError' className='error'>{formErrors.passwordError}</span>
 
                 {/* submit / login button */}
                 <button type='submit' id='loginButton'>Login</button>
