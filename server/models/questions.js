@@ -31,8 +31,8 @@ const Question = new Schema({
       required : true,  
     },
     asked_by : {
-        type : String,
-        required : true,
+        type: [Schema.Types.ObjectId],
+        required: true,
     },
     ask_date_time : { 
         type : Date,
