@@ -1,6 +1,7 @@
 // User Document Schema
 
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'),
+    bcrypt = require(bcrypt);
 
 const Schema = mongoose.Schema;
 
