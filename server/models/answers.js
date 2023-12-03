@@ -9,12 +9,16 @@ const Answer = new Schema({
         required : true,
     },
     ans_by: {
-        type : String,
+        type : Schema.Types.ObjectId,
         required : true,
     },
     ans_date_time: { 
         type: Date, 
         default: Date.now 
+    },
+    votes: { 
+        type: Number,
+        default : 0,
     },
 });
 

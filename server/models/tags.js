@@ -11,6 +11,10 @@ const Tag = new Schema({
         required : true,
         maxlength: 20,
      },
+     createdBy: { 
+        type: Schema.Types.ObjectId,
+        required : true,
+    },
 });
 
  module.exports = mongoose.model('Tag', Tag);
