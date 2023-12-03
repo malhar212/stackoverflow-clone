@@ -67,7 +67,7 @@ function userCreate(username, email, password) {
 const populate = async () => {
   let userOne = await userCreate("samZ", "samZ@gmail.com", 'examplePass');
   let userTwo = await userCreate("newGuy", "newGuy@gmail.com", 'passwordExample');
-  let userThree = await userCreate("newGuy", "copiedUsername@gmail.com", 'askdjalskdj');
+  // let userThree = await userCreate("newGuy", "copiedUsername@gmail.com", 'askdjalskdj');
 
 
   let t1 = await tagCreate('react'); 
