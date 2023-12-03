@@ -48,6 +48,9 @@ export function LocationContextProvider({ children }) {
         if (page === "signup") {
             return <Signup />
         }
+        if (page === "guest") {
+            return <QuestionsPage />
+        }
     }
 
     return (

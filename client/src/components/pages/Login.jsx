@@ -12,10 +12,10 @@ const Login = () => {
 
 
   const [inputValue, setInputValue] = useState({
-    email: "",
+    username: "",
     password: "",
   });
-  const { email, password } = inputValue;
+  const { username, password } = inputValue;
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setInputValue({
@@ -58,7 +58,7 @@ const Login = () => {
     }
     setInputValue({
       ...inputValue,
-      email: "",
+      username: "",
       password: "",
     });
   };
@@ -67,25 +67,25 @@ const Login = () => {
     <MainContent>
       <h2>Login Account</h2>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Emailhkjhkjhkjhkhkjhkjhj</label>
+      <div>
+        <label htmlFor="username">Username</label>
           <input
-            type="email"
-            name="email"
-            value={email}
-            placeholder="Enter your email"
+            type="text"
+            name="username"
+            value={username} 
+            placeholder="Enter your username"
             onChange={handleOnChange}
-          />
-        </div>
+         />
+      </div>
         <div>
           <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            name="password"
-            value={password}
-            placeholder="Enter your password"
-            onChange={handleOnChange}
-          />
+            <input
+              type="password"
+              name="password"
+              value={password}
+              placeholder="Enter your password"
+              onChange={handleOnChange}
+            />
         </div>
         <button type="submit">Submit</button>
         <span>

@@ -100,7 +100,7 @@ const Signup = () => {
   //     </form>
   //     <ToastContainer />
   //   </div>
-  <h1> SIGnalksfjalksdjlasjdlaksjdlaksjdlajsdlajdlkasjdlkasjdlkasjdlkajsdl SIGNUP</h1>
+  <h1> SIGNUP SIGNUP SIGNUP</h1>
    );
 };
 
