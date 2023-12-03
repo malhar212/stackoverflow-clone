@@ -67,9 +67,10 @@ function userCreate(username, email, password) {
 const populate = async () => {
   let userOne = await userCreate("samZ", "samZ@gmail.com", 'examplePass');
   let userTwo = await userCreate("newGuy", "newGuy@gmail.com", 'passwordExample');
-  console.log("userOne" + userOne)
-  console.log("userTwo" + userTwo);
-  let t1 = await tagCreate('react');
+  // let userThree = await userCreate("newGuy", "copiedUsername@gmail.com", 'askdjalskdj');
+
+
+  let t1 = await tagCreate('react'); 
   let t2 = await tagCreate('javascript');
   let t3 = await tagCreate('android-studio');
   let t4 = await tagCreate('shared-preferences');

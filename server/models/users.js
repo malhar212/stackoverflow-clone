@@ -4,9 +4,13 @@ var bcrypt = require('bcrypt');
 var SALT_WORK_FACTOR = 10;
 
 var UserSchema = new Schema({
-    username: { type: String, required: true, index: { unique: true } },
-    email: { type: String, required: true, index: {unique: true }},
-    password: { type: String, required: true }
+    username: { type: String, required: [true, "Your username is required"], index: { unique: true } },
+    email: { type: String, required: [true, "Your email address is required"], index: {unique: true }},
+    password: { type: String, required: [true, "Your password is required"],},
+    createdAt: {
+        type: Date,
+        default: new Date(),
+      },
 });
 
 UserSchema.pre('save', function(next) {
