@@ -8,14 +8,15 @@ import AddAnswerPage from './addAnswer/addAnswerPage'
 import NotFound from './404';
 import { SearchTextContextProvider } from './searchTextContext';
 import PropTypes from 'prop-types';
-import Login from "../components/pages/Login.jsx";
-import Signup from "../components/pages/Signup.jsx";
-import Home from "../components/pages/Home.jsx";
+import Login from "../components/pages/Login.js";
+import Signup from "./signup/Signup.js"
+import Home from "./welcome/Home.js";
 
 const LocationContext = createContext();
 
 export function LocationContextProvider({ children }) {
-    const [page, setPage] = useState('questions');
+    // default state is set to 'questions'
+    const [page, setPage] = useState('home');
     const [params, setParams] = useState({});
     
 
@@ -49,10 +50,12 @@ export function LocationContextProvider({ children }) {
         if (page === "signup") {
             return <Signup />
         }
+        // If user chooses to continue as guest, they go to questions page with Guest as state
         if (page === "guest") {
             // adjust state for guest user?
             return <QuestionsPage />
         }
+        // home page
         if (page === "welcome" || page === "" || page === "/" || page === "home") {
             return <Home />
         }

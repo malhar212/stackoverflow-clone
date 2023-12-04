@@ -262,4 +262,44 @@ export class DataDao {
       console.log("Login failed :(")
       return null; // lets login.jsx know that it was not successful
     }
-}
+
+
+    // signup
+
+    async signup(credentials) {
+      console.log("IN MODELDAO LOGIN")
+      try {
+        console.log("inside the try of modeldao login")
+        const response = await this.instance.post('auth/login', credentials, {
+          withCredentials: true,
+        });
+        const { success, data } = response.data
+        if (success) {
+          console.log(success)
+          return success, data;
+        }
+      } catch (error) {
+        console.error('Error logging in:', error);
+      }
+      console.log("Login failed :(")
+      return null; // lets login.jsx know that it was not successful
+    }
+
+    // get userName based on uid of user
+    async getUsername(userId) {
+      console.log(userId);
+      try {
+        console.log("inside the try of getUsername modelDAO")
+        const response = await this.instance.get('getUsername', userId)
+        const { success, data } = response.data
+        if (success) {
+          console.log(success)
+          return success, data;
+        }
+      } catch (error) {
+        console.error('Error getting username', error);
+      }
+      console.log("at end of getUSername in DAO");
+      return null; 
+    }
+  }

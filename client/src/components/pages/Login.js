@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useLocationContext } from '../locationContext';
+import { useLocationContext } from '../locationContext.js';
 import { ToastContainer, toast } from "react-toastify";
 import MainContent from '../mainContent.js';
 import '../../stylesheets/form.css'
-import { DataDao } from '../../models/ModelDAO';
+import { DataDao } from '../../models/ModelDAO.js';
 
 const Login = () => {
   const { page, params } = useLocationContext();

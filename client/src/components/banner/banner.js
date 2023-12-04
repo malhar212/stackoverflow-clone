@@ -1,8 +1,8 @@
 import React from 'react';
 import SearchBar from './searchBar';
-import LoginButton from './loginButton';
-import SignupButton from './signupButton';
-import GuestButton from './guestButton';
+// import LoginButton from './loginButton';
+// import SignupButton from './signupButton';
+// import GuestButton from './guestButton';
 import './stylesheets/bannerStyle.css'
 import { useLocationContext } from '../locationContext';
 
@@ -22,11 +22,11 @@ function Banner() {
         Fake Stack Overflow
       </a>
       <SearchBar />
-      <div className="buttonColumn">
+      {/* <div className="buttonColumn">
         <LoginButton />
         <SignupButton />
         <GuestButton />
-      </div>
+      </div> */}
     </div>
   );
 }
