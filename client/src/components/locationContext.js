@@ -10,6 +10,7 @@ import { SearchTextContextProvider } from './searchTextContext';
 import PropTypes from 'prop-types';
 import Login from "../components/pages/Login.jsx";
 import Signup from "../components/pages/Signup.jsx";
+import Home from "../components/pages/Home.jsx";
 
 const LocationContext = createContext();
 
@@ -25,7 +26,7 @@ export function LocationContextProvider({ children }) {
 
     // return page components depending on page routine
     function conditionalRendering() {
-        if (page === "questions" || page == null) {
+        if (page === "questions") {
             return <QuestionsPage />
         }
          if (page === "addQuestion") {
@@ -49,7 +50,11 @@ export function LocationContextProvider({ children }) {
             return <Signup />
         }
         if (page === "guest") {
+            // adjust state for guest user?
             return <QuestionsPage />
+        }
+        if (page === "welcome" || page === "" || page === "/" || page === "home") {
+            return <Home />
         }
     }
 

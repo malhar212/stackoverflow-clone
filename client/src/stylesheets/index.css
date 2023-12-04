@@ -7,7 +7,8 @@
     text-align: center;
     background: #dadbdbe9;
     color : rgb(30, 21, 21);
-    font-size: 20px;
+    font-size: 40px;
+    font-weight: bold;
     border-width: 5px;
     border-color: black;
     border-style : solid;
@@ -96,8 +97,8 @@
     margin-left: 200px; 
   }
 
-
-  /* *,
+/* 
+  *,
 ::before,
 ::after {
   box-sizing: border-box;
@@ -226,5 +227,5 @@ span a {
     padding: 0.6rem 1rem;
     font-size: 1.5rem;
   }
-} */
-
+}
+ */
