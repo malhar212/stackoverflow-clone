@@ -9,8 +9,12 @@ var UserSchema = new Schema({
     password: { type: String, required: [true, "Your password is required"],},
     createdAt: {
         type: Date,
-        default: new Date(),
+        default: Date.now,
       },
+    votes: { 
+        type: Number,
+        default : 0,
+    },
 });
 
 UserSchema.pre('save', function(next) {
