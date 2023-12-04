@@ -4,7 +4,7 @@ import { useLocationContext } from '../locationContext';
 function SignupButton() {
     const { setPageAndParams } = useLocationContext();
     return (
-        <a id='SignupButton' href='' onClick={(e)=> { e.preventDefault(); setPageAndParams('signup')}}>Signup</a>
+        <button type='submit' id='signupButton' href='' onClick={(e)=> { e.preventDefault(); setPageAndParams('signup')}}>Signup</button>
     )
 }
 
