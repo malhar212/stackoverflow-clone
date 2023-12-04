@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { DataDao } from '../../models/ModelDAO';
 import { useLocationContext } from '../locationContext';
+import './stylesheets/signupStyle.css'
 
 function Signup() {
   const { page, params } = useLocationContext();
@@ -52,7 +53,7 @@ function Signup() {
     if (success) {
       handleSuccess(message);
       setTimeout(() => {
-        console.log("success! papge nav foes here");
+        setPageAndParams('login')
       }, 1000);
     } else {
       handleError(message);
@@ -70,7 +71,7 @@ function Signup() {
 
 
   return (
-    <div>
+    <div className="signupForm">
       <h2>Signup for Fake Stack Overflow!</h2>
       <form onSubmit={handleSubmit}>
       <div>
@@ -104,9 +105,6 @@ function Signup() {
             />
         </div>
         <button type="submit">Submit</button>
-        <span>
-        <a id='signupButton' href='' onClick={(e)=> { e.preventDefault(); setPageAndParams('signup')}}>Need to Signup?</a>
-        </span>
       </form>
       <ToastContainer />
       </div>

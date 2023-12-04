@@ -11,9 +11,8 @@ const Home = () => {
     <>
       <div className="home_page">
         <h4>
-          <span id="welcomeText">Welcome </span>
           {/* If theres a value for username, append the user's name to the welcomeText. If not, display the login, signup and guest buttons */}
-          <span>{ username ? username : 
+          <span>{ username ? "" : 
              <div className="buttonColumn">
               <LoginButton />
               <SignupButton />

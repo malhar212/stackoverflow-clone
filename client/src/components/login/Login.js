@@ -57,7 +57,7 @@ const Login = () => {
 
   return (
     <MainContent>
-      <h2>Login Account</h2>
+      <h2>Login</h2>
       <form onSubmit={handleSubmit}>
       <div>
         <label htmlFor="username">Username</label>
