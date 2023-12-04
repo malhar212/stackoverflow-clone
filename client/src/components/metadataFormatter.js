@@ -1,3 +1,7 @@
+// import { DataDao } from '../models/ModelDAO';
+
+
+
 // Helper function to format metadata for questions and answer
 export function metadataFormatter(post, typeOfPost) {
     var verbString = '';
@@ -15,6 +19,9 @@ export function metadataFormatter(post, typeOfPost) {
         userParam = post.ansBy;
         dateParam = post.ansDate;
     }
+
+    // const userName = await DataDao.getInstance().getUsername(userParam);
+    // console.log(userName)
 
     const pastDate = new Date(dateParam);
     const timeDiffMillis = now - pastDate;

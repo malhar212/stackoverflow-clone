@@ -18,6 +18,7 @@ const questionRoutes = require('./routes/questionRoutes');
 const answerRoutes = require('./routes/answerRoutes');
 const tagRoutes = require('./routes/tagRoutes');
 const authRoutes = require('./routes/AuthRoutes'); // NEW
+const userRoutes = require('./routes/userRoutes'); // NEW
 
 // const allowedOrigin = 'http://localhost:3000';
 
@@ -41,6 +42,7 @@ app.use('/questions', questionRoutes);
 app.use('/answers', answerRoutes);
 app.use('/tags', tagRoutes);
 app.use("/auth", authRoutes); // NEW
+app.use("/users", userRoutes); // NEW
 
 // When the server starts 
 app.listen(port, ()=> {

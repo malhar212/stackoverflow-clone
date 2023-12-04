@@ -1,21 +1,23 @@
 import React, { useState } from "react";
-import { useLocationContext } from '../locationContext';
 import { ToastContainer, toast } from "react-toastify";
-import MainContent from '../mainContent.js';
-import '../../stylesheets/form.css'
 import { DataDao } from '../../models/ModelDAO';
+import { useLocationContext } from '../locationContext';
+import './stylesheets/signupStyle.css'
 
-const Login = () => {
+function Signup() {
   const { page, params } = useLocationContext();
   const { setPageAndParams } = useLocationContext();
   console.log("Page is: " + page + "Params: " + params)
 
 
   const [inputValue, setInputValue] = useState({
+    email: "",
     username: "",
     password: "",
   });
-  const { username, password } = inputValue;
+
+  const { email, password, username } = inputValue;
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setInputValue({
@@ -33,32 +35,55 @@ const Login = () => {
       position: "bottom-left",
     });
 
+
+
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const credentials = {
-      username: 'your_username',
-      password: 'your_password',
-    };
+    try {
 
-    const userData = await DataDao.getInstance().login(credentials);
+    // hard coded for testing - should be getInstace().signup
+    const { userData } = await DataDao.getInstance().getUsername('656cf2553306392f5c8119e9');
 
-    if (userData) {
-      // Handle successful login (e.g., update state, redirect, etc.)
-      handleSuccess("Success!")
-      console.log('Login successful:', userData);
+    console.log(inputValue)
+
+    const { success, message } = userData;
+
+    if (success) {
+      handleSuccess(message);
       setTimeout(() => {
-        {setPageAndParams('/', '')}
+        setPageAndParams('login')
       }, 1000);
     } else {
-      // Handle login failure
-      handleError("login failed");
+      handleError(message);
     }
+  } catch (error) {
+    console.log(error);
   }
+  setInputValue({
+    ...inputValue,
+    email: "",
+    password: "",
+    username: "",
+  });
+};
+
 
   return (
-    <MainContent>
-      <h2>Login Account</h2>
+    <div className="signupForm">
+      <h2>Signup for Fake Stack Overflow!</h2>
       <form onSubmit={handleSubmit}>
+      <div>
+          <label htmlFor="email">Email</label>
+          <input
+            type="email"
+            name="email"
+            value={email}
+            placeholder="Enter your email"
+            onChange={handleOnChange}
+          />
+        </div>
       <div>
         <label htmlFor="username">Username</label>
           <input
@@ -80,14 +105,10 @@ const Login = () => {
             />
         </div>
         <button type="submit">Submit</button>
-        <span>
-        <a id='signupButton' href='' onClick={(e)=> { e.preventDefault(); setPageAndParams('signup')}}>Need to Signup?</a>
-        </span>
       </form>
       <ToastContainer />
-      </MainContent>
+      </div>
   );
-};
+}
 
-export default Login;
-  
+export default Signup;
