@@ -6,19 +6,21 @@ import GuestButton from './guestButton';
 import './stylesheets/bannerStyle.css'
 import { useLocationContext } from '../locationContext';
 
+
+
 function Banner() {
   const { setPageAndParams } = useLocationContext();
 
-  function handleClick(newpage) {
-    return function (event) {
-        event.preventDefault();
-        setPageAndParams(newpage, {x: new Date()});
-    }
-}
+  const handleClick = (newpage) => (event) => {
+    event.preventDefault();
+    setPageAndParams(newpage, {});
+  };
 
   return (
     <div className="banner">
-      <a id="pageTitle" href='' onClick={handleClick('home')}>Fake Stack Overflow</a>
+      <a id="pageTitle" href="#" onClick={handleClick('home')}>
+        Fake Stack Overflow
+      </a>
       <SearchBar />
       <div className="buttonColumn">
         <LoginButton />
@@ -28,9 +30,6 @@ function Banner() {
     </div>
   );
 }
-    
-
-
-
 
 export default Banner;
+
