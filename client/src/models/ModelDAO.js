@@ -242,4 +242,24 @@ export class DataDao {
     }
     return [];
   }
+
+    // Login method
+    async login(credentials) {
+      console.log("IN MODELDAO LOGIN")
+      try {
+        console.log("inside the try of modeldao login")
+        const response = await this.instance.post('auth/login', credentials, {
+          withCredentials: true,
+        });
+        const { success, data } = response.data
+        if (success) {
+          console.log(success)
+          return success, data;
+        }
+      } catch (error) {
+        console.error('Error logging in:', error);
+      }
+      console.log("Login failed :(")
+      return null; // lets login.jsx know that it was not successful
+    }
 }
