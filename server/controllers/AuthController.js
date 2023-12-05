@@ -1,8 +1,8 @@
 // controllers/AuthController.js
 // const bcrypt = require('bcryptjs');
 const User = require('../models/users');
-// const signUp = require('../validations/userValidation');
-// const Joi = require('joi')
+// const { signUp, signIn } = require('../validations/userValidation');
+
 
 
 exports.Login = async (req, res) => {
@@ -16,7 +16,8 @@ exports.Login = async (req, res) => {
 
 exports.Signup = async (req, res) => {
   try {
-      // const { username, email, password } = req.body
+      const { username, email, password } = req.body
+      console.log(username, email, password + "===========================");
       // await Joi.validate({ username, email, password }, signUp);
     // Assuming req.body contains the user data
     const newUser = new User(req.body);

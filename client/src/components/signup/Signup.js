@@ -49,7 +49,6 @@ function Signup() {
       password,
     };
 
-
     const userData = await DataDao.getInstance().signup(credentials);
 
     if (userData) {
