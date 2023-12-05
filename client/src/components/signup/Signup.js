@@ -11,7 +11,7 @@ function Signup() {
     email: "",
     username: "",
     password: "",
-    confirmPassword: "", // New field for password confirmation
+    confirmPassword: "", // password confirmation
   });
 
   const { email, username, password, confirmPassword } = inputValue;
@@ -49,6 +49,12 @@ function Signup() {
       password,
     };
 
+    // console.log(credentials)
+
+    // for testing
+    // await DataDao.getInstance().test()
+
+    // for keeping
     const userData = await DataDao.getInstance().signup(credentials);
 
     if (userData) {

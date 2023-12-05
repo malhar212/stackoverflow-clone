@@ -1,16 +1,16 @@
 const express = require('express');
-const session = require("express-session");
+const session = require('express-session');
 const cors = require('cors');
-const cookieParser = require("cookie-parser");
-const dotenv = require("dotenv"); // Updated import for dotenv
-const csrf = require('csurf'); // Added csurf for CSRF protection
+const cookieParser = require('cookie-parser');
+const dotenv = require('dotenv');
+const csrf = require('csurf');
 
-dotenv.config(); // Load environment variables from .env file
+dotenv.config();
 
 const app = express();
 const port = 8000;
 
-const secret = process.env.SESSION_SECRET; // Use process.env to access environment variables
+const secret = process.env.SESSION_SECRET;
 
 // Initialize mongo db connection
 require('./config/database');
@@ -21,39 +21,42 @@ const tagRoutes = require('./routes/tagRoutes');
 const authRoutes = require('./routes/AuthRoutes');
 const userRoutes = require('./routes/userRoutes');
 
-// Middleware:
-
-app.use(express.urlencoded({ extended: false }));
-
-app.use(
-  session({
-    secret: `${secret}`,
-    cookie: {
-      httpOnly: true,
-      sameSite: true,
-    },
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-
 app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true,
   methods: ['POST', 'PUT', 'DELETE', 'GET'],
-  allowedHeaders: 'Content-Type,Authorization',
+  allowedHeaders: 'Content-Type, Authorization, X-CSRF-Token', // Add X-CSRF-Token here
 }));
 
+// Enable JSON and URL-encoded parsing
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
+// Enable cookie parsing
 app.use(cookieParser());
 
-app.use(csrf({ cookie: true })); // Enable CSRF protection
+// Enable session middleware
+app.use(session({
+  secret: `${secret}`,
+  cookie: {
+    httpOnly: true,
+    sameSite: true,
+  },
+  resave: false,
+  saveUninitialized: false,
+}));
 
-app.get('/csrf-token', (req, res) => {
+// Enable CSRF protection
+const csrfProtection = csrf({ cookie: true });
+app.use(csrfProtection);
+
+// CSRF token endpoint 
+app.get('/auth/csrf-token', csrfProtection, (req, res) => {
+  console.log("======CSRF ENDPOINT============")
   res.json({ csrfToken: req.csrfToken() });
 });
 
+// Route handlers
 app.use('/questions', questionRoutes);
 app.use('/answers', answerRoutes);
 app.use('/tags', tagRoutes);
