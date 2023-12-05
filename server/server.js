@@ -10,7 +10,7 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const port = 8000;
 
-// const secret = process.env.SESSION_SECRET; 
+const secret = process.env.SESSION_SECRET; 
 
 
 // Initialize mongo db connection
@@ -26,17 +26,17 @@ const userRoutes = require('./routes/userRoutes');
 
 app.use(express.urlencoded({ extended: false }));
 
-// app.use(
-//   session({
-//     secret: `${secret}`,
-//     cookie: {
-//       httpOnly: true,
-//       sameSite: true,
-//     },
-//     resave: false,
-//     saveUninitialized: false,
-//   })
-// );
+app.use(
+  session({
+    secret: `${secret}`,
+    cookie: {
+      httpOnly: true,
+      sameSite: true,
+    },
+    resave: false,
+    saveUninitialized: false,
+  })
+);
 
 
 
