@@ -10,7 +10,6 @@ const Login = () => {
   const { setPageAndParams } = useLocationContext();
   console.log("Page is: " + page + "Params: " + params)
 
-
   const [inputValue, setInputValue] = useState({
     username: "",
     password: "",
@@ -35,11 +34,13 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     const credentials = {
-      username: 'your_username',
-      password: 'your_password',
+      username: 'samZ',
+      password: 'examplePassword',
     };
 
+    console.log(credentials)
     const userData = await DataDao.getInstance().login(credentials);
 
     if (userData) {
@@ -47,7 +48,7 @@ const Login = () => {
       handleSuccess("Success!")
       console.log('Login successful:', userData);
       setTimeout(() => {
-        {setPageAndParams('/', '')}
+        {setPageAndParams('questions', '')}
       }, 1000);
     } else {
       // Handle login failure
