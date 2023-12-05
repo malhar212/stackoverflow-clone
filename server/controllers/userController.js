@@ -15,15 +15,3 @@ exports.getUsername = async (req, res) => {
       res.status(500).json({ success: false, error: err.message });
     }
   };
-
-  exports.newUser = async (req, res) => {
-    try {
-      // Assuming req.body contains the user data
-      const newUser = new User(req.body);
-      await newUser.save();
-  
-      res.status(200).json({ success: true, data: newUser });
-    } catch (err) {
-      res.status(500).json({ success: false, error: err.message });
-    }
-  };
