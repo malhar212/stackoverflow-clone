@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import { useLocationContext } from './locationContext';
-import { SearchTextContext } from './searchTextContext';
+import { useLocationContext } from '../locationContext';
+import { SearchTextContext } from '../searchTextContext';
+import './stylesheets/sideBarNav.css'
 
 // Static Side-bar Navigation component
 function SideNavBar() {

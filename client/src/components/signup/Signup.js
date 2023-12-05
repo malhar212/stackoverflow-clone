@@ -108,6 +108,8 @@ function Signup() {
           />
         </div>
         <button type="submit">Submit</button>
+        <button id='loginButton' onClick={(e) => { e.preventDefault(); setPageAndParams('login')}}>Already signed up? Login here</button>
+        <button id='guestButton' onClick={(e) => { e.preventDefault(); setPageAndParams('guest')}}>Continue as guest</button>
       </form>
       <ToastContainer />
     </div>

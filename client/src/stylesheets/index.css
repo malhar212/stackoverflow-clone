@@ -25,39 +25,6 @@
     margin-right: 8px; */
     font-size: 20px;
   }
-
-
-  #sideBarNav {
-    height: 100%;
-    /*  can change with JS to create pop out animation: */
-    width: 200px; 
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #f3f1f1;
-    overflow-x: hidden;
-    padding-top: 20px;
-    border-width: 2px;
-    border-color: black;
-    border-style: dotted;
-  }
-
-  #sideBarNav a {
-    padding-top: 150px;
-    padding-left: 6px;
-    padding-bottom: 20px;
-    padding-right: 0px;
-    text-decoration: none;
-    font-size: 40px;
-    color: #093f80;
-    display: block;
-  }
-
-  #sideBarNav a.active{
-    background-color: #ccc;
-  }
-
   .main {
     /* moving main page to accomodate side nav bar */
     margin-left: 200px; 
