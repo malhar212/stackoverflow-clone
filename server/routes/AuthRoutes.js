@@ -7,5 +7,6 @@ const router = express.Router();
 router.post('/signup', AuthController.Signup);
 router.post('/login', AuthController.Login);
 router.post('/checkLoginGetUsername', AuthController.checkLoginGetUsername);
+// router.get('/csrf-token', AuthController.CsrfToken)
 
 module.exports = router;
