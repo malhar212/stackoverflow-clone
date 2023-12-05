@@ -2,12 +2,15 @@
 // The server should run on localhost port 8000.
 // This is where you should start writing server-side code for this application.
 const express = require('express');
-require("dotenv").config(); // NEW
+require("dotenv").config(); // NEW - links to env file with node env = devleopment
 const app = express();
 const port = 8000;
 var cors = require('cors');
 const cookieParser = require("cookie-parser"); // NEW
 var bodyParser = require('body-parser');
+
+// hides that we are using express
+app.disable('x-powered-by');
 
 // Initialize mongo db connection
 require('./config/database'); 
