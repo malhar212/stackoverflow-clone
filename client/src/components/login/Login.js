@@ -14,7 +14,9 @@ const Login = () => {
     username: "",
     password: "",
   });
+
   const { username, password } = inputValue;
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setInputValue({
@@ -35,12 +37,8 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const credentials = {
-      username: 'samZ',
-      password: 'examplePassword',
-    };
+    const credentials = inputValue;
 
-    console.log(credentials)
     const userData = await DataDao.getInstance().login(credentials);
 
     if (userData) {

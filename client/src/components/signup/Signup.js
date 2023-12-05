@@ -35,39 +35,25 @@ function Signup() {
       position: "bottom-left",
     });
 
-
-
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
+    
+    const credentials = inputValue;
 
-    // hard coded for testing - should be getInstace().signup
-    const { userData } = await DataDao.getInstance().getUsername('656cf2553306392f5c8119e9');
+    const userData = await DataDao.getInstance().signup(credentials);
 
-    console.log(inputValue)
-
-    const { success, message } = userData;
-
-    if (success) {
-      handleSuccess(message);
+    if (userData) {
+      handleSuccess("Success!")
       setTimeout(() => {
-        setPageAndParams('login')
+        // if successfull signup, redirect to login page
+        {setPageAndParams('login', '')}
       }, 1000);
     } else {
-      handleError(message);
+      // Handle failure
+      handleError("Signup failed");
     }
-  } catch (error) {
-    console.log(error);
   }
-  setInputValue({
-    ...inputValue,
-    email: "",
-    password: "",
-    username: "",
-  });
-};
+
 
 
   return (

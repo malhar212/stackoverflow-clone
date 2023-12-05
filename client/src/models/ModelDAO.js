@@ -264,13 +264,12 @@ export class DataDao {
     }
 
 
-    // signup
-
+    // Signup
     async signup(credentials) {
-      console.log("IN MODELDAO LOGIN")
+      console.log("IN MODELDAO signup")
       try {
-        console.log("inside the try of modeldao login")
-        const response = await this.instance.post('auth/login', credentials, {
+        console.log("inside the try of modeldao SIGNUP")
+        const response = await this.instance.post('auth/signup', credentials, {
           withCredentials: true,
         });
         const { success, data } = response.data
@@ -279,9 +278,9 @@ export class DataDao {
           return success, data;
         }
       } catch (error) {
-        console.error('Error logging in:', error);
+        console.error('Error Signing up:', error);
       }
-      console.log("Login failed :(")
+      console.log("signup failed")
       return null; // lets login.jsx know that it was not successful
     }
 
