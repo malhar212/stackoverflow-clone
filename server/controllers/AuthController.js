@@ -16,7 +16,7 @@ exports.Login = async (req, res) => {
 exports.Signup = async (req, res) => {
   try {
       const { username, email, password } = req.body
-      req.session.user = req.body.username.trim()
+      // req.session.user = req.body.username.trim()
       console.log(username, email, password + "===========================");
 
       const newUser = new User(req.body);

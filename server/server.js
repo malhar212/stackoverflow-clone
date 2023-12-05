@@ -2,15 +2,16 @@ const express = require('express');
 const session = require("express-session");
 const cors = require('cors');
 const cookieParser = require("cookie-parser");
-const dotenv = require("dotenv"); // Updated import for dotenv
-const csrf = require('csurf'); // Added csurf for CSRF protection
+// const dotenv = require("dotenv");  
+// const csrf = require('csurf'); 
 
-dotenv.config(); // Load environment variables from .env file
+// dotenv.config();
 
 const app = express();
 const port = 8000;
 
-const secret = process.env.SESSION_SECRET; // Use process.env to access environment variables
+// const secret = process.env.SESSION_SECRET; 
+
 
 // Initialize mongo db connection
 require('./config/database');
@@ -25,17 +26,19 @@ const userRoutes = require('./routes/userRoutes');
 
 app.use(express.urlencoded({ extended: false }));
 
-app.use(
-  session({
-    secret: `${secret}`,
-    cookie: {
-      httpOnly: true,
-      sameSite: true,
-    },
-    resave: false,
-    saveUninitialized: false,
-  })
-);
+// app.use(
+//   session({
+//     secret: `${secret}`,
+//     cookie: {
+//       httpOnly: true,
+//       sameSite: true,
+//     },
+//     resave: false,
+//     saveUninitialized: false,
+//   })
+// );
+
+
 
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -48,11 +51,11 @@ app.use(express.json());
 
 app.use(cookieParser());
 
-app.use(csrf({ cookie: true })); // Enable CSRF protection
+// app.use(csrf({ cookie: true })); // Enable CSRF protection
 
-app.get('/csrf-token', (req, res) => {
-  res.json({ csrfToken: req.csrfToken() });
-});
+// app.get('/csrf-token', (req, res) => {
+//   res.json({ csrfToken: req.csrfToken() });
+// });
 
 app.use('/questions', questionRoutes);
 app.use('/answers', answerRoutes);
