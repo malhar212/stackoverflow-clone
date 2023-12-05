@@ -5,9 +5,7 @@ import { useLocationContext } from '../locationContext';
 import './stylesheets/signupStyle.css'
 
 function Signup() {
-  const { page, params } = useLocationContext();
   const { setPageAndParams } = useLocationContext();
-  console.log("Page is: " + page + "Params: " + params)
 
 
   const [inputValue, setInputValue] = useState({

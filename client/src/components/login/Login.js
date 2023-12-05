@@ -6,9 +6,7 @@ import '../../stylesheets/form.css'
 import { DataDao } from '../../models/ModelDAO.js';
 
 const Login = () => {
-  const { page, params } = useLocationContext();
   const { setPageAndParams } = useLocationContext();
-  console.log("Page is: " + page + "Params: " + params)
 
   const [inputValue, setInputValue] = useState({
     username: "",

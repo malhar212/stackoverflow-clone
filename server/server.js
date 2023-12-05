@@ -39,10 +39,6 @@ app.use('/tags', tagRoutes);
 app.use('/auth', authRoutes); // NEW
 app.use('/users', userRoutes); // NEW
 
-
-
-
-
 // When the server starts 
 app.listen(port, ()=> {
   console.log('Server running on port 8000');
