@@ -77,9 +77,8 @@ const Login = () => {
             />
         </div>
         <button type="submit">Submit</button>
-        <span>
-        <a id='signupButton' href='' onClick={(e)=> { e.preventDefault(); setPageAndParams('signup')}}>Need to Signup?</a>
-        </span>
+        <button id='signupButton' onClick={(e) => { e.preventDefault(); setPageAndParams('signup')}}>Need to Signup?</button>
+        <button id='guestButton' onClick={(e) => { e.preventDefault(); setPageAndParams('guest')}}>Continue as guest</button>
       </form>
       <ToastContainer />
       </MainContent>
