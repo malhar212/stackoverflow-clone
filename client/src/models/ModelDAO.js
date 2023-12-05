@@ -275,6 +275,8 @@ export class DataDao {
         const { success, data } = response.data
         if (success) {
           console.log(success)
+          // save this information in global state somehow - redux?
+          console.log(data)
           return success, data;
         }
       } catch (error) {
@@ -285,7 +287,7 @@ export class DataDao {
     }
 
     // get userName based on uid of user
-    async getUsername(userId) {
+    async getUsernameByUid(userId) {
       console.log(userId);
       try {
         console.log("inside the try of getUsername modelDAO")
@@ -301,4 +303,30 @@ export class DataDao {
       console.log("at end of getUSername in DAO");
       return null; 
     }
-  }
+
+  async checkLoginGetUsername(credentials) {
+    console.log("IN MODELDAO LOGIN")
+      try {
+        console.log("sdfgsdfgsdfg")
+        const response = await this.instance.post('auth/checkLoginGetUsername', credentials, {
+            withCredentials: true,
+          });
+          const { success, data } = response.data
+          if (success) {
+            console.log(success)
+            return success, data;
+          }
+        } catch (error) {
+          console.error('Error logging in:', error);
+        }
+        console.log(":(")
+        return null; // lets login.jsx know that it was not successful
+      }
+      
+   
+
+
+
+
+
+}

@@ -6,5 +6,6 @@ const router = express.Router();
 // Specific routes should come before the generic one
 router.post('/signup', AuthController.Signup);
 router.post('/login', AuthController.Login);
+router.post('/checkLoginGetUsername', AuthController.checkLoginGetUsername);
 
 module.exports = router;
