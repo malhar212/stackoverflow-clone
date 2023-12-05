@@ -43,7 +43,12 @@ function Signup() {
       return;
     }
 
-    const credentials = inputValue;
+    const credentials = {
+      email,
+      username,
+      password,
+    };
+
 
     const userData = await DataDao.getInstance().signup(credentials);
 

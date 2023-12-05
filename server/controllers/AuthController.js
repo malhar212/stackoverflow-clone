@@ -1,15 +1,9 @@
 // controllers/AuthController.js
 // const bcrypt = require('bcryptjs');
 const User = require('../models/users');
+// const signUp = require('../validations/userValidation');
+// const Joi = require('joi')
 
-// exports.Signup = async (req, res) => {
-//   try {
-//     res.status(201).json({ message: 'User signed up successfully' });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Internal server error' });
-//   }
-// };
 
 exports.Login = async (req, res) => {
   try {
@@ -22,6 +16,8 @@ exports.Login = async (req, res) => {
 
 exports.Signup = async (req, res) => {
   try {
+      // const { username, email, password } = req.body
+      // await Joi.validate({ username, email, password }, signUp);
     // Assuming req.body contains the user data
     const newUser = new User(req.body);
     await newUser.save();
@@ -31,3 +27,15 @@ exports.Signup = async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 };
+
+// exports.Signup = async (req, res) => {
+//   try {
+//     const { username, email, password } = req.body
+//     await Joi.validate({ username, email, password }, signUp);
+//     const newUser = new User({ username, email, password });
+//     await newUser.save();
+//     res.send({ userId: newUser.id, username });
+//   } catch (err) {
+//     res.status(400).send(err);
+//   }
+//   };
