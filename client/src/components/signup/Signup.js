@@ -2,21 +2,19 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { DataDao } from '../../models/ModelDAO';
 import { useLocationContext } from '../locationContext';
-import './stylesheets/signupStyle.css'
+import './stylesheets/signupStyle.css';
 
 function Signup() {
-  const { page, params } = useLocationContext();
   const { setPageAndParams } = useLocationContext();
-  console.log("Page is: " + page + "Params: " + params)
-
 
   const [inputValue, setInputValue] = useState({
     email: "",
     username: "",
     password: "",
+    confirmPassword: "", // New field for password confirmation
   });
 
-  const { email, password, username } = inputValue;
+  const { email, username, password, confirmPassword } = inputValue;
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -30,51 +28,46 @@ function Signup() {
     toast.error(err, {
       position: "bottom-left",
     });
+
   const handleSuccess = (msg) =>
     toast.success(msg, {
       position: "bottom-left",
     });
 
-
-
-
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
 
-    // hard coded for testing - should be getInstace().signup
-    const { userData } = await DataDao.getInstance().getUsername('656cf2553306392f5c8119e9');
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      handleError("Passwords do not match");
+      return;
+    }
 
-    console.log(inputValue)
+    const credentials = {
+      email,
+      username,
+      password,
+    };
 
-    const { success, message } = userData;
+    const userData = await DataDao.getInstance().signup(credentials);
 
-    if (success) {
-      handleSuccess(message);
+    if (userData) {
+      handleSuccess("Success!");
       setTimeout(() => {
-        setPageAndParams('login')
+        // if successful signup, redirect to login page
+        setPageAndParams('login', '');
       }, 1000);
     } else {
-      handleError(message);
+      // Handle failure
+      handleError("Signup failed");
     }
-  } catch (error) {
-    console.log(error);
-  }
-  setInputValue({
-    ...inputValue,
-    email: "",
-    password: "",
-    username: "",
-  });
-};
-
+  };
 
   return (
     <div className="signupForm">
       <h2>Signup for Fake Stack Overflow!</h2>
       <form onSubmit={handleSubmit}>
-      <div>
+        <div>
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -84,30 +77,42 @@ function Signup() {
             onChange={handleOnChange}
           />
         </div>
-      <div>
-        <label htmlFor="username">Username</label>
+        <div>
+          <label htmlFor="username">Username</label>
           <input
             type="text"
             name="username"
-            value={username} 
+            value={username}
             placeholder="Enter your username"
             onChange={handleOnChange}
-         />
-      </div>
+          />
+        </div>
         <div>
           <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              name="password"
-              value={password}
-              placeholder="Enter your password"
-              onChange={handleOnChange}
-            />
+          <input
+            type="password"
+            name="password"
+            value={password}
+            placeholder="Enter your password"
+            onChange={handleOnChange}
+          />
+        </div>
+        <div>
+          <label htmlFor="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            name="confirmPassword"
+            value={confirmPassword}
+            placeholder="Confirm your password"
+            onChange={handleOnChange}
+          />
         </div>
         <button type="submit">Submit</button>
+        <button id='loginButton' onClick={(e) => { e.preventDefault(); setPageAndParams('login')}}>Already signed up? Login here</button>
+        <button id='guestButton' onClick={(e) => { e.preventDefault(); setPageAndParams('guest')}}>Continue as guest</button>
       </form>
       <ToastContainer />
-      </div>
+    </div>
   );
 }
 

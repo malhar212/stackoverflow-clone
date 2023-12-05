@@ -3,7 +3,7 @@
 import React from 'react';
 import Banner from "./components/banner/banner.js"
 import { LocationContextProvider } from "./components/locationContext.js";
-import SideBarNav from './components/sideBarNav.js';
+import SideBarNav from './components/sideBarNav/sideBarNav.js';
 
 function App() {
   return (

@@ -1,56 +1,53 @@
-const User = require("../models/users");
-const { createSecretToken } = require("../util/SecretToken");
-const bcrypt = require('bcrypt');
+// controllers/AuthController.js
+// const bcrypt = require('bcryptjs');
+const User = require('../models/users');
+// const { signUp, signIn } = require('../validations/userValidation');
 
-exports.Signup = async (req, res, next) => {
+exports.Login = async (req, res) => {
   try {
-    const { email, password, username, createdAt } = req.body;
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.json({ message: "User already exists" });
-    }
-    const user = await User.create({ email, password, username, createdAt });
-    const token = createSecretToken(user._id);
-    res.cookie("token", token, {
-      withCredentials: true,
-      httpOnly: false,
-    });
-    res
-      .status(201)
-      .json({ message: "User signed in successfully", success: true, user });
-    next();
+    // check if user credentials are correct
+    res.status(200).json({ success: true, data: "login"});
   } catch (error) {
     console.error(error);
+    res.status(500).json({ message: "Login failure" });
   }
 };
 
-
-
-exports.Login = async (req, res, next) => {
-  console.log("IN LOGIN IN AUTHCONTROLLER")
+exports.Signup = async (req, res) => {
   try {
-    console.log("IN AUTH CONTROLLER!!! BEGINNING")
-    const { username, password } = req.body;
-    if(!username || !password ){
-      return res.json({message:'All fields are required'})
-    }
-    const user = await User.findOne({ username });
-    if(!user){
-      return res.json({message:'Incorrect password or username' }) 
-    }
-    const auth = await bcrypt.compare(password,user.password)
-    if (!auth) {
-      return res.json({message:'Incorrect password or username' }) 
-    }
-     const token = createSecretToken(user._id);
-     res.cookie("token", token, {
-       withCredentials: true,
-       httpOnly: false,
-     });
-     res.status(201).json({ success: true, message: "User logged in successfully" });
-     next()
-    console.log("IN AUTH CONTROLLER!!!")
-  } catch (error) {
-    console.error(error);
+      const { username, email, password } = req.body
+      req.session.user = req.body.username.trim()
+      console.log(username, email, password + "===========================");
+
+      const newUser = new User(req.body);
+      await newUser.save();
+      // const response = `<p>Thank you</p> <a href="/">Back home</a>`;
+      const response = username;
+      res.status(200).json({ success: true, data: response});
+      // res.send(`<p>Thank you</p> <a href="/">Back home</a>`)
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+exports.checkLoginGetUsername = async (req, res) => {
+  try {
+    let name = "Guest";
+    if (req.session.user) name = req.session.user;
+    res.status(200).json({ success: true, data: name });
+    res.send(`
+    <h1>Welcome, ${name}</h1>
+    <form action="/register" method="POST">
+      <input type="text" name="name" placeholder="Your name">
+      <button>Submit</button>
+    </form>
+    <form action="/forget" method="POST">
+      <button>Logout</button>
+    </form>
+    `)
+
+    // res.send(name); 
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
   }
 }

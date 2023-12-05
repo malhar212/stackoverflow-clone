@@ -6,16 +6,15 @@ import '../../stylesheets/form.css'
 import { DataDao } from '../../models/ModelDAO.js';
 
 const Login = () => {
-  const { page, params } = useLocationContext();
   const { setPageAndParams } = useLocationContext();
-  console.log("Page is: " + page + "Params: " + params)
-
 
   const [inputValue, setInputValue] = useState({
     username: "",
     password: "",
   });
+
   const { username, password } = inputValue;
+
   const handleOnChange = (e) => {
     const { name, value } = e.target;
     setInputValue({
@@ -35,10 +34,8 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const credentials = {
-      username: 'your_username',
-      password: 'your_password',
-    };
+    
+    const credentials = inputValue;
 
     const userData = await DataDao.getInstance().login(credentials);
 
@@ -47,7 +44,7 @@ const Login = () => {
       handleSuccess("Success!")
       console.log('Login successful:', userData);
       setTimeout(() => {
-        {setPageAndParams('/', '')}
+        {setPageAndParams('questions', '')}
       }, 1000);
     } else {
       // Handle login failure
@@ -80,9 +77,8 @@ const Login = () => {
             />
         </div>
         <button type="submit">Submit</button>
-        <span>
-        <a id='signupButton' href='' onClick={(e)=> { e.preventDefault(); setPageAndParams('signup')}}>Need to Signup?</a>
-        </span>
+        <button id='signupButton' onClick={(e) => { e.preventDefault(); setPageAndParams('signup')}}>Need to Signup?</button>
+        <button id='guestButton' onClick={(e) => { e.preventDefault(); setPageAndParams('guest')}}>Continue as guest</button>
       </form>
       <ToastContainer />
       </MainContent>
