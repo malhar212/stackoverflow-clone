@@ -11,6 +11,6 @@ function SortButtonsGroup() {
       <button id='unansweredButton' onClick={()=>setSortState('unanswered')}>Unanswered</button>
     </div>
   );
-};
+}
 
 export default SortButtonsGroup;
