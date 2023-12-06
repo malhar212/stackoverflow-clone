@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { DataDao } from '../../models/ModelDAO';
-import { useLocationContext } from '../locationContext';
-import './stylesheets/signupStyle.css';
+// import { useLocationContext } from '../locationContext';
+//import './stylesheets/signupStyle.css';
 
-function Signup() {
-  const { setPageAndParams } = useLocationContext();
+function Signup({handleButtonClick}) {
+  // const { setPageAndParams } = useLocationContext();
 
   const [inputValue, setInputValue] = useState({
     email: "",
@@ -61,7 +61,7 @@ function Signup() {
       handleSuccess("Success!");
       setTimeout(() => {
         // if successful signup, redirect to login page
-        setPageAndParams('login', '');
+        handleButtonClick(e)
       }, 1000);
     } else {
       // Handle failure
@@ -72,7 +72,7 @@ function Signup() {
   return (
     <div className="signupForm">
       <h2>Signup for Fake Stack Overflow!</h2>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div>
           <label htmlFor="email">Email</label>
           <input
@@ -113,9 +113,8 @@ function Signup() {
             onChange={handleOnChange}
           />
         </div>
-        <button type="submit">Submit</button>
-        <button id='loginButton' onClick={(e) => { e.preventDefault(); setPageAndParams('login')}}>Already signed up? Login here</button>
-        <button id='guestButton' onClick={(e) => { e.preventDefault(); setPageAndParams('guest')}}>Continue as guest</button>
+        <button type="submit" onClick={handleSubmit}>Sign Up!</button>
+        <button id='loginButton' onClick={handleButtonClick}>Already signed up? Login here</button>
       </form>
       <ToastContainer />
     </div>

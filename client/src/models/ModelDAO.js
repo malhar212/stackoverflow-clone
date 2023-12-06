@@ -3,14 +3,23 @@ import axios from 'axios';
 export class DataDao {
   static #instance;
   instance;
+  #csrfToken;
   constructor() {
     if (!DataDao.#instance) {
       this.instance = axios.create({
         baseURL: "http://localhost:8000",
-        timeout: 5000
+        timeout: 5000,
+        withCredentials: true,
       });
       DataDao.#instance = this;
-      Object.freeze(DataDao.#instance);
+      this.instance.interceptors.request.use(function (config) {
+        console.log("Token: ", DataDao.getInstance().#csrfToken);
+        config.headers['X-CSRF-Token'] = DataDao.getInstance().#csrfToken;
+        return config;
+      }, function (error) {
+        return Promise.reject(error);
+      });
+      Object.seal(DataDao.#instance);
     }
     return DataDao.#instance;
   }
@@ -30,11 +39,12 @@ export class DataDao {
   async getCSRFToken() {
     try {
       console.log("in get token!")
-      const response = await this.instance.get('auth/csrf-token');
+      const response = await this.instance.get('csrf-token');
       // const { success, data } = response.data;
       if (response.data.csrfToken) {
         console.log("SUCCESSFUL TOKEN", response.data.csrfToken)
-        return (response.data.csrfToken);
+        this.#csrfToken = response.data.csrfToken;
+        // axios.defaults.headers.common['X-CSRF-Token'] = response.data.csrfToken;
       }
     } catch (error) {
       console.log("in csrf token failure")
@@ -47,13 +57,8 @@ export class DataDao {
 
   // Sort questions by newest and re-display
   async sortQuestionsByNewest() {
-    const csrfToken = await this.getCSRFToken();
-    try {
-      const response = await this.instance.get('questions/newest', {        
-        headers: {
-        'X-CSRF-Token': csrfToken,
-      },
-    });
+        try {
+      const response = await this.instance.get('questions/newest', );
       const { success, data } = response.data;
       if (success)
         return data;
@@ -75,13 +80,8 @@ export class DataDao {
 
   // Sort the questions based on the most recent answer date
   async sortQuestionsByRecentAnswers() {
-    const csrfToken = await this.getCSRFToken();
-    try {
-      const response = await this.instance.get('questions/recentlyAnswered', {
-        headers: {
-          'X-CSRF-Token': csrfToken,
-        },
-      });
+        try {
+      const response = await this.instance.get('questions/recentlyAnswered');
       const { success, data } = response.data;
       if (success)
         return data;
@@ -94,13 +94,8 @@ export class DataDao {
 
   // Filter unanswered questions
   async getUnansweredQuestions() {
-    const csrfToken = await this.getCSRFToken();
-    try {
-      const response = await this.instance.get('questions/unanswered', {
-        headers: {
-          'X-CSRF-Token': csrfToken,
-        },
-      });
+        try {
+      const response = await this.instance.get('questions/unanswered');
       const { success, data } = response.data;
       if (success)
         return data;
@@ -126,13 +121,8 @@ export class DataDao {
 
   // Get a specific question by its ID
   async getQuestionById(qid) {
-    const csrfToken = await this.getCSRFToken();
-    try {
-      const response = await this.instance.get(`questions/${qid}`, {
-        headers: {
-          'X-CSRF-Token': csrfToken,
-        },
-      });
+        try {
+      const response = await this.instance.get(`questions/${qid}`);
       const { success, data } = response.data;
       if (success)
         return data;
@@ -144,13 +134,8 @@ export class DataDao {
 
   // Add new Question
   async addNewQuestion(question) {
-    const csrfToken = await this.getCSRFToken();
-    try {
-      const response = await this.instance.post('questions/add', { question }, {
-        headers: {
-          'X-CSRF-Token': csrfToken,
-        },
-      });
+        try {
+      const response = await this.instance.post('questions/add', { question });
       const { success, data } = response.data;
       if (success)
         return data;
@@ -162,13 +147,8 @@ export class DataDao {
 
   // Increments view count of the question
   async incrementViewCount(qid) {
-    const csrfToken = await this.getCSRFToken();
     try {
-      const response = await this.instance.get(`questions/${qid}/incrementViewCount`, {        
-        headers: {
-        'X-CSRF-Token': csrfToken,
-      },
-    });
+      const response = await this.instance.get(`questions/${qid}/incrementViewCount`);
       const { success, data } = response.data;
       if (success)
         return data;
@@ -180,19 +160,14 @@ export class DataDao {
 
   // Get answers for the question
   async filterAnswersBasedOnAnsIds(ansIdsList) {
-    const csrfToken = await this.getCSRFToken();
-    try {
+        try {
       if (ansIdsList.length === 0) {
         return []
       }
       const response = await this.instance.get(`answers/filterByIds`, {
         params: {
           ids: ansIdsList.join(',')
-        },
-        headers: {
-          'X-CSRF-Token': csrfToken,
-        },
-
+        }
       });
       const { success, data } = response.data;
       if (success)
@@ -205,13 +180,8 @@ export class DataDao {
 
   // Add new Answer
   async addAnswer(answer, qid) {
-    const csrfToken = await this.getCSRFToken();
-    try {
-      const response = await this.instance.post('answers/add', { answer, qid }, {
-        headers: {
-          'X-CSRF-Token': csrfToken,
-        },
-      });
+        try {
+      const response = await this.instance.post('answers/add', { answer, qid });
       const { success, data } = response.data;
       if (success)
         return data;
@@ -226,13 +196,8 @@ export class DataDao {
 
   // Get a tag by ID
   async getTagById(tagId) {
-    const csrfToken = await this.getCSRFToken();
-    try {
-      const response = await this.instance.get(`tags/${tagId}`, {
-        headers: {
-          'X-CSRF-Token': csrfToken,
-        },
-      });
+        try {
+      const response = await this.instance.get(`tags/${tagId}`);
       const { success, data } = response.data;
       if (success)
         return data;
@@ -244,15 +209,11 @@ export class DataDao {
 
   // Get a tag by ID
   async getTagsById(tagIds) {
-    const csrfToken = await this.getCSRFToken();
-    try {
+        try {
       const response = await this.instance.get(`tags`, {
         params: {
           ids: tagIds.join(',')
-        },
-        headers: {
-          'X-CSRF-Token': csrfToken,
-        },
+        }
       });
       const { success, data } = response.data;
       if (success)
@@ -264,13 +225,8 @@ export class DataDao {
   }
 
   async getTagsAndQuestionCount() {
-    const csrfToken = await this.getCSRFToken();
-    try {
-      const response = await this.instance.get(`tags/questionCount`, {
-        headers: {
-          'X-CSRF-Token': csrfToken,
-        },
-      });
+        try {
+      const response = await this.instance.get(`tags/questionCount`);
       const { success, data } = response.data;
       if (success)
         return data;
@@ -284,13 +240,8 @@ export class DataDao {
 
   // Get all questions
   async getAllQuestions() {
-    const csrfToken = await this.getCSRFToken();
-    try {
-      const response = await this.instance.get('questions', {
-        headers: {
-          'X-CSRF-Token': csrfToken,
-        },
-      });
+        try {
+      const response = await this.instance.get('questions');
       const { success, data } = response.data;
       if (success)
         return data;
@@ -302,13 +253,8 @@ export class DataDao {
 
   // Get all tags
   async getAllTags() {
-    const csrfToken = await this.getCSRFToken();
-    try {
-      const response = await this.instance.get('tags', {
-        headers: {
-          'X-CSRF-Token': csrfToken,
-        },
-      });
+        try {
+      const response = await this.instance.get('tags');
       const { success, data } = response.data;
       if (success)
         return data;
@@ -320,13 +266,8 @@ export class DataDao {
 
   // Get all answers
   async getAllAnswers() {
-    const csrfToken = await this.getCSRFToken();
-    try {
-      const response = await this.instance.get('answers', {
-        headers: {
-          'X-CSRF-Token': csrfToken,
-        },
-      });
+        try {
+      const response = await this.instance.get('answers');
       const { success, data } = response.data;
       if (success)
         return data;
@@ -335,18 +276,13 @@ export class DataDao {
     }
     return [];
   }
+
 // Login method
 async login(credentials) {
   console.log("IN MODELDAO LOGIN");
   try {
     console.log("inside the try of modeldao login");
-    const csrfToken = await this.getCSRFToken();
-    const response = await this.instance.post('auth/login', credentials, {
-      withCredentials: true,
-      headers: {
-        'X-CSRF-Token': csrfToken,
-      },
-    });
+    const response = await this.instance.post('auth/login', credentials);
     console.log("HERERERERER", response.data);
     const { success, data } = response.data;
     if (success) {
@@ -361,7 +297,24 @@ async login(credentials) {
 }
 
 
-
+// Logout method
+async logout() {
+  console.log("IN MODELDAO LOGIN");
+  try {
+    console.log("inside the try of modeldao login");
+    const response = await this.instance.post('auth/logout', null);
+    console.log("HERERERERER", response.data);
+    const { success, data } = response.data;
+    if (success) {
+      console.log(success, data);
+      return { success, data }; // Return as an object
+    }
+  } catch (error) {
+    console.error('Error logging in:', error);
+  }
+  console.log("Login failed :(");
+  return null; // lets login.jsx know that it was not successful
+}
 
 
 async signup(credentials) {
@@ -372,17 +325,11 @@ async signup(credentials) {
       // if(csrfToken) {
 
         console.log("in signup, after csrf token retrieveda")
-        const response = await this.instance.post('auth/signup', credentials, {
-            withCredentials: true,
-            headers: {
-              'X-CSRF-Token': await this.getCSRFToken(),
-              'Content-Type': 'application/json',
-            },
-        });
+        const response = await this.instance.post('auth/signup', credentials);
 
         console.log("SIGNUP RESPONSE:", response);
 
-        if (response.data && response.data.csrfToken) {
+        if (response.data && response.data.success && response.data.success ==  true && response.data.data.csrfToken) {
             console.log("Got the token in signup!");
             return true;
         } else {
@@ -414,7 +361,7 @@ async signup(credentials) {
         const { success, data } = response.data
         if (success) {
           console.log(success)
-          return success, data;
+          return data;
         }
       } catch (error) {
         console.error('Error getting username', error);
@@ -427,13 +374,7 @@ async signup(credentials) {
     console.log("IN MODELDAO LOGIN")
       try {
         console.log("sdfgsdfgsdfg")
-        const csrfToken = await this.getCSRFToken();
-        const response = await this.instance.post('auth/checkLoginGetUsername', credentials, {
-            withCredentials: true,
-            headers: {
-              'X-CSRF-Token': csrfToken,
-            },
-          });
+                const response = await this.instance.post('auth/checkLoginGetUsername', credentials);
           const { success, data } = response.data
           if (success) {
             console.log(success)

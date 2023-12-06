@@ -22,6 +22,6 @@ function QuestionsPage() {
             </QuestionPageContext.Provider>
         </MainContent>
     )
-};
+}
 
 export default QuestionsPage;

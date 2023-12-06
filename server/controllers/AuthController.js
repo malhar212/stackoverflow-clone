@@ -19,7 +19,7 @@ const User = require('../models/users');
 //   res.json({ csrfToken: req.csrfToken() });
 // }
 
-exports.Login = async (req, res) => {
+exports.login = async (req, res) => {
   try {
     console.log("in login!")
     const { username, password } = req.body;
@@ -54,7 +54,7 @@ exports.Login = async (req, res) => {
   }
 };
 
-exports.Signup = async (req, res) => {
+exports.signup = async (req, res) => {
   try {
       const { username, email, password } = req.body
       // req.session.user = req.body.username.trim()
@@ -63,11 +63,16 @@ exports.Signup = async (req, res) => {
       const newUser = new User(req.body);
       await newUser.save();
       // const response = `<p>Thank you</p> <a href="/">Back home</a>`;
-      res.status(200).json({ success: true, data: "hello"});
+      res.status(200).json({ success: true, data: { csrfToken: req.csrfToken() }});
       // res.send(`<p>Thank you</p> <a href="/">Back home</a>`)
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
+};
+
+exports.logout = async (req, res) => {
+  req.session.destroy();
+  res.json({ success: true });
 };
 
 exports.checkLoginGetUsername = async (req, res) => {
@@ -90,4 +95,4 @@ exports.checkLoginGetUsername = async (req, res) => {
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
-}
+};

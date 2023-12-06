@@ -1,3 +1,4 @@
+import React from 'react';
 // Invalid Page Navigation
 export default function NotFound() {
     return (

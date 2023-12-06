@@ -60,4 +60,4 @@ export function validateLinks(input) {
         }
     }
     return true;
-};
+}
