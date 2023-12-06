@@ -5,21 +5,21 @@ const Schema = mongoose.Schema;
 
 const Question = new Schema({
     title: {
-        type : String,
+        type: String,
         // unique : true,
-        required : true,
+        required: true,
         maxlength: 100,
     },
     text: {
-        type : String,
+        type: String,
         // unique : true,
-        required : true,
+        required: true,
     },
     tags: {
-        type: [Schema.Types.ObjectId], 
+        type: [Schema.Types.ObjectId],
         default: [],
         validate: {
-            validator: function(arr) {
+            validator: function (arr) {
                 return arr.length <= 5;
             },
             message: "Cannot have more than 5 tags"
@@ -30,22 +30,26 @@ const Question = new Schema({
     //   default : [], 
     //   required : true,  
     // },
-    asked_by : {
+    asked_by: {
         type: Schema.Types.ObjectId,
         required: true,
     },
-    ask_date_time : { 
-        type : Date,
-        default : Date.now,
+    ask_date_time: {
+        type: Date,
+        default: Date.now,
     },
-    last_activity : { 
-        type : Date,
-        default : Date.now,
+    last_activity: {
+        type: Date,
+        default: Date.now,
     },
     views: {
-        type : Number,
-        default : 0,
-     }
+        type: Number,
+        default: 0,
+    },
+    votes: {
+        type: Number,
+        default: 0,
+    }
 });
 
 

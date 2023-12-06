@@ -10,7 +10,7 @@ function formatQuestionsForUI(results) {
     const formattedQuestions = results.map(result => {
         const builder = new BuilderFactory().createBuilder({ builderType: 'questionUI' })
 
-        const { _id, title, text, tags, asked_by, ask_date_time, views } = result;
+        const { _id, title, text, tags, asked_by, ask_date_time, views, votes, answerCount } = result;
         // Extracting tag IDs
         const tagIds = tags.map(tag => tag._id);
 
@@ -26,6 +26,8 @@ function formatQuestionsForUI(results) {
             .setAskedBy(asked_by)
             .setAskDate(ask_date_time)
             .setViews(views)
+            .setVotes(votes)
+            .setAnswerCount(answerCount)
             .build();
     });
     return formattedQuestions
@@ -44,7 +46,43 @@ exports.getAllQuestions = async (req, res) => {
 
 exports.sortQuestionsByNewest = async (req, res) => {
     try {
-        const questions = await Question.find().sort({ ask_date_time: -1 });
+        const questions = await Question.aggregate([
+            {
+              $lookup: {
+                from: "users",
+                localField: "asked_by",
+                foreignField: "_id",
+                as: "asked_by",
+              },
+            },
+            {
+              $lookup: {
+                from: "answers",
+                localField: "_id",
+                foreignField: "qid",
+                as: "answers",
+              },
+            },
+            {
+              $addFields: {
+                asked_by: {
+                  $arrayElemAt: ["$asked_by.username", 0],
+                },
+                answerCount: {
+                  $size: "$answers",
+                },
+              },
+            },
+            {
+              $sort: {
+                last_activity: -1,
+              },
+            },
+            {
+              $unset:
+                "answers",
+            },
+          ]);
         console.log(questions);
         const formattedQuestions = formatQuestionsForUI(questions);
         res.status(200).json({ success: true, data: formattedQuestions });
