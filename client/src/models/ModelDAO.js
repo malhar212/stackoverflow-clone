@@ -79,9 +79,9 @@ export class DataDao {
   }
 
   // Sort the questions based on the most recent answer date
-  async sortQuestionsByRecentAnswers() {
+  async sortQuestionsByActivity() {
         try {
-      const response = await this.instance.get('questions/recentlyAnswered');
+      const response = await this.instance.get('questions/activity');
       const { success, data } = response.data;
       if (success)
         return data;

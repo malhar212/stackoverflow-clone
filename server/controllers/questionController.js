@@ -48,41 +48,41 @@ exports.sortQuestionsByNewest = async (req, res) => {
     try {
         const questions = await Question.aggregate([
             {
-              $lookup: {
-                from: "users",
-                localField: "asked_by",
-                foreignField: "_id",
-                as: "asked_by",
-              },
-            },
-            {
-              $lookup: {
-                from: "answers",
-                localField: "_id",
-                foreignField: "qid",
-                as: "answers",
-              },
-            },
-            {
-              $addFields: {
-                asked_by: {
-                  $arrayElemAt: ["$asked_by.username", 0],
+                $lookup: {
+                    from: "users",
+                    localField: "asked_by",
+                    foreignField: "_id",
+                    as: "asked_by",
                 },
-                answerCount: {
-                  $size: "$answers",
+            },
+            {
+                $lookup: {
+                    from: "answers",
+                    localField: "_id",
+                    foreignField: "qid",
+                    as: "answers",
                 },
-              },
             },
             {
-              $sort: {
-                last_activity: -1,
-              },
+                $addFields: {
+                    asked_by: {
+                        $arrayElemAt: ["$asked_by.username", 0],
+                    },
+                    answerCount: {
+                        $size: "$answers",
+                    },
+                },
             },
             {
-              $unset:
-                "answers",
+                $sort: {
+                    ask_date_time: -1,
+                },
             },
-          ]);
+            {
+                $unset:
+                    "answers",
+            },
+        ]);
         console.log(questions);
         const formattedQuestions = formatQuestionsForUI(questions);
         res.status(200).json({ success: true, data: formattedQuestions });
@@ -92,59 +92,43 @@ exports.sortQuestionsByNewest = async (req, res) => {
     }
 };
 
-exports.sortQuestionsByRecentAnswers = async (req, res) => {
+exports.sortQuestionsByActivity = async (req, res) => {
     try {
-        const questions = await Question.aggregate([
-            {
-                $lookup: {
-                    from: "answers",
-                    localField: "answers",
-                    foreignField: "_id",
-                    as: "answers",
+        const questions = await Question.aggregate([{
+            $lookup: {
+                from: "users",
+                localField: "asked_by",
+                foreignField: "_id",
+                as: "asked_by",
+            },
+        },
+        {
+            $lookup: {
+                from: "answers",
+                localField: "_id",
+                foreignField: "qid",
+                as: "answers",
+            },
+        },
+        {
+            $addFields: {
+                asked_by: {
+                    $arrayElemAt: ["$asked_by.username", 0],
+                },
+                answerCount: {
+                    $size: "$answers",
                 },
             },
-            {
-                $unwind: "$answers",
+        },
+        {
+            $sort: {
+                last_activity: -1,
             },
-            {
-                $sort: {
-                    "answers.ans_date_time": -1,
-                },
-            },
-            {
-                $group: {
-                    _id: "$_id",
-                    title: {
-                        $first: "$title",
-                    },
-                    text: {
-                        $first: "$text",
-                    },
-                    tags: {
-                        $first: "$tags",
-                    },
-                    asked_by: {
-                        $first: "$asked_by",
-                    },
-                    ask_date_time: {
-                        $first: "$ask_date_time",
-                    },
-                    answers: {
-                        $push: "$answers",
-                    },
-                    views: {
-                        $first: "$views",
-                    },
-                    latestAnswer: {
-                        $max: "$answers.ans_date_time",
-                    },
-                },
-            },
-            {
-                $sort: {
-                    "latestAnswer": -1,
-                },
-            }
+        },
+        {
+            $unset:
+                "answers"
+        }
         ]);
         const formattedQuestions = formatQuestionsForUI(questions);
         res.status(200).json({ success: true, data: formattedQuestions });
@@ -155,7 +139,47 @@ exports.sortQuestionsByRecentAnswers = async (req, res) => {
 
 exports.getUnansweredQuestions = async (req, res) => {
     try {
-        const questions = await Question.find({ answers: { $size: 0 } }).sort({ ask_date_time: -1 });
+        const questions = await Question.aggregate([{
+            $lookup: {
+                from: "users",
+                localField: "asked_by",
+                foreignField: "_id",
+                as: "asked_by",
+            },
+        },
+        {
+            $lookup: {
+                from: "answers",
+                localField: "_id",
+                foreignField: "qid",
+                as: "answers",
+            },
+        },
+        {
+            $addFields: {
+                asked_by: {
+                    $arrayElemAt: ["$asked_by.username", 0],
+                },
+                answerCount: {
+                    $size: "$answers",
+                },
+            },
+        },
+        {
+            $sort: {
+                ask_date_time: -1,
+            },
+        },
+        {
+            $unset:
+                "answers"
+        },
+        {
+            $match: {
+                answerCount: 0
+            }
+        }
+        ]);
         const formattedQuestions = formatQuestionsForUI(questions);
         res.status(200).json({ success: true, data: formattedQuestions });
     } catch (err) {
@@ -187,6 +211,35 @@ exports.search = async (req, res) => {
                     $or: [
                     ]
                 }
+            }, {
+                $lookup: {
+                    from: "users",
+                    localField: "asked_by",
+                    foreignField: "_id",
+                    as: "asked_by",
+                },
+            },
+            {
+                $lookup: {
+                    from: "answers",
+                    localField: "_id",
+                    foreignField: "qid",
+                    as: "answers",
+                },
+            },
+            {
+                $addFields: {
+                    asked_by: {
+                        $arrayElemAt: ["$asked_by.username", 0],
+                    },
+                    answerCount: {
+                        $size: "$answers",
+                    },
+                },
+            },
+            {
+                $unset:
+                    "answers"
             }];
             if (escapedSearchString.length > 0) {
                 aggregation[0].$match.$or.push({ title: { $regex: escapedSearchString, $options: 'i' } });
@@ -207,6 +260,7 @@ exports.search = async (req, res) => {
             aggregation.push({
                 $sort: { ask_date_time: -1 }
             });
+            console.log(aggregation);
             const questions = await Question.aggregate(aggregation);
             const formattedQuestions = formatQuestionsForUI(questions);
             res.status(200).json({ success: true, data: formattedQuestions });

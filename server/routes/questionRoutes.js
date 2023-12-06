@@ -4,7 +4,7 @@ const questionController = require('../controllers/questionController');
 
 router.get('/', questionController.getAllQuestions);
 router.get('/newest', questionController.sortQuestionsByNewest);
-router.get('/recentlyAnswered', questionController.sortQuestionsByRecentAnswers);
+router.get('/activity', questionController.sortQuestionsByActivity);
 router.get('/unanswered', questionController.getUnansweredQuestions);
 router.get('/search/:query?', questionController.search);
 router.get('/:id/incrementViewCount', questionController.incrementViewCount);
