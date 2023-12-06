@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { DataDao } from '../../models/ModelDAO';
-// import { useLocationContext } from '../locationContext';
-//import './stylesheets/signupStyle.css';
+import { useLocationContext } from '../locationContext';
 
 function Signup({handleButtonClick}) {
-  // const { setPageAndParams } = useLocationContext();
+  const { setPageAndParams, setLoggedIn } = useLocationContext();
+  console.log("in signup")
 
   const [inputValue, setInputValue] = useState({
     email: "",
@@ -70,11 +70,12 @@ function Signup({handleButtonClick}) {
   };
 
   return (
-    <div className="signupForm">
+    <div className="form">
       <h2>Signup for Fake Stack Overflow!</h2>
       <form>
+      <div className="buttonColumn">
         <div>
-          <label htmlFor="email">Email</label>
+          <label htmlFor="email">Email       </label>
           <input
             type="email"
             name="email"
@@ -84,7 +85,7 @@ function Signup({handleButtonClick}) {
           />
         </div>
         <div>
-          <label htmlFor="username">Username</label>
+          <label htmlFor="username">Username     </label>
           <input
             type="text"
             name="username"
@@ -94,7 +95,7 @@ function Signup({handleButtonClick}) {
           />
         </div>
         <div>
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Password   </label>
           <input
             type="password"
             name="password"
@@ -104,7 +105,7 @@ function Signup({handleButtonClick}) {
           />
         </div>
         <div>
-          <label htmlFor="confirmPassword">Confirm Password</label>
+          <label htmlFor="confirmPassword">Confirm Password </label>
           <input
             type="password"
             name="confirmPassword"
@@ -115,6 +116,8 @@ function Signup({handleButtonClick}) {
         </div>
         <button type="submit" onClick={handleSubmit}>Sign Up!</button>
         <button id='loginButton' onClick={handleButtonClick}>Already signed up? Login here</button>
+        <button type='submit' id='guestButton' href='' onClick={(e) => { e.preventDefault(); setLoggedIn(false); setPageAndParams('questions') }}>Guest</button>
+        </div>
       </form>
       <ToastContainer />
     </div>

@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { useLocationContext } from '../locationContext.js';
 import { ToastContainer, toast } from "react-toastify";
 import MainContent from '../mainContent.js';
-import '../../stylesheets/form.css'
 import { DataDao } from '../../models/ModelDAO.js';
 
 const Login = ({ handleButtonClick }) => {
   const { setPageAndParams, setLoggedIn } = useLocationContext();
+
+  console.log("in login")
 
   const [inputValue, setInputValue] = useState({
     username: "",
@@ -55,10 +56,12 @@ const Login = ({ handleButtonClick }) => {
 
   return (
     <MainContent>
+      <div className="form">
       <h2>Login</h2>
       <form>
+      <div className="buttonColumn">
         <div>
-          <label htmlFor="username">Username</label>
+          <label htmlFor="username">Username  </label>
           <input
             type="text"
             name="username"
@@ -68,7 +71,7 @@ const Login = ({ handleButtonClick }) => {
           />
         </div>
         <div>
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Password  </label>
           <input
             type="password"
             name="password"
@@ -77,9 +80,13 @@ const Login = ({ handleButtonClick }) => {
             onChange={handleOnChange}
           />
         </div>
-        <button type="submit" onClick={handleSubmit}>Login</button>
-        <button id='signupButton' onClick={handleButtonClick}>Need to Signup?</button>
+
+          <button type="submit" onClick={handleSubmit}>Login</button>
+          <button id='signupButton' onClick={handleButtonClick}>Need to Signup?</button>
+          <button type='submit' id='guestButton' href='' onClick={(e) => { e.preventDefault(); setLoggedIn(false); setPageAndParams('questions') }}>Guest</button>
+        </div>
       </form>
+      </div>
       <ToastContainer />
     </MainContent>
   );

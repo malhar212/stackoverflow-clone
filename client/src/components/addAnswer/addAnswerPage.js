@@ -81,6 +81,7 @@ function AddAnswerPage() {
 
     return (
         <MainContent>
+        <div className="form">
             <h1>Create new answer</h1>
             <form id='answerForm' onSubmit={handleSubmit}>
 
@@ -97,6 +98,7 @@ function AddAnswerPage() {
                 <button type='submit' id='postAnswerButton'>Post Answer</button>
                 <span className='error'>* indicates mandatory fields</span>
             </form>
+        </div>
         </MainContent>
     )
 }
