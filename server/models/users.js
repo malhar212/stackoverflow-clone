@@ -11,7 +11,7 @@ var UserSchema = new Schema({
         type: Date,
         default: Date.now,
       },
-    votes: { 
+    reputation: { 
         type: Number,
         default : 0,
     },

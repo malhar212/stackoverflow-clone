@@ -8,6 +8,10 @@ const Answer = new Schema({
         type: String,
         required : true,
     },
+    qid: {
+        type: Schema.Types.ObjectId,
+        required: true,
+    },
     ans_by: {
         type: Schema.Types.ObjectId,
         required: true,
