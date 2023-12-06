@@ -34,14 +34,20 @@ function Signup({handleButtonClick}) {
       position: "bottom-left",
     });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // Check if passwords match
-    if (password !== confirmPassword) {
-      handleError("Passwords do not match");
-      return;
-    }
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+    
+      // Check if any field is blank
+      if (!email || !username || !password || !confirmPassword) {
+        handleError("Please fill in all fields");
+        return;
+      }
+    
+      // Check if passwords match
+      if (password !== confirmPassword) {
+        handleError("Passwords do not match");
+        return;
+      }
 
     const credentials = {
       email,
@@ -49,25 +55,27 @@ function Signup({handleButtonClick}) {
       password,
     };
 
-    // console.log(credentials)
+    try {
+      const userData = await DataDao.getInstance().signup(credentials);
 
-    // for testing
-    // await DataDao.getInstance().test()
-
-    // for keeping
-    const userData = await DataDao.getInstance().signup(credentials);
-
-    if (userData) {
-      handleSuccess("Success!");
-      setTimeout(() => {
-        // if successful signup, redirect to login page
-        handleButtonClick(e)
-      }, 1000);
-    } else {
-      // Handle failure
-      handleError("Signup failed");
+      if (userData) {
+        handleSuccess("Success!");
+        setTimeout(() => {
+          // if successful signup, redirect to login page
+          handleButtonClick(e);
+        }, 1000);
+      }
+    } catch (error) {
+      // Handle failure with more detailed messages
+      if (error.message === "Username already exists") {
+        handleError("Username is already taken. Please choose another one.");
+      } else if (error.message === "Email already exists") {
+        handleError("Email is already registered. Please use a different email.");
+      } else {
+        handleError("Signup failed. Please try again.");
+      }
     }
-  };
+  }
 
   return (
     <div className="form">

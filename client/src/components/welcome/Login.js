@@ -33,9 +33,15 @@ const Login = ({ handleButtonClick }) => {
       position: "bottom-left",
     });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+    
+      // Check if any field is blank
+      if (!username || !password) {
+        handleError("Please fill in all fields");
+        return;
+      }
+    
     const credentials = inputValue;
 
     const userData = await DataDao.getInstance().login(credentials);
