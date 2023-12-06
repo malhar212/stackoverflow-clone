@@ -35,11 +35,6 @@ class QuestionBuilder {
       return this;
     }
   
-    setAnsIds(ansIds) {
-      this.question.ansIds = ansIds;
-      return this;
-    }
-  
     setViews(views) {
       this.question.views = views;
       return this;

@@ -10,12 +10,12 @@ function formatQuestionsForUI(results) {
     const formattedQuestions = results.map(result => {
         const builder = new BuilderFactory().createBuilder({ builderType: 'questionUI' })
 
-        const { _id, title, text, tags, asked_by, ask_date_time, views, answers } = result;
+        const { _id, title, text, tags, asked_by, ask_date_time, views } = result;
         // Extracting tag IDs
         const tagIds = tags.map(tag => tag._id);
 
         // Extracting answer IDs
-        const ansIds = answers.map(answer => answer._id);
+        // const ansIds = answers.map(answer => answer._id);
 
         // Setting the fields using the builder pattern
         return builder
@@ -25,7 +25,6 @@ function formatQuestionsForUI(results) {
             .setTagIds(tagIds)
             .setAskedBy(asked_by)
             .setAskDate(ask_date_time)
-            .setAnsIds(ansIds)
             .setViews(views)
             .build();
     });
@@ -38,6 +37,7 @@ exports.getAllQuestions = async (req, res) => {
         const formattedQuestions = formatQuestionsForUI(questions);
         res.status(200).json({ success: true, data: formattedQuestions });
     } catch (err) {
+        console.log(err.message);
         res.status(500).json({ success: false, error: err.message });
     }
 };
@@ -45,9 +45,11 @@ exports.getAllQuestions = async (req, res) => {
 exports.sortQuestionsByNewest = async (req, res) => {
     try {
         const questions = await Question.find().sort({ ask_date_time: -1 });
+        console.log(questions);
         const formattedQuestions = formatQuestionsForUI(questions);
         res.status(200).json({ success: true, data: formattedQuestions });
     } catch (err) {
+        console.log(err);
         res.status(500).json({ success: false, error: err.message });
     }
 };
