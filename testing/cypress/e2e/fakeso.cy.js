@@ -2,13 +2,12 @@
 describe('Fake SO Test Suite', () => {
     beforeEach(() => {
         // Seed the database before each test
-//        cy.exec('node /path/to/server/init.js');
-      });
-
-      afterEach(() => {
+        cy.exec('node ../../../server/init.js');
+    });
+    afterEach(() => {
         // Clear the database after each test
-//        cy.exec('node /path/to/server/destroy.js');
-      });
+        cy.exec('node ../../../server/destroy.js');
+    });
     it('successfully shows All Questions string', () => {
         cy.visit('http://localhost:3000');
         cy.contains('All Questions');
