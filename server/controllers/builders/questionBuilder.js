@@ -40,6 +40,16 @@ class QuestionBuilder {
       return this;
     }
   
+    setVotes(votes) {
+      this.question.votes = votes;
+      return this;
+    }
+
+    setAnswerCount(count) {
+      this.question.answerCount = count;
+      return this;
+    }
+
     build() {
       return this.question;
     }

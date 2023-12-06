@@ -11,18 +11,18 @@ Add design docs in *images/*
     - valid email
     - password shouldn't contain username or email
 2. Login
-    - Enter username, password
-    - Redirect to homepage
+    - ~~Enter username, password~~
+    - ~~Redirect to homepage~~
 1. Logout
     - If logout issues stay on same page, else redirect to welcome page
 1. HomePage: 
-    - Show question summary
-    - number of votes on the querstion
-    - number of answers on the querstion
-    - Display 5 questions at a time.
-    - Next and Prev buttons
-    - Next should cycle over on last page
-    - but prev is disabled on first page
+    - ~~Show question summary~~
+    - ~~number of votes on the querstion~~
+    - ~~number of answers on the querstion~~
+    - ~~Display 5 questions at a time.~~
+    - ~~Next and Prev buttons~~
+    - ~~Next should cycle over on last page~~
+    - ~~but prev is disabled on first page~~
 1. Search:
     - Search results can be ordered according to sort buttons
 1. New Question:

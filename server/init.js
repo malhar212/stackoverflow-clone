@@ -29,7 +29,7 @@ function answerCreate(text, qid, ans_by, ans_date_time, votes) {
     return answer.save();
 }
 
-function questionCreate(title, text, tags, asked_by, ask_date_time, last_activity, views) {
+function questionCreate(title, text, tags, asked_by, ask_date_time, last_activity, views, votes) {
     let qstndetail = {
         title: title,
         text: text,
@@ -39,6 +39,7 @@ function questionCreate(title, text, tags, asked_by, ask_date_time, last_activit
     if (ask_date_time != false) qstndetail.ask_date_time = ask_date_time;
     if (last_activity != false) qstndetail.last_activity = last_activity;
     if (views != false) qstndetail.views = views;
+    if (votes != false) qstndetail.votes = votes;
 
     let qstn = new Question(qstndetail);
     return qstn.save();
@@ -90,9 +91,16 @@ const populate = async () => {
 
     // Create Questions
     //[a1, a2]
-    let q1 = await questionCreate('Programmatically navigate using React router', 'the alert shows the proper index for the li clicked, and when I alert the variable within the last function I\'m calling, moveToNextImage(stepClicked), the same value shows but the animation isn\'t happening. This works many other ways, but I\'m trying to pass the index value of the list item clicked to use for the math to calculate.', [t1, t2], userOne, new Date('2022-01-20T03:24:00'), new Date('2023-11-25T08:24:00'), false);
+    let q1 = await questionCreate('Programmatically navigate using React router', 'the alert shows the proper index for the li clicked, and when I alert the variable within the last function I\'m calling, moveToNextImage(stepClicked), the same value shows but the animation isn\'t happening. This works many other ways, but I\'m trying to pass the index value of the list item clicked to use for the math to calculate.', [t1, t2], userOne, new Date('2022-01-20T03:24:00'), new Date('2023-11-25T08:24:00'), false, 10);
     // [a3, a4, a5, a0]
     let q2 = await questionCreate('android studio save string shared preference, start activity and load the saved string', 'I am using bottom navigation view but am using custom navigation, so my fragments are not recreated every time i switch to a different view. I just hide/show my fragments depending on the icon selected. The problem i am facing is that whenever a config change happens (dark/light theme), my app crashes. I have 2 fragments in this activity and the below code is what i am using to refrain them from being recreated.', [t3, t4, t2], userTwo, new Date('2023-10-01T11:24:30'), new Date('2023-11-26T03:24:00'), 121);
+    
+    // Added for pagination testing. TODO: need to update text
+    await questionCreate('android studio save string shared preference, start activity and load the saved string', 'I am using bottom navigation view but am using custom navigation, so my fragments are not recreated every time i switch to a different view. I just hide/show my fragments depending on the icon selected. The problem i am facing is that whenever a config change happens (dark/light theme), my app crashes. I have 2 fragments in this activity and the below code is what i am using to refrain them from being recreated.', [t3, t4, t2], userTwo, new Date('2023-10-01T11:24:30'), new Date('2023-11-26T03:24:00'), 11);
+    await questionCreate('android studio save string shared preference, start activity and load the saved string', 'I am using bottom navigation view but am using custom navigation, so my fragments are not recreated every time i switch to a different view. I just hide/show my fragments depending on the icon selected. The problem i am facing is that whenever a config change happens (dark/light theme), my app crashes. I have 2 fragments in this activity and the below code is what i am using to refrain them from being recreated.', [t3, t4, t2], userTwo, new Date('2023-10-01T11:24:30'), new Date('2023-11-26T03:24:00'), 1);
+    await questionCreate('android studio save string shared preference, start activity and load the saved string', 'I am using bottom navigation view but am using custom navigation, so my fragments are not recreated every time i switch to a different view. I just hide/show my fragments depending on the icon selected. The problem i am facing is that whenever a config change happens (dark/light theme), my app crashes. I have 2 fragments in this activity and the below code is what i am using to refrain them from being recreated.', [t3, t4, t2], userTwo, new Date('2023-10-01T11:24:30'), new Date('2023-11-26T03:24:00'), 12);
+    await questionCreate('android studio save string shared preference, start activity and load the saved string', 'I am using bottom navigation view but am using custom navigation, so my fragments are not recreated every time i switch to a different view. I just hide/show my fragments depending on the icon selected. The problem i am facing is that whenever a config change happens (dark/light theme), my app crashes. I have 2 fragments in this activity and the below code is what i am using to refrain them from being recreated.', [t3, t4, t2], userTwo, new Date('2023-10-01T11:24:30'), new Date('2023-11-26T03:24:00'), 141);
+    await questionCreate('android studio save string shared preference, start activity and load the saved string', 'I am using bottom navigation view but am using custom navigation, so my fragments are not recreated every time i switch to a different view. I just hide/show my fragments depending on the icon selected. The problem i am facing is that whenever a config change happens (dark/light theme), my app crashes. I have 2 fragments in this activity and the below code is what i am using to refrain them from being recreated.', [t3, t4, t2], userTwo, new Date('2023-10-01T11:24:30'), new Date('2023-11-26T03:24:00'), 14);
 
     await answerCreate('answer text', q2, userOne, new Date('2023-11-24T08:24:00'), 10);
     let a1 = await answerCreate('React Router is mostly a wrapper around the history library. history handles interaction with the browser\'s window.history for you with its browser and hash histories. It also provides a memory history which is useful for environments that don\'t have a global history. This is particularly useful in mobile app development (react-native) and unit testing with Node.', q1,  userOne, new Date('2023-11-20T03:24:42'), 30);
