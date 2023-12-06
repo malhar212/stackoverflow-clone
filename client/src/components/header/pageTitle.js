@@ -16,13 +16,8 @@ function PageTitle() {
     }
     
     return (
-        <div>
         <div id="pageTitle">
             <h1> {pageTitle} </h1>
-        </div>
-        <div>
-            <p id="welcomeText"> Welcome </p>
-        </div>
         </div>
     )
 }

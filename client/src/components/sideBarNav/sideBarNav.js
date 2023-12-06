@@ -17,12 +17,12 @@ function SideNavBar() {
     page == "questions" ? questionsStyle = "active" : questionsStyle = "";
     page == "tags" ? tagsStyle = "active" : tagsStyle = "";
     page == "profile" ? profileStyle = "active" : profileStyle = "";
-    console.log(loggedIn);
+    console.log(page);
     function handleClick(newpage) {
         return function (event) {
             event.preventDefault();
-            if (newpage === 'questions')
-                setSearchQuery('');
+            if (page == newpage && newpage === 'questions')
+                setSearchQuery(" ".repeat(Math.floor(Math.random() * 10)));
             setPageAndParams(newpage, {x: new Date()});
         }
     }

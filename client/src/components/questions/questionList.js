@@ -31,7 +31,7 @@ function QuestionList() {
                     break;
                 }
                 case "active": {
-                    tempQuestions = await dao.sortQuestionsByRecentAnswers();
+                    tempQuestions = await dao.sortQuestionsByActivity();
                     break;
                 }
                 case "unanswered": {
