@@ -131,6 +131,7 @@ function Signup({ handleButtonClick }) {
               value={confirmPassword}
               placeholder="Confirm your password"
               onChange={handleOnChange}
+              
             />
           </div>
           <button type="submit" onClick={handleSubmit}>Sign Up!</button>

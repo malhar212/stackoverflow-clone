@@ -74,6 +74,7 @@ const Login = ({ handleButtonClick }) => {
             value={username}
             placeholder="Enter your username"
             onChange={handleOnChange}
+            autoComplete="current-username"
           />
         </div>
         <div>
@@ -84,6 +85,7 @@ const Login = ({ handleButtonClick }) => {
             value={password}
             placeholder="Enter your password"
             onChange={handleOnChange}
+            autoComplete="current-password"
           />
         </div>
 
