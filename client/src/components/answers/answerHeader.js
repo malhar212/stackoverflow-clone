@@ -11,6 +11,6 @@ function AnswerHeader(props) {
             <AskButton />
         </header>
     )
-};
+}
 
 export default AnswerHeader;

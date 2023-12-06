@@ -7,6 +7,6 @@ function TagPill(props) {
     return (
         <a href='' className="pill" onClick={(e)=> { e.preventDefault(); setPageAndParams('questions', {tag: props.name});}}>{props.name}</a>
     );
-};
+}
 
 export default TagPill;

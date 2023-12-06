@@ -11,6 +11,6 @@ function QuestionStats() {
             <SortButtonsGroup />
         </div>
     );
-};
+}
 
 export default QuestionStats;

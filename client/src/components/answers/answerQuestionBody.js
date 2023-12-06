@@ -14,7 +14,7 @@ function AnswerQuestionBody(props) {
             <p><span id="questionViews">{props.question.views} views</span></p>
         </div>
     )
-};
+}
 
 
 export default AnswerQuestionBody;
