@@ -3,7 +3,7 @@ const session = require('express-session');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
-const csrf = require('csurf');
+const csrf = require('@dr.pogodin/csurf');
 
 dotenv.config();
 
@@ -25,7 +25,7 @@ app.use(cors({
   origin: 'http://localhost:3000',
   credentials: true,
   methods: ['POST', 'PUT', 'DELETE', 'GET'],
-  allowedHeaders: 'Content-Type, Authorization, X-CSRF-Token', // Add X-CSRF-Token here
+  //allowedHeaders: /* 'Content-Type, Authorization,  */'X-CSRF-Token', // Add X-CSRF-Token here
 }));
 
 // Enable JSON and URL-encoded parsing
@@ -47,11 +47,10 @@ app.use(session({
 }));
 
 // Enable CSRF protection
-const csrfProtection = csrf({ cookie: true });
-app.use(csrfProtection);
+app.use(csrf({ cookie: false }));
 
 // CSRF token endpoint 
-app.get('/auth/csrf-token', csrfProtection, (req, res) => {
+app.get('/csrf-token', (req, res) => {
   console.log("======CSRF ENDPOINT============")
   res.json({ csrfToken: req.csrfToken() });
 });

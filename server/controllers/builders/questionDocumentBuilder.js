@@ -30,11 +30,6 @@ class QuestionDocumentBuilder {
       return this;
     }
   
-    setAnsIds(ansIds) {
-      this.question.answers = ansIds;
-      return this;
-    }
-  
     setViews(views) {
       this.question.views = views;
       return this;

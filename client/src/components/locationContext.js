@@ -1,5 +1,5 @@
 // Context.js
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import QuestionsPage from './questions/questionsPage';
 import AddQuestionsPage from './addQuestion/addQuestionPage';
 import TagsPage from './tags/tagsPage';
@@ -8,17 +8,25 @@ import AddAnswerPage from './addAnswer/addAnswerPage'
 import NotFound from './404';
 import { SearchTextContextProvider } from './searchTextContext';
 import PropTypes from 'prop-types';
-import Login from "./login/Login.js";
-import Signup from "./signup/Signup.js"
-import Home from "./welcome/Home.js";
+import WelcomePage from "./welcome/welcomePage.js";
+import { DataDao } from '../models/ModelDAO.js';
 
 const LocationContext = createContext();
 
 export function LocationContextProvider({ children }) {
     // default state is set to 'questions'
-    const [page, setPage] = useState('home');
+    const [page, setPage] = useState('welcome');
     const [params, setParams] = useState({});
+    const [loggedIn, setLoggedIn] = useState(false);
+    const [user, setUser] = useState("");
     
+    useEffect(() => {
+        try {
+            DataDao.getInstance().getCSRFToken();
+        } catch (error) {
+            console.error('Error fetching CSRF token:', error);
+        }
+    }, []);
 
     const setPageAndParams = (page, params) => {
         setParams(params);
@@ -30,8 +38,8 @@ export function LocationContextProvider({ children }) {
         if (page === "questions") {
             return <QuestionsPage />
         }
-         if (page === "addQuestion") {
-             return <AddQuestionsPage />
+        if (page === "addQuestion") {
+            return <AddQuestionsPage />
         }
         if (page === "tags") {
             return <TagsPage />
@@ -44,25 +52,20 @@ export function LocationContextProvider({ children }) {
         if (page === "addAnswer") {
             return <AddAnswerPage />
         }
-        if (page === "login") {
-            return <Login />
-        }
-        if (page === "signup") {
-            return <Signup />
-        }
-        // If user chooses to continue as guest, they go to questions page with Guest as state
-        if (page === "guest") {
-            // adjust state for guest user?
-            return <QuestionsPage />
-        }
-        // home page
-        if (page === "welcome" || page === "" || page === "/" || page === "home") {
-            return <Home />
+        // if (page === "login") {
+        //     return <Login />
+        // }
+        // if (page === "signup") {
+        //     return <Signup />
+        // }
+        // welcome page
+        if (page === "welcome") {
+            return <WelcomePage />
         }
     }
 
     return (
-        <LocationContext.Provider value={{ page, params, setPageAndParams }}>
+        <LocationContext.Provider value={{ page, params, setPageAndParams, loggedIn, setLoggedIn, user, setUser }}>
             <SearchTextContextProvider>
                 {children}
                 {conditionalRendering(page)}
@@ -78,4 +81,4 @@ export function useLocationContext() {
 
 LocationContextProvider.propTypes = {
     children: PropTypes.node.isRequired,
-  };
+};

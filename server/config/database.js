@@ -7,8 +7,9 @@ class Database {
   }  
   connect() {
     mongoose.connect('mongodb://127.0.0.1:27017/fake_so', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
+      // useNewUrlParser: true,
+      // useUnifiedTopology: true,
+      family: 4
     });
 
     const db = mongoose.connection;
