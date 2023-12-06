@@ -136,6 +136,7 @@ function AddQuestionsPage() {
 
     return (
         <MainContent>
+        <div className="form">
             <h1>Ask a Question</h1>
             <form id='questionForm' onSubmit={handleSubmit}>
                 <label htmlFor='formTitleInput'>Question Title*:</label>
@@ -159,6 +160,7 @@ function AddQuestionsPage() {
                 <button type='submit' id='postQuestionButton'>Post Question</button>
                 <span className='error'>* indicates mandatory fields</span>
             </form>
+            </div>
         </MainContent>
     )
 }
