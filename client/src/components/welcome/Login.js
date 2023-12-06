@@ -5,8 +5,8 @@ import MainContent from '../mainContent.js';
 import '../../stylesheets/form.css'
 import { DataDao } from '../../models/ModelDAO.js';
 
-const Login = () => {
-  const { setPageAndParams } = useLocationContext();
+const Login = ({ handleButtonClick }) => {
+  const { setPageAndParams, setLoggedIn } = useLocationContext();
 
   const [inputValue, setInputValue] = useState({
     username: "",
@@ -34,7 +34,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     const credentials = inputValue;
 
     const userData = await DataDao.getInstance().login(credentials);
@@ -42,9 +42,10 @@ const Login = () => {
     if (userData) {
       // Handle successful login (e.g., update state, redirect, etc.)
       handleSuccess("Success!")
+      setLoggedIn(true);
       console.log('Login successful:', userData);
       setTimeout(() => {
-        {setPageAndParams('questions', '')}
+        { setPageAndParams('questions', '') }
       }, 1000);
     } else {
       // Handle login failure
@@ -55,35 +56,33 @@ const Login = () => {
   return (
     <MainContent>
       <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="username">Username</label>
+      <form>
+        <div>
+          <label htmlFor="username">Username</label>
           <input
             type="text"
             name="username"
-            value={username} 
+            value={username}
             placeholder="Enter your username"
             onChange={handleOnChange}
-         />
-      </div>
+          />
+        </div>
         <div>
           <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              name="password"
-              value={password}
-              placeholder="Enter your password"
-              onChange={handleOnChange}
-            />
+          <input
+            type="password"
+            name="password"
+            value={password}
+            placeholder="Enter your password"
+            onChange={handleOnChange}
+          />
         </div>
-        <button type="submit">Submit</button>
-        <button id='signupButton' onClick={(e) => { e.preventDefault(); setPageAndParams('signup')}}>Need to Signup?</button>
-        <button id='guestButton' onClick={(e) => { e.preventDefault(); setPageAndParams('guest')}}>Continue as guest</button>
+        <button type="submit" onClick={handleSubmit}>Login</button>
+        <button id='signupButton' onClick={handleButtonClick}>Need to Signup?</button>
       </form>
       <ToastContainer />
-      </MainContent>
+    </MainContent>
   );
 };
 
 export default Login;
-  
