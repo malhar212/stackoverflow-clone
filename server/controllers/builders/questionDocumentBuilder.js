@@ -34,6 +34,11 @@ class QuestionDocumentBuilder {
       this.question.views = views;
       return this;
     }
+
+    setVotes(votes) {
+      this.question.votes = votes;
+      return this;
+    }
   
     build() {
       return this.question;

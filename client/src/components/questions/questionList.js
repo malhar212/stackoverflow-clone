@@ -4,6 +4,7 @@ import { DataDao } from '../../models/ModelDAO';
 import { QuestionPageContext } from './questionsPage';
 import { SearchTextContext } from '../searchTextContext';
 import { useLocationContext } from '../locationContext';
+import PaginationComponent from '../paginationComponent';
 
 // Create Individual Question in Question List
 function createQuestion(question) {
@@ -20,7 +21,7 @@ function QuestionList() {
     const { setQuestionCount, sortState } = useContext(QuestionPageContext);
     const [questions, setQuestions] = useState();
     const { searchQuery } = useContext(SearchTextContext);
-
+    const itemsPerPage = 5;
     useEffect(() => {
         const fetchData = async () => {
             let tempQuestions;
@@ -67,7 +68,10 @@ function QuestionList() {
                 (questions === undefined || questions.length === 0) ? (<span id='noQuestions'>No Questions Found</span>) :
                     (
                         <div className="question-list">
-                            {questions.map(createQuestion)}
+                            {/* {questions.map(createQuestion)} */}
+                            <PaginationComponent items={questions}
+                            itemsPerPage={itemsPerPage}
+                            renderItem={createQuestion}/>
                         </div>
                     )
             }
