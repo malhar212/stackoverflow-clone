@@ -17,7 +17,10 @@ function SideNavBar() {
     page == "questions" ? questionsStyle = "active" : questionsStyle = "";
     page == "tags" ? tagsStyle = "active" : tagsStyle = "";
     page == "profile" ? profileStyle = "active" : profileStyle = "";
-    console.log(page);
+
+    console.log("Page is: ", page);
+    console.log("isLoggedIn: ", loggedIn)
+    
     function handleClick(newpage) {
         return function (event) {
             event.preventDefault();

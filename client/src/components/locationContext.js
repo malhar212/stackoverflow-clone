@@ -5,6 +5,7 @@ import AddQuestionsPage from './addQuestion/addQuestionPage';
 import TagsPage from './tags/tagsPage';
 import AnswersPage from './answers/answersPage';
 import AddAnswerPage from './addAnswer/addAnswerPage'
+import ProfilePage from './welcome/profilePage.js';
 import NotFound from './404';
 import { SearchTextContextProvider } from './searchTextContext';
 import PropTypes from 'prop-types';
@@ -52,15 +53,11 @@ export function LocationContextProvider({ children }) {
         if (page === "addAnswer") {
             return <AddAnswerPage />
         }
-        // if (page === "login") {
-        //     return <Login />
-        // }
-        // if (page === "signup") {
-        //     return <Signup />
-        // }
-        // welcome page
         if (page === "welcome") {
             return <WelcomePage />
+        }
+        if (page ==="profile") {
+            return <ProfilePage />
         }
     }
 

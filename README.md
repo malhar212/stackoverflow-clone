@@ -6,15 +6,15 @@ Add design docs in *images/*
 ## To-Do
 1. Welcome page options to register or login or continue as guest user
 1. Create Account
-    - Create Account Form Fields: username, email, and a secret password, repeat password
-    - email and username unique
-    - valid email
-    - password shouldn't contain username or email
+    - ~~Create Account Form Fields: username, email, and a secret password, repeat password~~
+    - ~~email and username unique~~
+    - ~~valid email~~
+    - ~~password shouldn't contain username or email~~
 2. Login
     - ~~Enter username, password~~
     - ~~Redirect to homepage~~
 1. Logout
-    - If logout issues stay on same page, else redirect to welcome page
+    - ~~If logout issues stay on same page, else redirect to welcome page~~
 1. HomePage: 
     - ~~Show question summary~~
     - ~~number of votes on the querstion~~
@@ -63,7 +63,7 @@ Add design docs in *images/*
     - user can vote any number of times @180 piazza
     - voting on question/answer/comment updates question's lastActivity date
 1. User Profile Page:
-    - User Information: No. days since user joined, reputation points
+    - ~~User Information: No. days since user joined, reputation points~~
     - Menu: 
         - Link to view all questions of user
         - Link to view all tags of user
