@@ -24,7 +24,7 @@ Add design docs in *images/*
     - ~~Next should cycle over on last page~~
     - ~~but prev is disabled on first page~~
 1. Search:
-    - Search results can be ordered according to sort buttons
+    - ~~Search results can be ordered according to sort buttons~~
 1. New Question:
     - New tags can only be added by users with reputation of 50 or more.
 1. Answers: 

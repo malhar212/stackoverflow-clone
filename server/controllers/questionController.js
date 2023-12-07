@@ -192,6 +192,7 @@ exports.search = async (req, res) => {
         const textTerms = [];
         const tagNames = [];
         const query = req.params.query;
+        const sort = req.query.sort;
         if (query !== undefined && query.length > 0) {
             const searchTerms = query.match(/\[[^\]]+\]|\S+/g) || [];
             searchTerms.forEach((term) => {
@@ -257,9 +258,24 @@ exports.search = async (req, res) => {
                 });
                 aggregation[1].$match.$or.push({ "tags.name": { $in: tagNames } });
             }
-            aggregation.push({
-                $sort: { ask_date_time: -1 }
-            });
+            if (sort === undefined || sort === "newest")
+                aggregation.push({
+                    $sort: { ask_date_time: -1 }
+                });
+            if (sort === "active")
+                aggregation.push({
+                    $sort: { last_activity: -1 }
+                });
+            if (sort === "unanswered") {
+                aggregation.push({
+                    $match: {
+                        answerCount: 0
+                    }
+                });
+                aggregation.push({
+                    $sort: { ask_date_time: -1 }
+                });
+            }
             console.log(aggregation);
             const questions = await Question.aggregate(aggregation);
             const formattedQuestions = formatQuestionsForUI(questions);

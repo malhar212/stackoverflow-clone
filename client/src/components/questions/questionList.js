@@ -17,8 +17,8 @@ function createQuestion(question) {
 // Display Question List
 function QuestionList() {
     const dao = DataDao.getInstance();
-    const { params } = useLocationContext();
-    const { setQuestionCount, sortState } = useContext(QuestionPageContext);
+    const { params, setParams } = useLocationContext();
+    const { setQuestionCount, sortState, setSortState } = useContext(QuestionPageContext);
     const [questions, setQuestions] = useState();
     const { searchQuery } = useContext(SearchTextContext);
     const itemsPerPage = 5;
@@ -44,24 +44,50 @@ function QuestionList() {
             setQuestions(tempQuestions);
             setQuestionCount(tempQuestions.length);
         }
-        fetchData();
-    }, [sortState]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            if (searchQuery !== undefined) {
-                const tempQuestions = await dao.search(searchQuery);
-                setQuestions(tempQuestions);
-                setQuestionCount(tempQuestions.length);
-            }
-            if (params !== undefined && params.tag !== undefined && params.tag !== '') {
-                const tempQuestions = await dao.search(`[${params.tag}]`);
-                setQuestions(tempQuestions);
-                setQuestionCount(tempQuestions.length);
-            }
+        console.log(searchQuery);
+        console.log(sortState);
+        if (searchQuery === undefined || searchQuery.trim().length == 0) {
+            fetchData();
         }
-        fetchData();
-    }, [searchQuery]);
+        else {
+            (async () => {
+                let sort = sortState;
+                console.log(params);
+                if (params !== undefined && params.sortState !== undefined) {
+                    sort = params.sortState;
+                    setParams({});
+                    setSortState(sort);
+                }
+                if (searchQuery !== undefined) {
+                    console.log(sort);
+                    const tempQuestions = await dao.search(searchQuery, sort);       
+                    setQuestions(tempQuestions);
+                    setQuestionCount(tempQuestions.length);
+                }
+                if (params !== undefined && params.tag !== undefined && params.tag !== '') {
+                    const tempQuestions = await dao.search(`[${params.tag}]`);
+                    setQuestions(tempQuestions);
+                    setQuestionCount(tempQuestions.length);
+                }
+            })()
+        }
+    }, [sortState, searchQuery]);
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         if (searchQuery !== undefined) {
+    //             const tempQuestions = await dao.search(searchQuery);
+    //             setQuestions(tempQuestions);
+    //             setQuestionCount(tempQuestions.length);
+    //         }
+    //         if (params !== undefined && params.tag !== undefined && params.tag !== '') {
+    //             const tempQuestions = await dao.search(`[${params.tag}]`);
+    //             setQuestions(tempQuestions);
+    //             setQuestionCount(tempQuestions.length);
+    //         }
+    //     }
+    //     fetchData();
+    // }, [searchQuery]);
     return (
         <>
             {
