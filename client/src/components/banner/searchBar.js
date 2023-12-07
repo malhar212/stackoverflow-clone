@@ -9,7 +9,7 @@ function SearchBar() {
         if (event.key === 'Enter') {
             const query = event.target.value.trim();
             setSearchQuery(query + " ".repeat(Math.floor(Math.random() * 10)));
-            setPageAndParams('questions');
+            setPageAndParams('questions', { x: Date.now, sortState: 'newest' });
         }
     }
     return (
