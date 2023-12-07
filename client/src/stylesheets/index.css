@@ -1,31 +1,6 @@
 /* Global stylesheet */
-.banner { /* Banner on all pages: Fake Stack Overflow' + searchBar */
-    /* Moving the search bar to the right */
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    text-align: center;
-    background: #dadbdbe9;
-    color : rgb(30, 21, 21);
-    font-size: 40px;
-    font-weight: bold;
-    border-width: 5px;
-    border-color: black;
-    border-style : solid;
-    /* moving banner to accomodate side nav bar */
-    margin-left : 200px;
-    margin-bottom: 20px;
-  }
-
-  .banner #searchBar {
-    /* float: right; */
-    padding: 30px;
-    border: none;
-    /* margin-top: 8px;
-    margin-right: 8px; */
-    font-size: 20px;
-  }
   .main {
     /* moving main page to accomodate side nav bar */
     margin-left: 200px; 
   }
+

@@ -278,7 +278,7 @@ export class DataDao {
 async login(credentials) {
   try {
     const response = await this.instance.post('auth/login', credentials);
-    console.log(JSON.stringify(response, null, 4))
+    console.log(JSON.stringify(response.data, null, 4))
     console.log("HERERERERER", response.data);
     const { success, data } = response.data;
     if (success) {

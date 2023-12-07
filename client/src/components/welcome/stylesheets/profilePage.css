@@ -1,0 +1,48 @@
+/* styles.css */
+.buttonColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .banner {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    text-align: center;
+    /* background: linear-gradient(to right, #c3ced3, #6297cf); */
+    color: #1e1515;
+    font-size: 2rem;
+    font-weight: bold;
+    border-width: 5px;
+    border-color: black;
+    border-style: solid;
+    margin-left: 200px;
+    margin-bottom: 20px;
+  }
+  
+  .banner #searchBar {
+    padding: 10px;
+    border: none;
+    font-size: 1rem;
+  }
+  
+  .profilePage {
+    text-align: center;
+    background: linear-gradient(to right, #00a1ff, #007bff);
+    color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .profilePage h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+  
+  .profilePage span {
+    display: block;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }

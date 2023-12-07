@@ -1,27 +1,25 @@
 import React from 'react';
 import { useLocationContext } from '../locationContext.js';
 import MainContent from '../mainContent.js';
+import './stylesheets/profilePage.css'
 
 const ProfilePage = () => {
-  const { page, isLoggedIn, user} = useLocationContext();
-  console.log("is logged in?" + isLoggedIn);
-  console.log("In page: " + page)
-  console.log("User is:" + user)
-  console.log("usernam?" + user.username)
+  const { user} = useLocationContext();
 
-  console.log(JSON.stringify(user, null, 4))
+  // console.log(JSON.stringify(user, null, 4))
 
-  const username = user.data;
-
-  
-
-
-
-
+  const username = user.username;
+  const reputation = user.reputation;
+  // const createdAt = user.createdAt;
+  const days_ago = 4;
 
   return (
     <MainContent>
-      <h1> Welcome {username}!</h1>
+      <div className="profilePage">
+        <h1> Welcome {username}!</h1>
+        <span>Your reputation is: {reputation}</span>
+        <span> Your account was created {days_ago} ago.</span>
+      </div>
     </MainContent>
   );
 
