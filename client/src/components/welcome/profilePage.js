@@ -11,14 +11,16 @@ const ProfilePage = () => {
   const username = user.username;
   const reputation = user.reputation;
   // const createdAt = user.createdAt;
-  const days_ago = 4;
+  const daysAgo = Math.floor((new Date() - new Date(user.createdAt)) / (1000 * 60 * 60 * 24));
+
+
 
   return (
     <MainContent>
       <div className="profilePage">
         <h1> Welcome {username}!</h1>
         <span>Your reputation is: {reputation}</span>
-        <span> Your account was created {days_ago} ago.</span>
+        <span> Your account was created {daysAgo} ago.</span>
       </div>
     </MainContent>
   );
