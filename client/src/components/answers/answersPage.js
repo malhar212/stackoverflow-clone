@@ -14,10 +14,10 @@ function AnswersPage() {
     const dao = DataDao.getInstance();
 
     // params is the qid of the questions
-    const { params } = useLocationContext();
+    const { params, loggedIn } = useLocationContext();
 
     const [selectedQuestion, setSelectedQuestion] = useState();
-
+    const [selectedAnswers, setAnswers] = useState([]);
     useEffect(() => {
         const fetchQuestion = async () => {
             try {
@@ -40,12 +40,13 @@ function AnswersPage() {
             <MainContent>
             <AnswerHeader
                 title = {selectedQuestion.title}
-                answers = {selectedQuestion.ansIds.length} />
+                answers = {selectedAnswers.length} />
             <AnswerQuestionBody 
                 question = {selectedQuestion} />
-            <AnswersList ansIds={selectedQuestion.ansIds} />
-            <AnswerButton
-                question = {selectedQuestion} />
+            <h3>Answers</h3>
+            <AnswersList qid={selectedQuestion.qid} selectedAnswers={selectedAnswers} setAnswers={setAnswers}/>
+            { loggedIn ? <AnswerButton
+                question = {selectedQuestion} /> : <></> }
          </MainContent>
         );
     }

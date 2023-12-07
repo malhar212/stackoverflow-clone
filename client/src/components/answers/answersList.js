@@ -1,29 +1,28 @@
-import React, { useState, useEffect} from 'react';
+import React, { useEffect} from 'react';
 import Answer from './answer';
 import { DataDao } from '../../models/ModelDAO';
+import PaginationComponent from '../paginationComponent';
 
 
 // Create Individual answer in answer list
-function createAnswer(answer) {
+function createAnswer(answer, accepted) {
     return <Answer
         key={answer.aid}
         answer={answer}
+        accepted={accepted}
     />
 }
 
 
 // Display List of Answers
 // recieves question object as prop (FIRST)
-function AnswersList({ansIds}) {
+function AnswersList({qid, selectedAnswers, setAnswers}) {
     const dao = DataDao.getInstance();
-
-    // list of answers
-    const [selectedAnswers, setAnswers] = useState();
-      
+    const itemsPerPage = 5;
     useEffect(() => {
       const getAnswers = async () => {
         try {
-          const responseData = await dao.filterAnswersBasedOnAnsIds(ansIds);
+          const responseData = await dao.filterAnswersBasedOnQuestionId(qid);
           setAnswers(responseData)
         } catch (error) {
           console.error(error.message);
@@ -39,7 +38,10 @@ function AnswersList({ansIds}) {
           <span id='noAnswers'>No Answers</span>
         ) : (
           <div className='answer-list'>
-            {selectedAnswers.map( (answer) => createAnswer(answer))}
+            {/* {selectedAnswers.map( (answer) => createAnswer(answer))} */}
+            <PaginationComponent items={selectedAnswers}
+                            itemsPerPage={itemsPerPage}
+                            renderItem={createAnswer}/>
           </div>
         )}
       </>

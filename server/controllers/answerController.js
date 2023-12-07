@@ -1,3 +1,4 @@
+const { ObjectId } = require('mongodb');
 const Answer = require('../models/answers');
 const Question = require('../models/questions');
 const BuilderFactory = require('./builders/builderFactory');
@@ -8,7 +9,7 @@ function formatAnswersForUI(results) {
   const formattedAnswers = results.map(result => {
     const builder = new BuilderFactory().createBuilder({ builderType: 'answerUI' });
 
-    const { _id, text, ans_by, ans_date_time } = result;
+    const { _id, text, ans_by, ans_date_time, votes, accepted } = result;
 
     // Setting the fields using the builder pattern
     return builder
@@ -16,6 +17,8 @@ function formatAnswersForUI(results) {
       .setText(text)
       .setAnsBy(ans_by)
       .setAnsDate(ans_date_time)
+      .setVotes(votes)
+      .setAccepted(accepted)
       .build();
   });
   return formattedAnswers;
@@ -46,6 +49,51 @@ exports.filterAnswersBasedOnAnsIds = async (req, res) => {
       return;
     }
     const answers = await Answer.find({ _id: { $in: idList } }).sort({ ans_date_time: 1 });
+    const formattedAnswers = formatAnswersForUI(answers);
+    res.status(200).json({ success: true, data: formattedAnswers });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+exports.filterAnswersBasedOnQuestionId = async (req, res) => {
+  try {
+    const id = req.params.id;
+    if (id === undefined || id.length <= 0) {
+        res.status(404).json({ success: false, error: "No QID provided" });
+        return;
+    }
+    const answers = await Answer.aggregate(
+      [
+          {
+            $match: {
+              qid: new ObjectId(id),
+            },
+          },
+          {
+            $lookup: {
+              from: "users",
+              localField: "ans_by",
+              foreignField: "_id",
+              as: "ans_by",
+            },
+          },
+          {
+            $addFields: {
+              ans_by: {
+                $arrayElemAt: ["$ans_by.username", 0],
+              },
+            },
+          },
+          {
+            $sort: {
+              accepted: -1,
+              ans_date_time: -1,
+            },
+          },
+      ]
+  );
+  console.log(answers);
     const formattedAnswers = formatAnswersForUI(answers);
     res.status(200).json({ success: true, data: formattedAnswers });
   } catch (err) {

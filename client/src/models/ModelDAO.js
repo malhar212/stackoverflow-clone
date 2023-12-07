@@ -175,6 +175,19 @@ export class DataDao {
     return [];
   }
 
+  // Get answers for the question
+  async filterAnswersBasedOnQuestionId(qid) {
+    try {
+      const response = await this.instance.get(`answers/question/${qid}`);
+      const { success, data } = response.data;
+      if (success)
+        return data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+    return [];
+}
+
   // Add new Answer
   async addAnswer(answer, qid) {
         try {
@@ -229,6 +242,21 @@ export class DataDao {
         return data;
     } catch (error) {
       console.error('Error fetching data:', error);
+    }
+    return [];
+  }
+
+  // Comment methods
+
+  // Get a comments by associated Object ID
+  async fetchComments(associatedObjectId) {
+    try {
+      const response = await this.instance.get(`comments/object/${associatedObjectId}`);
+      const { success, data } = response.data;
+      if (success)
+        return data;
+    } catch (error) {
+      throw new Error('Error fetching data:', error);
     }
     return [];
   }

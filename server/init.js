@@ -20,10 +20,11 @@ function tagCreate(name, createdBy) {
     return tag.save();
 }
 
-function answerCreate(text, qid, ans_by, ans_date_time, votes) {
+function answerCreate(text, qid, ans_by, ans_date_time, votes, accepted) {
     let answerdetail = { text: text, qid: qid, ans_by: ans_by };
     if (ans_date_time != false) answerdetail.ans_date_time = ans_date_time;
     if (votes != false) answerdetail.votes = votes;
+    if (accepted != false) answerdetail.accepted = accepted;
 
     let answer = new Answer(answerdetail);
     return answer.save();
@@ -66,7 +67,7 @@ function commentCreate(text, postedBy, associatedObjectType, associatedObjectId,
         associatedObjectId,
         votes
     };
-    if (posted_date != undefined && posted_date != false) newComment.posted_date = posted_date;
+    if (posted_date != undefined && posted_date != false) newComment.postedDate = posted_date;
     if (votes != undefined && votes != false) newComment.votes = votes;
     let user = new Comment(newComment)
     return user.save();
@@ -108,10 +109,16 @@ const populate = async () => {
     let a3 = await answerCreate('Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background.', q2, userOne, new Date('2023-11-18T09:24:00'));
     await answerCreate('YourPreference yourPrefrence = YourPreference.getInstance(context); yourPreference.saveData(YOUR_KEY,YOUR_VALUE);', q2, userOne, new Date('2023-11-12T03:30:00'));
     await answerCreate('I just found all the above examples just too confusing, so I wrote my own. ', q2, userTwo, new Date('2023-11-01T15:24:19'));
+    await answerCreate('Answer 5', q2, userTwo, new Date('2023-10-07T15:24:19'));
+    await answerCreate('Answer 6', q2, userThree, new Date('2023-10-08T15:24:19'));
+    await answerCreate('Answer 7', q2, userOne, new Date('2023-10-09T15:24:19'), 0, true);
     
-    await commentCreate('Comment 1\n Some more text', userTwo, 'Question', q1, 10, new Date('2023-11-25T08:24:00'));
-    await commentCreate('Comment 2. Some more text', userThree, 'Answer', a3, 10, new Date('2023-11-26T03:24:00'));
-    await commentCreate('Comment 1\n Some more text', userThree, 'Question', a1, 10, new Date('2023-11-22T12:24:00'));
+    await commentCreate('Comment 1\n Some more text', userTwo, 'question', q1, 10, new Date('2023-11-25T08:24:00'));
+    await commentCreate('Comment 2. Some more text', userThree, 'answer', a3, 10, new Date('2023-11-26T03:24:00'));
+    await commentCreate('Comment 1', userThree, 'question', a1, 10, new Date('2023-11-22T12:24:00'));
+    await commentCreate('Comment 2', userTwo, 'question', a1, 1, new Date('2023-11-21T11:24:00'));
+    await commentCreate('Comment 3', userOne, 'question', a1, 0, new Date('2023-11-21T12:24:00'));
+    await commentCreate('Comment 4', userThree, 'question', a1, 10, new Date('2023-11-20T12:24:00'));
     if (db) db.close();
     console.log('done');
 }

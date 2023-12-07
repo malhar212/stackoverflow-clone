@@ -1,5 +1,5 @@
 // import { DataDao } from '../models/ModelDAO';
-
+import { OBJECT_TYPES } from '../models/enums';
 
 
 // Helper function to format metadata for questions and answer
@@ -9,15 +9,20 @@ export function metadataFormatter(post, typeOfPost) {
     var dateParam = '';
     const now = new Date();
 
-    if(typeOfPost === "question") {
+    if(typeOfPost === OBJECT_TYPES.QUESTION) {
         verbString = "asked";
         userParam = post.askedBy;
         dateParam = post.askDate;
     }
-    else {
+    else if (typeOfPost === OBJECT_TYPES.ANSWER) {
         verbString = "answered";
         userParam = post.ansBy;
         dateParam = post.ansDate;
+    }
+    else {
+        verbString = "posted";
+        userParam = post.postedBy;
+        dateParam = post.postedDate;
     }
 
     // const userName = await DataDao.getInstance().getUsername(userParam);

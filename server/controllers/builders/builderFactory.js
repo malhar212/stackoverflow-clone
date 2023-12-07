@@ -1,5 +1,7 @@
 const AnswerBuilder = require("./answerBuilder");
 const AnswerDocumentBuilder = require("./answerDocumentBuilder");
+const CommentBuilder = require("./commentBuilder");
+const CommentDocumentBuilder = require("./commentDocumentBuilder");
 const QuestionBuilder = require("./questionBuilder");
 const QuestionDocumentBuilder = require("./questionDocumentBuilder");
 const TagBuilder = require("./tagBuilder");
@@ -38,6 +40,12 @@ class BuilderFactoryImpl extends BuilderFactory {
                 break;
             case 'tagUI':
                 this.builder = TagBuilder;
+                break;
+            case 'comment':
+                this.builder = CommentDocumentBuilder;
+                break;
+            case 'commentUI':
+                this.builder = CommentBuilder;
                 break;
         }
         return new this.builder();

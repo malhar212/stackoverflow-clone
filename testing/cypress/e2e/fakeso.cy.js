@@ -177,4 +177,56 @@ describe('Home Page', () => {
             cy.wrap($el).should('contain', qTitles[index]);
         })
     })
+
+    it('Search and sort by newest', () => {
+        const qTitles = ["Programmatically navigate using React router", 'android studio save string shared preference, start activity and load the saved string', 'Question 5', 'Question 4', 'Question 2'];
+        cy.get('#searchBar').type('[javascript]{enter}');
+        cy.contains('6 questions');
+        cy.get('.postTitle').each(($el, index, $list) => {
+            cy.wrap($el).should('contain', qTitles[index]);
+        })
+        cy.contains('button', 'Next').click();
+        cy.get('.postTitle').each(($el, index, $list) => {
+            cy.wrap($el).should('contain', 'Question 1');
+        })
+    })
+
+    it('Search and sort using newest button', () => {
+        const qTitles = ["Programmatically navigate using React router", 'android studio save string shared preference, start activity and load the saved string', 'Question 5', 'Question 4', 'Question 2'];
+        cy.get('#searchBar').type('[javascript]{enter}');
+        cy.contains('Unanswered').click();
+        cy.contains('Newest').click();
+        cy.contains('6 questions');
+        cy.get('.postTitle').each(($el, index, $list) => {
+            cy.wrap($el).should('contain', qTitles[index]);
+        })
+        cy.contains('button', 'Next').click();
+        cy.get('.postTitle').each(($el, index, $list) => {
+            cy.wrap($el).should('contain', 'Question 1');
+        })
+    })
+
+    it('Search and sort using active button', () => {
+        const qTitles = ['android studio save string shared preference, start activity and load the saved string', "Programmatically navigate using React router", 'Question 5', 'Question 4', 'Question 2'];
+        cy.get('#searchBar').type('[javascript]{enter}');
+        cy.contains('Active').click();
+        cy.contains('6 questions');
+        cy.get('.postTitle').each(($el, index, $list) => {
+            cy.wrap($el).should('contain', qTitles[index]);
+        })
+        cy.contains('button', 'Next').click();
+        cy.get('.postTitle').each(($el, index, $list) => {
+            cy.wrap($el).should('contain', 'Question 1');
+        })
+    })
+
+    it('Search and sort using unanswered button', () => {
+        const qTitles = ['Question 5', 'Question 4', 'Question 2', 'Question 1'];
+        cy.get('#searchBar').type('[javascript]{enter}');
+        cy.contains('Unanswered').click();
+        cy.contains('4 questions');
+        cy.get('.postTitle').each(($el, index, $list) => {
+            cy.wrap($el).should('contain', qTitles[index]);
+        })
+    })
 })
