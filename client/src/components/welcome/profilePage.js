@@ -6,8 +6,6 @@ import './stylesheets/profilePage.css'
 const ProfilePage = () => {
   const { user} = useLocationContext();
 
-  // console.log(JSON.stringify(user, null, 4))
-
   const username = user.username;
   const reputation = user.reputation;
   // const createdAt = user.createdAt;
