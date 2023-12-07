@@ -4,3 +4,6 @@
     margin-left: 200px; 
   }
 
+  .vote-component button {
+    font-size: inherit; /* Inherits the font size from the parent div */
+  }

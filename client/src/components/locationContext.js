@@ -29,6 +29,24 @@ export function LocationContextProvider({ children }) {
         }
     }, []);
 
+    // Load state from sessionStorage when the component mounts
+    useEffect(() => {
+        const storedState = sessionStorage.getItem('locationContextState');
+        if (storedState) {
+            const parsedState = JSON.parse(storedState);
+            setPage(parsedState.page);
+            setParams(parsedState.params);
+            setLoggedIn(parsedState.loggedIn);
+            setUser(parsedState.user);
+        }
+    }, []);
+
+    // Save state to sessionStorage when it changes
+    useEffect(() => {
+        const stateToStore = JSON.stringify({ page, params, loggedIn, user });
+        sessionStorage.setItem('locationContextState', stateToStore);
+    }, [page, params, loggedIn, user]);
+
     const setPageAndParams = (page, params) => {
         setParams(params);
         setPage(page);
