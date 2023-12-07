@@ -6,11 +6,12 @@ import { useLocationContext } from '../locationContext';
 
 // Header for Questions and Tags page
 function Header() {
-    const { isLoggedIn } = useLocationContext();
+    const { loggedIn } = useLocationContext();
     return (
         <header>
             <PageTitle />
-            { isLoggedIn ? <AskButton /> : <></> }
+            {console.log("Header... logged in: ", loggedIn)}
+            { loggedIn ? <AskButton /> : <></> }
         </header>
     )
 }

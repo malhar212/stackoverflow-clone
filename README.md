@@ -6,15 +6,15 @@ Add design docs in *images/*
 ## To-Do
 1. Welcome page options to register or login or continue as guest user
 1. Create Account
-    - Create Account Form Fields: username, email, and a secret password, repeat password
-    - email and username unique
-    - valid email
+    - ~~Create Account Form Fields: username, email, and a secret password, repeat password~~
+    - ~~email and username unique~~
+    - ~~valid email~~
     - password shouldn't contain username or email
 2. Login
     - ~~Enter username, password~~
     - ~~Redirect to homepage~~
 1. Logout
-    - If logout issues stay on same page, else redirect to welcome page
+    - ~~If logout issues stay on same page, else redirect to welcome page~~
 1. HomePage: 
     - ~~Show question summary~~
     - ~~number of votes on the querstion~~
