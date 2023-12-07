@@ -9,7 +9,7 @@ Add design docs in *images/*
     - ~~Create Account Form Fields: username, email, and a secret password, repeat password~~
     - ~~email and username unique~~
     - ~~valid email~~
-    - password shouldn't contain username or email
+    - ~~password shouldn't contain username or email~~
 2. Login
     - ~~Enter username, password~~
     - ~~Redirect to homepage~~
