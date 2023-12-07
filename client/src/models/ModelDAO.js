@@ -106,9 +106,9 @@ export class DataDao {
   }
 
   // Function to perform search
-  async search(query) {
+  async search(query, sort) {
     try {
-      const response = await this.instance.get(`questions/search/${query}`);
+      const response = await this.instance.get(`questions/search/${query}?sort=${sort}`);
       const { success, data } = response.data;
       if (success)
         return data;

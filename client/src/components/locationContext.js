@@ -65,7 +65,7 @@ export function LocationContextProvider({ children }) {
     }
 
     return (
-        <LocationContext.Provider value={{ page, params, setPageAndParams, loggedIn, setLoggedIn, user, setUser }}>
+        <LocationContext.Provider value={{ page, params, setParams, setPageAndParams, loggedIn, setLoggedIn, user, setUser }}>
             <SearchTextContextProvider>
                 {children}
                 {conditionalRendering(page)}
