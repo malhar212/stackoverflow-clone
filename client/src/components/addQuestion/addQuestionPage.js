@@ -152,10 +152,10 @@ function AddQuestionsPage() {
                 <span className='limits'>Add tags separated by whitespace</span>
                 <input type='text' id='formTagInput' name='tags' value={formData.tags} onChange={handleChange} />
                 <span id='tagsError' className='error'>{formErrors.tagsError}</span>
-
+{/* 
                 <label htmlFor='formUsernameInput'>Your Username*:</label>
                 <input type='text' id='formUsernameInput' name='username' value={formData.username} onChange={handleChange} />
-                <span id='usernameError' className='error'>{formErrors.usernameError}</span>
+                <span id='usernameError' className='error'>{formErrors.usernameError}</span> */}
 
                 <button type='submit' id='postQuestionButton'>Post Question</button>
                 <span className='error'>* indicates mandatory fields</span>
