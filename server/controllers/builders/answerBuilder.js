@@ -25,6 +25,16 @@ class AnswerBuilder {
         return this;
     }
 
+    setVotes(votes) {
+        this.answer.votes = votes;
+        return this;
+    }
+
+    setAccepted(accepted) {
+        this.answer.accepted = accepted;
+        return this;
+    }
+    
     build() {
         return this.answer;
     }

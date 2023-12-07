@@ -20,6 +20,7 @@ const answerRoutes = require('./routes/answerRoutes');
 const tagRoutes = require('./routes/tagRoutes');
 const authRoutes = require('./routes/AuthRoutes');
 const userRoutes = require('./routes/userRoutes');
+const commentRoutes = require('./routes/commentRoutes');
 
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -61,6 +62,7 @@ app.use('/answers', answerRoutes);
 app.use('/tags', tagRoutes);
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
+app.use('/comments', commentRoutes);
 
 // When the server starts
 app.listen(port, () => {

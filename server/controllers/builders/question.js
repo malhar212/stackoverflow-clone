@@ -8,6 +8,7 @@ class Question {
     this.askDate = '';
     this.ansIds = [];
     this.views = 0;
+    this.votes = 0;
   }
 }
 module.exports = Question;

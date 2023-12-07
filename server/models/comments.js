@@ -15,7 +15,7 @@ const Comment = new Schema({
     },
     associatedObjectType: {
         type: String,
-        enum : ['Answer', 'Question'],
+        enum : ['answer', 'question'],
     },
     associatedObjectId: { 
         type: Schema.Types.ObjectId,

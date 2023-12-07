@@ -11,6 +11,11 @@ class AnswerDocumentBuilder {
         return this;
     }
 
+    setQid(qid) {
+        this.answer.qid = qid;
+        return this;
+    }
+
     setAnsBy(ansBy) {
         this.answer.ans_by = ansBy;
         return this;
@@ -18,6 +23,16 @@ class AnswerDocumentBuilder {
 
     setAnsDate(ansDate) {
         this.answer.ans_date_time = ansDate;
+        return this;
+    }
+
+    setVotes(votes) {
+        this.answer.votes = votes;
+        return this;
+    }
+
+    setAccepted(accepted) {
+        this.answer.accepted = accepted;
         return this;
     }
 
