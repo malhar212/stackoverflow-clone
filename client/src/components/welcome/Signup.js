@@ -42,21 +42,24 @@ function Signup({ handleButtonClick }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Check if any field is blank
+    // Check if any field is left blank
     if (!email || !username || !password || !confirmPassword) {
       handleError("Please fill in all fields");
       return;
     }
 
-    // Check if email is valid
     if (!isEmailValid(email)) {
       handleError("Please enter a valid email address");
       return;
     }
 
-    // Check if passwords match
     if (password !== confirmPassword) {
       handleError("Passwords do not match");
+      return;
+    }
+
+    if (password.includes(username) || password.includes(email)) {
+      handleError("Password cannot contain username or email");
       return;
     }
 
