@@ -50,6 +50,7 @@ const Login = ({ handleButtonClick }) => {
       // Handle successful login (e.g., update state, redirect, etc.)
       handleSuccess("Success!")
       setLoggedIn(true);
+      console.log("set to true!")
       console.log('Login successful:', userData);
       setTimeout(() => {
         { setPageAndParams('questions', '') }
