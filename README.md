@@ -63,7 +63,7 @@ Add design docs in *images/*
     - user can vote any number of times @180 piazza
     - voting on question/answer/comment updates question's lastActivity date
 1. User Profile Page:
-    - User Information: No. days since user joined, reputation points
+    - ~~User Information: No. days since user joined, reputation points~~
     - Menu: 
         - Link to view all questions of user
         - Link to view all tags of user

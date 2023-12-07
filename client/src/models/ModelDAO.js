@@ -13,7 +13,6 @@ export class DataDao {
       });
       DataDao.#instance = this;
       this.instance.interceptors.request.use(function (config) {
-        console.log("Token: ", DataDao.getInstance().#csrfToken);
         config.headers['X-CSRF-Token'] = DataDao.getInstance().#csrfToken;
         return config;
       }, function (error) {
@@ -38,11 +37,9 @@ export class DataDao {
 
   async getCSRFToken() {
     try {
-      console.log("in get token!")
       const response = await this.instance.get('csrf-token');
       // const { success, data } = response.data;
       if (response.data.csrfToken) {
-        console.log("SUCCESSFUL TOKEN", response.data.csrfToken)
         this.#csrfToken = response.data.csrfToken;
         // axios.defaults.headers.common['X-CSRF-Token'] = response.data.csrfToken;
       }
@@ -279,10 +276,9 @@ export class DataDao {
 
 // Login method
 async login(credentials) {
-  console.log("IN MODELDAO LOGIN");
   try {
-    console.log("inside the try of modeldao login");
     const response = await this.instance.post('auth/login', credentials);
+    console.log(JSON.stringify(response.data, null, 4))
     console.log("HERERERERER", response.data);
     const { success, data } = response.data;
     if (success) {
@@ -299,14 +295,10 @@ async login(credentials) {
 
 // Logout method
 async logout() {
-  console.log("IN MODELDAO LOGIN");
   try {
-    console.log("inside the try of modeldao login");
     const response = await this.instance.post('auth/logout', null);
-    console.log("HERERERERER", response.data);
     const { success, data } = response.data;
     if (success) {
-      console.log(success, data);
       return { success, data }; // Return as an object
     }
   } catch (error) {
@@ -323,24 +315,14 @@ async signup(credentials) {
     // const csrfToken = data.csrfToken;
     // console.log("in signup: ", csrfToken)
       // if(csrfToken) {
-
-        console.log("in signup, after csrf token retrieveda")
         const response = await this.instance.post('auth/signup', credentials);
-
-        console.log("SIGNUP RESPONSE:", response);
-
         if (response.data && response.data.success && response.data.success ==  true && response.data.data.csrfToken) {
-            console.log("Got the token in signup!");
             return true;
         } else {
             console.log("Signup failed:", response.data);
             return false;
         }
   
-    // } 
-    // else {
-    //   console.log("no csrf token available")
-    // }
   } catch (error) {
     console.error('Error signing up:', error);
     return false;
@@ -354,37 +336,29 @@ async signup(credentials) {
 
     // get userName based on uid of user
     async getUsernameByUid(userId) {
-      console.log(userId);
       try {
-        console.log("inside the try of getUsername modelDAO")
         const response = await this.instance.get('getUsername', userId)
         const { success, data } = response.data
         if (success) {
-          console.log(success)
           return data;
         }
       } catch (error) {
         console.error('Error getting username', error);
       }
-      console.log("at end of getUSername in DAO");
       return null; 
     }
 
   async checkLoginGetUsername(credentials) {
-    console.log("IN MODELDAO LOGIN")
       try {
-        console.log("sdfgsdfgsdfg")
                 const response = await this.instance.post('auth/checkLoginGetUsername', credentials);
           const { success, data } = response.data
           if (success) {
-            console.log(success)
             return success, data;
           }
         } catch (error) {
           console.error('Error logging in:', error);
         }
-        console.log(":(")
-        return null; // lets login.jsx know that it was not successful
+        return null; 
       }
       
    
