@@ -42,7 +42,7 @@ exports.login = async (req, res) => {
       console.log(user)
       req.session.user = user.username;
       console.log("in auth controller - correct password2")
-      return res.status(200).json({ success: true, data : { username : user.username, reputation : user.reputation, createdAt : user.createdAt } });
+      return res.status(200).json({ success: true, data : { username : user.username, reputation : user.reputation, createdAt : user.createdAt, uid:user.uid } });
     } else {
       console.log("in auth controller - wrong password")
       // Passwords don't match, login failed

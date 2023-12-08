@@ -2,6 +2,7 @@ const escapeStringRegexp = require('escape-string-regexp');
 const { ObjectId } = require('mongoose').Types;
 const Question = require('../models/questions');
 const Tag = require('../models/tags');
+const User = require("../models/users");
 const BuilderFactory = require('./builders/builderFactory');
 const { validateLinks } = require('./hyperlinkParser');
 
@@ -83,7 +84,7 @@ exports.sortQuestionsByNewest = async (req, res) => {
                     "answers",
             },
         ]);
-        console.log(questions);
+        // console.log(questions);
         const formattedQuestions = formatQuestionsForUI(questions);
         res.status(200).json({ success: true, data: formattedQuestions });
     } catch (err) {
@@ -353,6 +354,7 @@ exports.incrementViewCount = async (req, res) => {
     }
 };
 
+// '/add'
 exports.addNewQuestion = async (req, res) => {
     try {
         if (req.body === undefined || req.body.question === undefined) {
@@ -366,6 +368,7 @@ exports.addNewQuestion = async (req, res) => {
             return;
         }
         let tagIds = [];
+        console.log("++++++++before tag creation")
         if (formData.tags !== undefined && formData.tags.length > 0) {
             formData.tags = removeDuplicatesIgnoreCase(formData.tags);
             const result = await Tag.aggregate([
@@ -418,7 +421,11 @@ exports.addNewQuestion = async (req, res) => {
             }
         }
         const qBuilder = new BuilderFactory().createBuilder({ builderType: 'question' });
-        const question = qBuilder.setTitle(formData.title).setText(formData.text).setTagIds(tagIds).setAskedBy(formData.askedBy).setAskDate(new Date()).build();
+        // extracting username from formData
+        const username = formData.askedBy
+        // finding the user object from database based on username
+        const user = await User.findOne({ username });
+        const question = qBuilder.setTitle(formData.title).setText(formData.text).setTagIds(tagIds).setAskedBy(user).setAskDate(new Date()).build();
         const savedQuestion = await question.save();
         res.status(200).json({ success: true, data: savedQuestion });
     } catch (err) {
@@ -478,10 +485,10 @@ const validateQuestion = (formData) => {
     }
 
     // Validate username
-    if (formData.askedBy.trim() === '') {
-        isValid = false;
-        error = 'Username cannot be empty';
-        return { isValid, error };
-    }
+    // if (formData.askedBy.trim() === '') {
+    //     isValid = false;
+    //     error = 'Username cannot be empty';
+    //     return { isValid, error };
+    // }
     return { isValid };
 }

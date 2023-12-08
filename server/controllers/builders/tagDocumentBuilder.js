@@ -10,6 +10,11 @@ class TagDocumentBuilder {
         return this;
     }
 
+    setCreatedBy(userObj) {
+        this.tag.createdBy = userObj;
+        return this;
+    }
+
     build() {
         return this.tag;
     }
