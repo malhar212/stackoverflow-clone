@@ -29,12 +29,10 @@ const ProfilePage = () => {
       let tempData;
       switch (dataType) {
         case "profileQuestions": {
-          // Implement logic to fetch questions based on user
           // tempData = await dao.fetchQuestionsBasedOnUser();
           break;
         }
         case "profileAnswers": {
-          // Implement logic to fetch answers based on user
           tempData = await dao.fetchAnswersBasedOnUser();
           setSelectedAnswers(tempData)
           console.log(selectedAnswers)
@@ -42,7 +40,6 @@ const ProfilePage = () => {
           break;
         }
         case "profileTags": {
-          // Implement logic to fetch tags based on user
           // tempData = await dao.fetchTagsBasedOnUser();
           break;
         }
@@ -54,7 +51,7 @@ const ProfilePage = () => {
       setSelectedData(tempData);
     };
   
-    fetchData(); // Call fetchData directly, no need for .then() because it's an async function
+    fetchData(); 
   }, [dataType]);
 
   return (
