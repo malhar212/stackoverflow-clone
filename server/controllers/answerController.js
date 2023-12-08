@@ -147,25 +147,25 @@ exports.addAnswer = async (req, res) => {
     const username = formData.ans_by
     // finding the user object from database based on username
     const user = await User.findOne({ username });
-    console.log("++++++++ADDANSWER 5" + (JSON.stringify(user, null, 4)))
+    // console.log("++++++++ADDANSWER 5" + (JSON.stringify(user, null, 4)))
     const answerBuilder = new BuilderFactory().createBuilder({ builderType: 'answer' });
-    console.log("+++++++++ADDANSWER 6 ")
+    // console.log("+++++++++ADDANSWER 6 ")
     const answer = answerBuilder.setText(formData.text).setAnsBy(user).setQid(question).setAnsDate(new Date()).build();
-    console.log("+++++++++ADDANSWER 7 ") 
-    console.log("+++++++++ANSWER.STRINGY: " + (JSON.stringify(answer, null, 4)))
+    // console.log("+++++++++ADDANSWER 7 ") 
+    // console.log("+++++++++ANSWER.STRINGY: " + (JSON.stringify(answer, null, 4)))
     try {
       var savedAnswer = await answer.save();
     } catch (err) {
       console.log(err)
       return;
     }
-    console.log("+++++++++ADDANSWER 8 ") 
-    console.log("++++ " + question.answers);
-    console.log("=====" + JSON.stringify(question.answers))
+    // console.log("+++++++++ADDANSWER 8 ") 
+    // console.log("++++ " + question.answers);
+    // console.log("=====" + JSON.stringify(question.answers))
     question.answers.push(savedAnswer);
-    console.log("+++++++++ADDANSWER 9 ") 
+    // console.log("+++++++++ADDANSWER 9 ") 
     await question.save();
-    console.log("+++++++++ADDANSWER 10 ") 
+    // console.log("+++++++++ADDANSWER 10 ") 
     res.status(200).json({ success: true, data: savedAnswer });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
