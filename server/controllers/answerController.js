@@ -4,6 +4,7 @@ const Question = require('../models/questions');
 const User = require("../models/users");
 const BuilderFactory = require('./builders/builderFactory');
 const { validateLinks } = require('./hyperlinkParser');
+const { JsonWebTokenError } = require('jsonwebtoken');
 
 // Function to convert database results to the desired format for UI
 function formatAnswersForUI(results) {
@@ -104,6 +105,14 @@ exports.filterAnswersBasedOnQuestionId = async (req, res) => {
 
 exports.addAnswer = async (req, res) => {
   console.log("++++++++ADDANSWER 1" + (JSON.stringify(req.body, null, 4 )))
+// req.body:
+//   "answer": {
+//     "text": "ANSWERRRR\n",
+//     "ans_by": "123",
+//     "ansDate": "2023-12-08T19:17:54.763Z"
+// },
+// "qid": "65736b9c29c943e4639d7d03"
+// }
   try {
     if (req.body === undefined || req.body.answer === undefined) {
       console.log("++++++++ADDANSWER 2" + req.body.answer)
@@ -151,6 +160,8 @@ exports.addAnswer = async (req, res) => {
       return;
     }
     console.log("+++++++++ADDANSWER 8 ") 
+    console.log("++++ " + question.answers);
+    console.log("=====" + JSON.stringify(question.answers))
     question.answers.push(savedAnswer);
     console.log("+++++++++ADDANSWER 9 ") 
     await question.save();
