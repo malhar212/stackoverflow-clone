@@ -132,15 +132,8 @@ export class DataDao {
   // Add new Question
   async addNewQuestion(question) {
     try {
+      console.log("ModelDAO addNewQuestion: ");
       console.log(JSON.stringify(question, null, 4));
-    //   {
-    //     "title": "testTitle",
-    //     "text": "testText",
-    //     "tags": [
-    //         "testtag"
-    //     ],
-    //     "askedBy": "123"
-    // }
       const response = await this.instance.post('questions/add', { question });
       const { success, data } = response.data;
       if (success)
@@ -199,10 +192,15 @@ export class DataDao {
 
   // Add new Answer
   async addAnswer(answer, qid) {
-        try {
+    try {
+      console.log(JSON.stringify(answer, null, 4));
+      console.log("IN ADD ANSWER DAO 1 ")
       const response = await this.instance.post('answers/add', { answer, qid });
+      console.log("IN ADD ANSWER DAO 2 ")
       const { success, data } = response.data;
+      console.log("IN ADD ANSWER DAO 3 ")
       if (success)
+        console.log("IN ADD ANSWER DAO SUCCESS ");
         return data;
     } catch (error) {
       console.error('Error fetching data:', error);

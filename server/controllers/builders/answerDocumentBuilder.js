@@ -16,8 +16,8 @@ class AnswerDocumentBuilder {
         return this;
     }
 
-    setAnsBy(ansBy) {
-        this.answer.ans_by = ansBy;
+    setAnsBy(ans_by) {
+        this.answer.ans_by = ans_by;
         return this;
     }
 

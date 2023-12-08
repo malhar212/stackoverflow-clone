@@ -4,7 +4,8 @@ import MainContent from '../mainContent.js';
 import './stylesheets/profilePage.css'
 
 const ProfilePage = () => {
-  const { user} = useLocationContext();
+  const { user, setParams} = useLocationContext();
+
 
   const username = user.username;
   const reputation = user.reputation;
@@ -15,10 +16,18 @@ const ProfilePage = () => {
 
   return (
     <MainContent>
-      <div className="profilePage">
+      <div className="profilePageUserBanner">
         <h1> Welcome {username}!</h1>
         <span>Your reputation is: {reputation}</span>
         <span> Your account was created {daysAgo} ago.</span>
+        <div className = "profile-btn-group">
+          <button className='profileBtn' href='' onClick={(e) => { e.preventDefault(); setParams('profileQuestions')}}>My QUESTIONS</button>
+          <button className='profileBtn' href='' onClick={(e) => { e.preventDefault(); setParams('profileAnswers')}}>My ANSWERS</button>
+          <button className='profileBtn' href='' onClick={(e) => { e.preventDefault(); setParams('profileTags')}}>My TAGS</button>
+        </div>
+      </div>
+      <div className = "profileContent">
+        <h3> lksdjflskdjflskdfjlskdjflksdjflksdjflksdjflksdjflksjdlfkjsdfl </h3>
       </div>
     </MainContent>
   );

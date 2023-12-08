@@ -52,7 +52,7 @@ app.use(csrf({ cookie: false }));
 
 // CSRF token endpoint 
 app.get('/csrf-token', (req, res) => {
-  console.log("======CSRF ENDPOINT============")
+  // console.log("======CSRF ENDPOINT============")
   res.json({ csrfToken: req.csrfToken() });
 });
 

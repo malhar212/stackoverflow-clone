@@ -3,7 +3,6 @@ import Answer from './answer';
 import { DataDao } from '../../models/ModelDAO';
 import PaginationComponent from '../paginationComponent';
 
-
 // Create Individual answer in answer list
 function createAnswer(answer, accepted) {
     return <Answer
@@ -12,7 +11,6 @@ function createAnswer(answer, accepted) {
         accepted={accepted}
     />
 }
-
 
 // Display List of Answers
 // recieves question object as prop (FIRST)

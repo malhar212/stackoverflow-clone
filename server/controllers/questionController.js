@@ -278,7 +278,7 @@ exports.search = async (req, res) => {
                     $sort: { ask_date_time: -1 }
                 });
             }
-            console.log(aggregation);
+            // console.log(aggregation);
             const questions = await Question.aggregate(aggregation);
             const formattedQuestions = formatQuestionsForUI(questions);
             res.status(200).json({ success: true, data: formattedQuestions });
@@ -326,9 +326,9 @@ exports.getQuestionById = async (req, res) => {
                 },
               ]
         );
-        console.log(question);
+        // console.log(question);
         const formattedQuestions = formatQuestionsForUI(question);
-        console.log(formattedQuestions);
+        // console.log(formattedQuestions);
         res.status(200).json({ success: true, data: formattedQuestions });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
@@ -377,7 +377,6 @@ exports.addNewQuestion = async (req, res) => {
         const user = await User.findOne({ username });
 
         let tagIds = [];
-        console.log("++++++++before tag creation")
         if (formData.tags !== undefined && formData.tags.length > 0) {
             formData.tags = removeDuplicatesIgnoreCase(formData.tags);
             const result = await Tag.aggregate([
@@ -489,11 +488,5 @@ const validateQuestion = (formData) => {
         }
     }
 
-    // Validate username
-    // if (formData.askedBy.trim() === '') {
-    //     isValid = false;
-    //     error = 'Username cannot be empty';
-    //     return { isValid, error };
-    // }
     return { isValid };
 }

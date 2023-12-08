@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { ToastContainer, toast } from "react-toastify";
 import '../../stylesheets/form.css'
 import MainContent from '../mainContent.js';
 import { DataDao } from '../../models/ModelDAO';
@@ -21,7 +22,6 @@ function AddQuestionsPage() {
         titleError: '',
         textError: '',
         tagsError: '',
-        // usernameError: ''
     });
 
     // Handle form input change
@@ -40,7 +40,6 @@ function AddQuestionsPage() {
             titleError: '',
             textError: '',
             tagsError: '',
-            // usernameError: '',
         });
 
         let isValid = true;
@@ -83,7 +82,6 @@ function AddQuestionsPage() {
             tagsArray = formData.tags.trim().split(/\s+/);
             tagsArray = removeDuplicatesIgnoreCase(tagsArray);
             if (tagsArray.length > 5) {
-                // console.log("Is this happening?");
                 isValid = false;
                 setFormErrors((prevState) => ({
                     ...prevState,
@@ -103,21 +101,26 @@ function AddQuestionsPage() {
             }
         }
 
-        // Validate username
-        // if (formData.username.trim() === '') {
-        //     isValid = false;
-        //     setFormErrors((prevState) => ({
-        //         ...prevState,
-        //         usernameError: 'Username cannot be empty',
-        //     }));
-        // }
+        const handleError = (err) =>
+        toast.error(err, {
+          position: "bottom-left",
+        });
+
+        // Validate reputation
+        if (user.reputation <= 50) {
+            isValid = false;
+            setFormErrors((prevState) => ({
+            ...prevState,
+            }));
+            handleError('Reputation score must be above 50 to post a question')
+        }
+
 
         if (isValid) {
             const question = {
                 title: formData.title.trim(),
                 text: formData.text.trim(),
                 tags: tagsArray,
-                // askedBy: formData.username.trim(),
                 askedBy: user.username,
 
             };
@@ -137,6 +140,7 @@ function AddQuestionsPage() {
 
     return (
         <MainContent>
+
         <div className="form">
             <h1>Ask a Question</h1>
             <form id='questionForm' onSubmit={handleSubmit}>
@@ -158,6 +162,7 @@ function AddQuestionsPage() {
                 <span className='error'>* indicates mandatory fields</span>
             </form>
             </div>
+            <ToastContainer />
         </MainContent>
     )
 }
