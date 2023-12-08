@@ -73,21 +73,22 @@ function QuestionList() {
         }
     }, [sortState, searchQuery]);
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         if (searchQuery !== undefined) {
-    //             const tempQuestions = await dao.search(searchQuery);
-    //             setQuestions(tempQuestions);
-    //             setQuestionCount(tempQuestions.length);
-    //         }
-    //         if (params !== undefined && params.tag !== undefined && params.tag !== '') {
-    //             const tempQuestions = await dao.search(`[${params.tag}]`);
-    //             setQuestions(tempQuestions);
-    //             setQuestionCount(tempQuestions.length);
-    //         }
-    //     }
-    //     fetchData();
-    // }, [searchQuery]);
+    useEffect(() => {
+        const fetchData = async () => {
+            if (searchQuery !== undefined) {
+                const tempQuestions = await dao.search(searchQuery);
+                setQuestions(tempQuestions);
+                setQuestionCount(tempQuestions.length);
+            }
+            if (params !== undefined && params.tag !== undefined && params.tag !== '') {
+                const tempQuestions = await dao.search(`[${params.tag}]`);
+                setQuestions(tempQuestions);
+                setQuestionCount(tempQuestions.length);
+            }
+        }
+        fetchData();
+    }, [searchQuery]);
+    
     return (
         <>
             {

@@ -88,7 +88,6 @@ Add design docs in *images/*
             - Deleting answer has no effect on reputation
             - Repost/Delete of answer makes question active. i.e. update lastActivity date
 
-
 Bugs:
     - When new question is created with no tags, all tags are added to it
 

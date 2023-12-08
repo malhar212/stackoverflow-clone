@@ -103,6 +103,39 @@ exports.filterAnswersBasedOnQuestionId = async (req, res) => {
   }
 };
 
+
+exports.fetchUserAnswers = async (req, res) => {
+  try {
+    console.log("++====++==++==++==")
+    const username  = req.session.user.username
+    console.log("++++++++ USERNAMEM: " + username)
+    if (username === undefined) {
+      res.status(404).json({ success: false, error: "Username is undefined" });
+      return;
+    }
+    // const idList = ids.split(',');
+    // if (idList.length <= 0) {
+    //   res.status(404).json({ success: false, error: "Provide a valid list of ids in query" });
+    //   return;
+    // }
+    console.log("11111111++====++==++==++==")
+    try {
+      // get the user object based on username
+      const user = await User.findOne({ username });
+      const answers = await Answer.find({ 'ans_by': user._id }).sort({ ans_date_time: 1 });
+      console.log(answers); // Check the retrieved answers in the console
+      console.log("222222222++====++==++==++==")
+      console.log(answers)
+      res.status(200).json({ success: true, data: answers });
+    } catch (error) {
+      console.error('Error fetching answers:', error);
+      return;
+    }
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
 exports.addAnswer = async (req, res) => {
   console.log("++++++++ADDANSWER 1" + (JSON.stringify(req.body, null, 4 )))
   try {
