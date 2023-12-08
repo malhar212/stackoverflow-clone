@@ -15,8 +15,8 @@ class AnswerBuilder {
         return this;
     }
 
-    setAnsBy(ansBy) {
-        this.answer.ansBy = ansBy;
+    setAnsBy(ans_by) {
+        this.answer.ans_by = ans_by;
         return this;
     }
 

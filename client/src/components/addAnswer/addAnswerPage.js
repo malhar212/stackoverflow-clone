@@ -7,16 +7,16 @@ import { validateLinks } from '../hyperlinkParser';
 
 // Answer a Question Form
 function AddAnswerPage() {
-    const { params } = useLocationContext();
-    const { setPageAndParams } = useLocationContext();
+    const { params, setPageAndParams, user } = useLocationContext();
+
 
     const [formData, setFormData] = useState({
-        username: '',
+        // username: '',
         text: '',
     });
 
     const [formErrors, setFormErrors] = useState({
-        usernameError: '',
+        // usernameError: '',
         textError: ''
     });
 
@@ -34,20 +34,20 @@ function AddAnswerPage() {
         // Reset error messages
         setFormErrors({
             textError: '',
-            usernameError: '',
+            // usernameError: '',
         });
 
 
         let isValid = true;
 
         // Validate username
-        if (formData.username.trim() == '') {
-            isValid = false;
-            setFormErrors((prevState) => ({
-                ...prevState,
-                usernameError: 'Username cannot be empty',
-            }));
-        }
+        // if (formData.username.trim() == '') {
+        //     isValid = false;
+        //     setFormErrors((prevState) => ({
+        //         ...prevState,
+        //         usernameError: 'Username cannot be empty',
+        //     }));
+        // }
 
         // Validate text
         if (formData.text.trim() === '') {
@@ -69,10 +69,12 @@ function AddAnswerPage() {
         if (isValid) {
             const answer = {
                 text: formData.text,
-                ansBy: formData.username,
+                // ansBy: formData.username,
+                ans_by : user.username,
                 ansDate: new Date()
             };
 
+            console.log("In answers page: " + user.username)
             // needs answer and qid as parameters
             await DataDao.getInstance().addAnswer(answer, params.question.qid);
             setPageAndParams('answers', params.question);

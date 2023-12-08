@@ -103,15 +103,6 @@ function AddQuestionsPage() {
             }
         }
 
-        // Validate username
-        // if (formData.username.trim() === '') {
-        //     isValid = false;
-        //     setFormErrors((prevState) => ({
-        //         ...prevState,
-        //         usernameError: 'Username cannot be empty',
-        //     }));
-        // }
-
         if (isValid) {
             const question = {
                 title: formData.title.trim(),

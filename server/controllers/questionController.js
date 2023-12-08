@@ -377,7 +377,6 @@ exports.addNewQuestion = async (req, res) => {
         const user = await User.findOne({ username });
 
         let tagIds = [];
-        console.log("++++++++before tag creation")
         if (formData.tags !== undefined && formData.tags.length > 0) {
             formData.tags = removeDuplicatesIgnoreCase(formData.tags);
             const result = await Tag.aggregate([
@@ -489,11 +488,5 @@ const validateQuestion = (formData) => {
         }
     }
 
-    // Validate username
-    // if (formData.askedBy.trim() === '') {
-    //     isValid = false;
-    //     error = 'Username cannot be empty';
-    //     return { isValid, error };
-    // }
     return { isValid };
 }
