@@ -133,9 +133,11 @@ export class DataDao {
   async addNewQuestion(question) {
     try {
       console.log("ModelDAO addNewQuestion: ");
-      console.log(JSON.stringify(question, null, 4));
+      console.log("NEW Q: " + JSON.stringify(question, null, 4));
       const response = await this.instance.post('questions/add', { question });
+      console.log("++++++++++modelDAO addNewQuestion question" + JSON.stringify(question, null, 5))
       const { success, data } = response.data;
+      console.log("++++++++++modelDAO addNewQuestion resp.data:" + JSON.stringify(response.data, null, 4))
       if (success)
         return data;
     } catch (error) {
@@ -392,8 +394,6 @@ async signup(credentials) {
         return null; 
       }
       
-   
-
     async test() {
       try {
         fetch('http://localhost:8000/auth/csrf-token', {

@@ -26,7 +26,7 @@ Add design docs in *images/*
 1. Search:
     - ~~Search results can be ordered according to sort buttons~~
 1. New Question:
-    - New tags can only be added by users with reputation of 50 or more.
+    - ~~New tags can only be added by users with reputation of 50 or more. ~~   NOTE: check piazza post for clarificaiton if it shoudl still add the new question w/o the new tags
 1. Answers: 
     - Show set of tags of the question
     - No. of votes of the question
