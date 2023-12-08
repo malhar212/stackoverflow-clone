@@ -5,11 +5,28 @@ const PaginationComponent = ({ items, itemsPerPage, renderItem }) => {
 
     const totalItems = items.length;
     const totalPages = Math.ceil(totalItems / itemsPerPage);
+    let accepted = false;
+    // const indexOfLastItem = currentPage * itemsPerPage;
+    // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = items.slice(indexOfFirstItem, indexOfLastItem);
+    const getPaginatedItems = () => {
+        let nonAcceptedItems = [...items];
+        let perPage = itemsPerPage;
+        if (items[0].accepted) {
+            accepted = true;
+            nonAcceptedItems = [...items].slice(1);
+            perPage = perPage - 1; 
+        }
+        const startIndex = (currentPage - 1) * perPage;
+        let pageItems = nonAcceptedItems.slice(startIndex, startIndex + perPage);
+        return (items[0].accepted)  ? [items[0], ...pageItems] : pageItems;
+    };
 
+
+    const currentItems = getPaginatedItems();
+
+    console.log(currentItems);
+    
     const handlePrevClick = () => {
         setCurrentPage((prevPage) => prevPage - 1);
     };
@@ -26,7 +43,7 @@ const PaginationComponent = ({ items, itemsPerPage, renderItem }) => {
         <div>
             {/* Display items */}
             {currentItems.map((item, index) => (
-                <div key={index}>{renderItem(item)}</div>
+                <div key={index}>{renderItem(item, accepted)}</div>
             ))}
 
             {/* Pagination controls */}
@@ -34,7 +51,7 @@ const PaginationComponent = ({ items, itemsPerPage, renderItem }) => {
                 Prev
             </button>
             <span>Page {currentPage}</span>
-            <button onClick={handleNextClick}>
+            <button onClick={handleNextClick} disabled={totalPages === 1}>
                 Next
             </button>
         </div>

@@ -35,7 +35,7 @@ function SideNavBar() {
             <a className={questionsStyle} href='' onClick={handleClick('questions')}>Questions</a>
             <a className={tagsStyle} href='' onClick={handleClick('tags')}>Tags</a>
             { loggedIn ? <a className={profileStyle} href='' onClick={handleClick('profile')}>Profile</a> : <></> }
-            { loggedIn ? <a className={profileStyle} href='' onClick={async (e) => {e.preventDefault(); setLoggedIn(false); await DataDao.getInstance().logout(); setPageAndParams('welcome', {})}}>Logout</a> : <a href='' onClick={handleClick('welcome')}>Login</a> }
+            { loggedIn ? <a className={profileStyle} href='' onClick={async (e) => {e.preventDefault(); setLoggedIn(false); sessionStorage.clear(); await DataDao.getInstance().logout(); setPageAndParams('welcome', {})}}>Logout</a> : <a href='' onClick={handleClick('welcome')}>Login</a> }
         </div>
     )
 }

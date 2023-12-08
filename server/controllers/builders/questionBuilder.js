@@ -45,6 +45,11 @@ class QuestionBuilder {
       return this;
     }
 
+    setAnsIds(ansIds) {
+      this.question.ansIds = ansIds;
+      return this;
+    }
+
     setAnswerCount(count) {
       this.question.answerCount = count;
       return this;

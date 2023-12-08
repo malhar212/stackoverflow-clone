@@ -24,6 +24,10 @@ const Answer = new Schema({
         type: Number,
         default : 0,
     },
+    accepted: {
+        type: Boolean,
+        default: false
+    }
 });
 
 

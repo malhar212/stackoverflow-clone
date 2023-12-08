@@ -11,7 +11,7 @@ function formatQuestionsForUI(results) {
     const formattedQuestions = results.map(result => {
         const builder = new BuilderFactory().createBuilder({ builderType: 'questionUI' })
 
-        const { _id, title, text, tags, asked_by, ask_date_time, views, votes, answerCount } = result;
+        const { _id, title, text, tags, asked_by, ask_date_time, views, votes, answerCount, answers } = result;
         // Extracting tag IDs
         const tagIds = tags.map(tag => tag._id);
 
@@ -29,6 +29,7 @@ function formatQuestionsForUI(results) {
             .setViews(views)
             .setVotes(votes)
             .setAnswerCount(answerCount)
+            .setAnsIds(answers)
             .build();
     });
     return formattedQuestions
@@ -299,32 +300,35 @@ exports.getQuestionById = async (req, res) => {
         const question = await Question.aggregate(
             [
                 {
-                    $match: {
-                        _id: new ObjectId(id),
-                    },
+                  $match: {
+                    _id: new ObjectId(id),
+                  },
                 },
                 {
-                    $lookup: {
-                        from: "answers",
-                        localField: "answers",
-                        foreignField: "_id",
-                        as: "answers",
-                    },
+                  $lookup: {
+                    from: "users",
+                    localField: "asked_by",
+                    foreignField: "_id",
+                    as: "asked_by",
+                  },
                 },
                 {
-                    $lookup: {
-                        from: "tags",
-                        localField: "tags",
-                        foreignField: "_id",
-                        as: "tags",
+                  $addFields: {
+                    asked_by: {
+                      $arrayElemAt: ["$asked_by.username", 0],
                     },
+                  },
                 },
                 {
-                    $sort: { ask_date_time: -1 }
-                }
-            ]
+                  $sort: {
+                    ask_date_time: -1,
+                  },
+                },
+              ]
         );
+        console.log(question);
         const formattedQuestions = formatQuestionsForUI(question);
+        console.log(formattedQuestions);
         res.status(200).json({ success: true, data: formattedQuestions });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
