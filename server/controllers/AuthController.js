@@ -1,27 +1,8 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/users');
 
-// const { signUp, signIn } = require('../validations/userValidation');
-
-// exports.Login = async (req, res) => {
-//   try {
-//     // check if user credentials are correct
-//      res.status(200).json({ success: true, data: "login"});
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: "Login failure" });
-//   }
-// };
-
-
-// exports.CsrfToken = async (req, res) => {
-//    console.log("=================in auth controller CSRF token==============")
-//   res.json({ csrfToken: req.csrfToken() });
-// }
-
 exports.login = async (req, res) => {
   try {
-    console.log("in login!")
     const { username, password } = req.body;
 
     // Find the user by username
@@ -29,7 +10,6 @@ exports.login = async (req, res) => {
 
     // Check if the user exists
     if (!user) {
-      console.log("in auth controller - wrong usernae")
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
 
@@ -38,13 +18,10 @@ exports.login = async (req, res) => {
 
     if (passwordMatch) {
       // Passwords match, login successful
-      console.log("in auth controller - correct password1")
       console.log(user)
       req.session.user = { username: user.username, uid: user._id };
-      console.log("in auth controller - correct password2")
       return res.status(200).json({ success: true, data : { uid: user._id, username : user.username, reputation : user.reputation, createdAt : user.createdAt } });
     } else {
-      console.log("in auth controller - wrong password")
       // Passwords don't match, login failed
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
@@ -56,9 +33,8 @@ exports.login = async (req, res) => {
 
 exports.signup = async (req, res) => {
   try {
-      const { username, email, password } = req.body
+      // const { username, email, password } = req.body
       // req.session.user = req.body.username.trim()
-      console.log(username, email, password + "=============IN SIGNUP SERVER SIDE==============");
 
       const newUser = new User(req.body);
       await newUser.save();
@@ -80,18 +56,6 @@ exports.checkLoginGetUsername = async (req, res) => {
     let name = "Guest";
     if (req.session.user) name = req.session.user;
     res.status(200).json({ success: true, data: name });
-    //  res.send(`
-    // <h1>Welcome, ${name}</h1>
-    // <form action="/register" method="POST">
-    //   <input type="text" name="name" placeholder="Your name">
-    //   <button>Submit</button>
-    // </form>
-    // <form action="/forget" method="POST">
-    //   <button>Logout</button>
-    // </form>
-    // `)
-
-    // res.send(name); 
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }

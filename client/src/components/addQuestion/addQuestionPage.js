@@ -106,13 +106,14 @@ function AddQuestionsPage() {
           position: "bottom-left",
         });
 
-        // Validate reputation
-        if (user.reputation <= 50) {
+        // Validate reputation for adding tags
+        if (user.reputation <=50) {
+            // console.log(tagsArray)
             isValid = false;
             setFormErrors((prevState) => ({
             ...prevState,
             }));
-            handleError('Reputation score must be above 50 to post a question')
+            handleError('Reputation score must be above 50 to create a new tag')
         }
 
 
