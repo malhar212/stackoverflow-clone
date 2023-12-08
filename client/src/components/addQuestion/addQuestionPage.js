@@ -22,7 +22,6 @@ function AddQuestionsPage() {
         titleError: '',
         textError: '',
         tagsError: '',
-        reputationError: '',
     });
 
     // Handle form input change
@@ -41,7 +40,6 @@ function AddQuestionsPage() {
             titleError: '',
             textError: '',
             tagsError: '',
-            // usernameError: '',
         });
 
         let isValid = true;
@@ -84,7 +82,6 @@ function AddQuestionsPage() {
             tagsArray = formData.tags.trim().split(/\s+/);
             tagsArray = removeDuplicatesIgnoreCase(tagsArray);
             if (tagsArray.length > 5) {
-                // console.log("Is this happening?");
                 isValid = false;
                 setFormErrors((prevState) => ({
                     ...prevState,
@@ -124,14 +121,12 @@ function AddQuestionsPage() {
                 title: formData.title.trim(),
                 text: formData.text.trim(),
                 tags: tagsArray,
-                // askedBy: formData.username.trim(),
                 askedBy: user.username,
 
             };
             
             await DataDao.getInstance().addNewQuestion(question);
             setSearchQuery('');
-
             setPageAndParams('questions');
         }
 
