@@ -9,7 +9,6 @@ import { validateLinks } from '../hyperlinkParser';
 function AddAnswerPage() {
     const { params, setPageAndParams, user } = useLocationContext();
 
-
     const [formData, setFormData] = useState({
         // username: '',
         text: '',
@@ -37,17 +36,7 @@ function AddAnswerPage() {
             // usernameError: '',
         });
 
-
         let isValid = true;
-
-        // Validate username
-        // if (formData.username.trim() == '') {
-        //     isValid = false;
-        //     setFormErrors((prevState) => ({
-        //         ...prevState,
-        //         usernameError: 'Username cannot be empty',
-        //     }));
-        // }
 
         // Validate text
         if (formData.text.trim() === '') {
