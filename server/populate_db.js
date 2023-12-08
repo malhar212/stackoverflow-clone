@@ -55,25 +55,28 @@ function questionCreate(title, text, tags, answers, asked_by, ask_date_time, vie
 }
 
 
-function userCreate(username, email, password) {
+function userCreate(username, email, password, reputation) {
   let newUser = new User({
     username: username,
     email: email,
     password: password,
+    reputation: reputation,
   })
   return newUser.save();
 }
 
 const populate = async () => {
-  let userOne = await userCreate("samZ", "samZ@gmail.com", 'examplePass');
-  let userTwo = await userCreate("newGuy", "newGuy@gmail.com", 'passwordExample');
+  let userOne = await userCreate("samZ", "samZ@gmail.com", 'examplePass', 0);
+  let userTwo = await userCreate("newGuy", "newGuy@gmail.com", 'passwordExample', 24);
+  let userThree = await userCreate("highREP", "highRep@yahoo.com", "pass", 51);
+
   // let userThree = await userCreate("newGuy", "copiedUsername@gmail.com", 'askdjalskdj');
 
 
   let t1 = await tagCreate('react', userOne); 
   let t2 = await tagCreate('javascript', userOne);
   let t3 = await tagCreate('android-studio', userTwo);
-  let t4 = await tagCreate('shared-preferences', userTwo);
+  let t4 = await tagCreate('shared-preferences', userThree);
 
   await questionCreate('Programmatically navigate using React router', 'the alert shows the proper index for the li clicked, and when I alert the variable within the last function I\'m calling, moveToNextImage(stepClicked), the same value shows but the animation isn\'t happening. This works many other ways, but I\'m trying to pass the index value of the list item clicked to use for the math to calculate.', [t1, t2], [], userOne, new Date('2022-01-20T03:24:00'), false);
   await questionCreate('android studio save string shared preference, start activity and load the saved string', 'I am using bottom navigation view but am using custom navigation, so my fragments are not recreated every time i switch to a different view. I just hide/show my fragments depending on the icon selected. The problem i am facing is that whenever a config change happens (dark/light theme), my app crashes. I have 2 fragments in this activity and the below code is what i am using to refrain them from being recreated.', [t3, t4, t2], [], userTwo, new Date('2023-10-01T11:24:30'), 121);

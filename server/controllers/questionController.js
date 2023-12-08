@@ -361,23 +361,32 @@ exports.incrementViewCount = async (req, res) => {
 // '/add'
 exports.addNewQuestion = async (req, res) => {
     try {
+        console.log("+++++++++++ 1")
         if (req.body === undefined || req.body.question === undefined) {
+            console.log("+++++++++++ 2")
             res.status(500).json({ success: false, error: "Question body not provided" });
             return;
         }
+        console.log("+++++++++++ 3")
         const formData = req.body.question;
+        console.log("+++++++++++ 4 "  + formData)
         const { isValid, error } = validateQuestion(formData);
+        console.log("+++++++++++ 5" + isValid + error)
         if (!isValid) {
+            console.log("+++++++++++ 6")
             res.status(500).json({ success: false, error });
             return;
         }
+        console.log("+++++++++++ 7")
         // extracting username from formData
         const username = formData.askedBy
+        console.log("+++++++++++ 8")
         // finding the user object from database based on username
         const user = await User.findOne({ username });
-
+        console.log("+++++++++++ 9")
         let tagIds = [];
         if (formData.tags !== undefined && formData.tags.length > 0) {
+            console.log("+++++++++++ 10")
             formData.tags = removeDuplicatesIgnoreCase(formData.tags);
             const result = await Tag.aggregate([
                 {
@@ -408,6 +417,7 @@ exports.addNewQuestion = async (req, res) => {
                     },
                 },
             ]);
+            console.log("+++++++++++ 11")
             if (result !== undefined && result[0] !== undefined) {
                 tagIds = tagIds.concat(result[0].matchedTags.map((obj) => obj._id));
                 const tagsToAdd = [];
@@ -428,8 +438,11 @@ exports.addNewQuestion = async (req, res) => {
                 tagIds = tagIds.concat(insertedTags);
             }
         }
+        console.log("++++++++++++++ 12")
         const qBuilder = new BuilderFactory().createBuilder({ builderType: 'question' });
+        console.log("++++++++++++++ 13")
         const question = qBuilder.setTitle(formData.title).setText(formData.text).setTagIds(tagIds).setAskedBy(user).setAskDate(new Date()).build();
+        console.log("++++++++++++++ 14")
         const savedQuestion = await question.save();
         res.status(200).json({ success: true, data: savedQuestion });
     } catch (err) {

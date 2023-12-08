@@ -4,6 +4,7 @@ const Question = require('../models/questions');
 const User = require("../models/users");
 const BuilderFactory = require('./builders/builderFactory');
 const { validateLinks } = require('./hyperlinkParser');
+const { JsonWebTokenError } = require('jsonwebtoken');
 
 // Function to convert database results to the desired format for UI
 function formatAnswersForUI(results) {
@@ -104,6 +105,14 @@ exports.filterAnswersBasedOnQuestionId = async (req, res) => {
 
 exports.addAnswer = async (req, res) => {
   console.log("++++++++ADDANSWER 1" + (JSON.stringify(req.body, null, 4 )))
+// req.body:
+//   "answer": {
+//     "text": "ANSWERRRR\n",
+//     "ans_by": "123",
+//     "ansDate": "2023-12-08T19:17:54.763Z"
+// },
+// "qid": "65736b9c29c943e4639d7d03"
+// }
   try {
     if (req.body === undefined || req.body.answer === undefined) {
       console.log("++++++++ADDANSWER 2" + req.body.answer)
@@ -138,23 +147,25 @@ exports.addAnswer = async (req, res) => {
     const username = formData.ans_by
     // finding the user object from database based on username
     const user = await User.findOne({ username });
-    console.log("++++++++ADDANSWER 5" + (JSON.stringify(user, null, 4)))
+    // console.log("++++++++ADDANSWER 5" + (JSON.stringify(user, null, 4)))
     const answerBuilder = new BuilderFactory().createBuilder({ builderType: 'answer' });
-    console.log("+++++++++ADDANSWER 6 ")
+    // console.log("+++++++++ADDANSWER 6 ")
     const answer = answerBuilder.setText(formData.text).setAnsBy(user).setQid(question).setAnsDate(new Date()).build();
-    console.log("+++++++++ADDANSWER 7 ") 
-    console.log("+++++++++ANSWER.STRINGY: " + (JSON.stringify(answer, null, 4)))
+    // console.log("+++++++++ADDANSWER 7 ") 
+    // console.log("+++++++++ANSWER.STRINGY: " + (JSON.stringify(answer, null, 4)))
     try {
       var savedAnswer = await answer.save();
     } catch (err) {
       console.log(err)
       return;
     }
-    console.log("+++++++++ADDANSWER 8 ") 
+    // console.log("+++++++++ADDANSWER 8 ") 
+    // console.log("++++ " + question.answers);
+    // console.log("=====" + JSON.stringify(question.answers))
     question.answers.push(savedAnswer);
-    console.log("+++++++++ADDANSWER 9 ") 
+    // console.log("+++++++++ADDANSWER 9 ") 
     await question.save();
-    console.log("+++++++++ADDANSWER 10 ") 
+    // console.log("+++++++++ADDANSWER 10 ") 
     res.status(200).json({ success: true, data: savedAnswer });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });

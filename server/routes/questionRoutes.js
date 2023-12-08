@@ -11,6 +11,6 @@ router.get('/search/:query?', questionController.search);
 router.get('/:id/incrementViewCount', questionController.incrementViewCount);
 router.get('/:id', questionController.getQuestionById);
 // router.post('/add', questionController.addNewQuestion);
-router.get('/add', isLoggedIn, questionController.addNewQuestion)
+router.post('/add', isLoggedIn, questionController.addNewQuestion)
 
 module.exports = router;

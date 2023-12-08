@@ -25,11 +25,11 @@ const Question = new Schema({
             message: "Cannot have more than 5 tags"
         }
     },
-    // answers : {
-    //   type : [Schema.Types.ObjectId],
-    //   default : [], 
-    //   required : true,  
-    // },
+    answers : {
+      type : [Schema.Types.ObjectId],
+      default : [], 
+      required : true,  
+    },
     asked_by: {
         type: Schema.Types.ObjectId,
         required: true,
