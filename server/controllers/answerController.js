@@ -103,6 +103,29 @@ exports.filterAnswersBasedOnQuestionId = async (req, res) => {
   }
 };
 
+
+exports.filterAnswersBasedOnUser = async (req, res) => {
+  try {
+    const { username } = req.query;
+
+    if (username === undefined) {
+      res.status(404).json({ success: false, error: "Provide a valid list of ids in query" });
+      return;
+    }
+    // const idList = ids.split(',');
+    // if (idList.length <= 0) {
+    //   res.status(404).json({ success: false, error: "Provide a valid list of ids in query" });
+    //   return;
+    // }
+    // const answers = await Answer.find({ _id: { $in: idList } }).sort({ ans_date_time: 1 });
+    // const formattedAnswers = formatAnswersForUI(answers);
+    // res.status(200).json({ success: true, data: formattedAnswers });
+       res.status(200).json({ success: true, data: "yayyy" });
+  } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
 exports.addAnswer = async (req, res) => {
   console.log("++++++++ADDANSWER 1" + (JSON.stringify(req.body, null, 4 )))
   try {

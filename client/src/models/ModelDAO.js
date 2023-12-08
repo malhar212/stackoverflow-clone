@@ -192,6 +192,19 @@ export class DataDao {
     return [];
 }
 
+  // Get answers for the question
+  async filterAnswersBasedOnUser(username) {
+    try {
+      const response = await this.instance.get(`answers/${username}`);
+      const { success, data } = response.data;
+      if (success)
+        return data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+    return [];
+}
+
   // Add new Answer
   async addAnswer(answer, qid) {
     try {
