@@ -4,7 +4,7 @@ import MainContent from '../mainContent.js';
 import './stylesheets/profilePage.css'
 import '../questions/questionList.js'
 // import QuestionList from '../questions/questionList.js';
-// import AnswersList from '../answers/answersList.js';
+import AnswersList from '../answers/answersList.js';
 import { DataDao } from '../../models/ModelDAO';
 
 const ProfilePage = () => {
@@ -15,6 +15,7 @@ const ProfilePage = () => {
   const [selectedData, setSelectedData] = useState();
   // the selection of which data (questions, answeers or tags) should be on the page
   const [dataType, setDataType] = useState('profileQuestions');
+  const [selectedAnswers, setSelectedAnswers] = useState([]);
 
   // for upper banner w/ welcome and user stats
   const username = user.username;
@@ -25,30 +26,36 @@ const ProfilePage = () => {
   // depending on button clicked will set selectedData to questions, answers or tags of the user
   useEffect(() => {
     const fetchData = async () => {
-        let selectedData;
-        switch (dataType) {
-            case "profileQuestions": {
-              selectedData = await dao.getAnswersBasedOnUser();
-              break;
-            }
-            case "profileAnswers": {
-              selectedData = await dao.getAnswersBasedOnUser();
-              break;
-            }
-            case "profileTags": {
-              selectedData = await dao.getAnswersBasedOnUser();
-                break;
-            }
-            default:
-              selectedData = "hey";
-              console.log(selectedData)
-            }
-          };
-      
-          fetchData().then((data) => {
-            setSelectedData(data);
-          });
-        }, [dataType]);
+      let tempData;
+      switch (dataType) {
+        case "profileQuestions": {
+          // Implement logic to fetch questions based on user
+          // tempData = await dao.fetchQuestionsBasedOnUser();
+          break;
+        }
+        case "profileAnswers": {
+          // Implement logic to fetch answers based on user
+          tempData = await dao.fetchAnswersBasedOnUser();
+          setSelectedAnswers(tempData)
+          console.log(selectedAnswers)
+
+          break;
+        }
+        case "profileTags": {
+          // Implement logic to fetch tags based on user
+          // tempData = await dao.fetchTagsBasedOnUser();
+          break;
+        }
+        default:
+          // Default to fetching answers if the dataType doesn't match any case
+          tempData = await dao.fetchAnswersBasedOnUser();
+          console.log(tempData);
+      }
+      setSelectedData(tempData);
+    };
+  
+    fetchData(); // Call fetchData directly, no need for .then() because it's an async function
+  }, [dataType]);
 
   return (
     <MainContent>
@@ -57,16 +64,19 @@ const ProfilePage = () => {
         <span>Your reputation is: {reputation}</span>
         <span> Your account was created {daysAgo} ago.</span>
         <div className = "profile-btn-group">
-            <button id='profileQuestionsButton' className={dataType === 'profileQuestions' || dataType === undefined ? 'active' : ''} onClick={()=>setDataType('profileQuestions')}>My Questions</button>
-            {/* <button id='activeButton' className={sortState === 'active' ? 'active' : ''} onClick={()=>setSortState('active')}>Active</button>
-            <button id='unansweredButton' className={sortState === 'unanswered' ? 'active' : ''} onClick={()=>setSortState('unanswered')}>Unanswered</button> */}
+            <button id='profileAnswersButton' onClick={()=>setDataType('profileAnswers')}>My Answers</button>
+          <button id='profileQuestionsButton' onClick={()=>setDataType('profileQuestions')}>My Questions</button>
+            <button id='profileTagsButton' onClick={()=>setDataType('profileTags')}>My Tags</button>
         </div>
       </div>
       <div className = "profileContent">
                 {/* <QuestionList /> */}
                 {/* should conditinoally render based on page params */}
-                {/* <AnswersList qid={null} selectedAnswers={selectedData} setAnswers={setAnswers}/> */}
-                {console.log("IN PROFILE PAGE: " + selectedData)}
+                <AnswersList qid={null} selectedAnswers={selectedAnswers} setAnswers={setSelectedAnswers}/>
+                {console.log("IN PROFILE PAGE: " + JSON.stringify(selectedData, null, 4))}
+                {/* {console.log(user.username)} */}
+                {console.log(dataType)}
+        
       </div>
     </MainContent>
   );

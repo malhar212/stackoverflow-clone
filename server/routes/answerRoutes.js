@@ -8,6 +8,6 @@ router.get('/filterByIds', answerController.filterAnswersBasedOnAnsIds);
 router.get('/question/:id', answerController.filterAnswersBasedOnQuestionId);
 // router.post('/add', answerController.addAnswer);
 router.post('/add', isLoggedIn, answerController.addAnswer);
-router.get('/:username', answerController.filterAnswersBasedOnUser);
+router.get('/fetchUserAnswers', answerController.fetchUserAnswers);
 
 module.exports = router;

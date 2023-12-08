@@ -193,9 +193,11 @@ export class DataDao {
 }
 
   // Get answers for the question
-  async filterAnswersBasedOnUser(username) {
+  async fetchAnswersBasedOnUser() {
     try {
-      const response = await this.instance.get(`answers/${username}`);
+      console.log("IN FILTERANSWERSBASEDONUSER ")
+      const response = await this.instance.get(`answers/fetchUserAnswers`);
+      console.log("GOT RESPONSE IN FILTERANSWERSBASEDONUSER")
       const { success, data } = response.data;
       if (success)
         return data;

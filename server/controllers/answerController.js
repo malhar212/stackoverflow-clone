@@ -104,12 +104,13 @@ exports.filterAnswersBasedOnQuestionId = async (req, res) => {
 };
 
 
-exports.filterAnswersBasedOnUser = async (req, res) => {
+exports.fetchUserAnswers = async (req, res) => {
   try {
-    const { username } = req.query;
-
+    console.log("++====++==++==++==")
+    const username  = req.session.user.username
+    console.log("++++++++ USERNAMEM: " + username)
     if (username === undefined) {
-      res.status(404).json({ success: false, error: "Provide a valid list of ids in query" });
+      res.status(404).json({ success: false, error: "Username is undefined" });
       return;
     }
     // const idList = ids.split(',');
@@ -117,10 +118,19 @@ exports.filterAnswersBasedOnUser = async (req, res) => {
     //   res.status(404).json({ success: false, error: "Provide a valid list of ids in query" });
     //   return;
     // }
-    // const answers = await Answer.find({ _id: { $in: idList } }).sort({ ans_date_time: 1 });
-    // const formattedAnswers = formatAnswersForUI(answers);
-    // res.status(200).json({ success: true, data: formattedAnswers });
-       res.status(200).json({ success: true, data: "yayyy" });
+    console.log("11111111++====++==++==++==")
+    try {
+      // get the user object based on username
+      const user = await User.findOne({ username });
+      const answers = await Answer.find({ 'ans_by': user._id }).sort({ ans_date_time: 1 });
+      console.log(answers); // Check the retrieved answers in the console
+      console.log("222222222++====++==++==++==")
+      console.log(answers)
+      res.status(200).json({ success: true, data: answers });
+    } catch (error) {
+      console.error('Error fetching answers:', error);
+      return;
+    }
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
