@@ -367,6 +367,11 @@ exports.addNewQuestion = async (req, res) => {
             res.status(500).json({ success: false, error });
             return;
         }
+        // extracting username from formData
+        const username = formData.askedBy
+        // finding the user object from database based on username
+        const user = await User.findOne({ username });
+
         let tagIds = [];
         console.log("++++++++before tag creation")
         if (formData.tags !== undefined && formData.tags.length > 0) {
@@ -414,17 +419,13 @@ exports.addNewQuestion = async (req, res) => {
                 const tagsToAdd = [];
                 formData.tags.forEach((tagName) => {
                     const tagBuilder = new BuilderFactory().createBuilder({ builderType: 'tag' });
-                    tagsToAdd.push(tagBuilder.setName(tagName).build());
+                    tagsToAdd.push(tagBuilder.setName(tagName).setCreatedBy(user).build());
                 })
                 const insertedTags = await Tag.insertMany(tagsToAdd);
                 tagIds = tagIds.concat(insertedTags);
             }
         }
         const qBuilder = new BuilderFactory().createBuilder({ builderType: 'question' });
-        // extracting username from formData
-        const username = formData.askedBy
-        // finding the user object from database based on username
-        const user = await User.findOne({ username });
         const question = qBuilder.setTitle(formData.title).setText(formData.text).setTagIds(tagIds).setAskedBy(user).setAskDate(new Date()).build();
         const savedQuestion = await question.save();
         res.status(200).json({ success: true, data: savedQuestion });

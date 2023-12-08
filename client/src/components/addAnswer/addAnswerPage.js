@@ -85,10 +85,6 @@ function AddAnswerPage() {
             <h1>Create new answer</h1>
             <form id='answerForm' onSubmit={handleSubmit}>
 
-                {/* <label htmlFor='formUsernameInput'>Your Username*:</label>
-                <input type='text' id='answerUsernameInput' name='username' value={formData.username} onChange={handleChange} />
-                <span id='usernameError' className='error'>{formErrors.usernameError}</span> */}
-
                 <label htmlFor='formTextInput'>Answer Text*:</label>
                 <textarea id='answerTextInput' name='text' rows='4' value={formData.text} onChange={handleChange}></textarea>
                 <span id='textError' className='error'>{formErrors.textError}</span>

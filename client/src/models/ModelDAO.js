@@ -131,7 +131,16 @@ export class DataDao {
 
   // Add new Question
   async addNewQuestion(question) {
-        try {
+    try {
+      console.log(JSON.stringify(question, null, 4));
+    //   {
+    //     "title": "testTitle",
+    //     "text": "testText",
+    //     "tags": [
+    //         "testtag"
+    //     ],
+    //     "askedBy": "123"
+    // }
       const response = await this.instance.post('questions/add', { question });
       const { success, data } = response.data;
       if (success)
@@ -328,10 +337,6 @@ async signup(credentials) {
     return false;
   }
 }
-
-
-
-
 
 
     // get userName based on uid of user
