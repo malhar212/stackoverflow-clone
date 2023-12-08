@@ -194,9 +194,13 @@ export class DataDao {
   async addAnswer(answer, qid) {
     try {
       console.log(JSON.stringify(answer, null, 4));
+      console.log("IN ADD ANSWER DAO 1 ")
       const response = await this.instance.post('answers/add', { answer, qid });
+      console.log("IN ADD ANSWER DAO 2 ")
       const { success, data } = response.data;
+      console.log("IN ADD ANSWER DAO 3 ")
       if (success)
+        console.log("IN ADD ANSWER DAO SUCCESS ");
         return data;
     } catch (error) {
       console.error('Error fetching data:', error);

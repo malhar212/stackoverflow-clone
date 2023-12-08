@@ -278,7 +278,7 @@ exports.search = async (req, res) => {
                     $sort: { ask_date_time: -1 }
                 });
             }
-            console.log(aggregation);
+            // console.log(aggregation);
             const questions = await Question.aggregate(aggregation);
             const formattedQuestions = formatQuestionsForUI(questions);
             res.status(200).json({ success: true, data: formattedQuestions });
@@ -326,9 +326,9 @@ exports.getQuestionById = async (req, res) => {
                 },
               ]
         );
-        console.log(question);
+        // console.log(question);
         const formattedQuestions = formatQuestionsForUI(question);
-        console.log(formattedQuestions);
+        // console.log(formattedQuestions);
         res.status(200).json({ success: true, data: formattedQuestions });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });

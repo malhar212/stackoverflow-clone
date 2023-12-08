@@ -5,6 +5,7 @@ const isLoggedIn = (req, res, next) => {
       next();
     } else {
       // If the session doesn't contain the necessary information, send a 401 Unauthorized status
+      console.log("IN USER MIDDLEWARE FAIL")
       res.status(401).json({ message: 'Unauthorized: Please log in to access this resource.' });
     }
   };

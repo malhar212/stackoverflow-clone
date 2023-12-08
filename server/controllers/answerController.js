@@ -150,8 +150,11 @@ exports.addAnswer = async (req, res) => {
       console.log(err)
       return;
     }
+    console.log("+++++++++ADDANSWER 8 ") 
     question.answers.push(savedAnswer);
+    console.log("+++++++++ADDANSWER 9 ") 
     await question.save();
+    console.log("+++++++++ADDANSWER 10 ") 
     res.status(200).json({ success: true, data: savedAnswer });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
