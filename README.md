@@ -88,7 +88,6 @@ Add design docs in *images/*
             - Deleting answer has no effect on reputation
             - Repost/Delete of answer makes question active. i.e. update lastActivity date
 
-
 ## Instructions to setup and run project
 
 Detailed instructions with all relevant commands go here.
