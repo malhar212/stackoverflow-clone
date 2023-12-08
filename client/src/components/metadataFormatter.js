@@ -15,8 +15,9 @@ export function metadataFormatter(post, typeOfPost) {
         dateParam = post.askDate;
     }
     else if (typeOfPost === OBJECT_TYPES.ANSWER) {
+        console.log("METADATAFORMATTER " + post + JSON.stringify(post, null, 4))
         verbString = "answered";
-        userParam = post.ansBy;
+        userParam = post.ans_by;
         dateParam = post.ansDate;
     }
     else {

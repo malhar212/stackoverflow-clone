@@ -193,13 +193,7 @@ export class DataDao {
   // Add new Answer
   async addAnswer(answer, qid) {
     try {
-      console.log("ModelDAO addAnswer: ");
       console.log(JSON.stringify(answer, null, 4));
-    //   {
-    //     "text": "asdfasdfasdzfadfasdfasdf",
-    //     "ansBy": "123",
-    //     "ansDate": "2023-12-08T15:21:27.711Z"
-    //   }
       const response = await this.instance.post('answers/add', { answer, qid });
       const { success, data } = response.data;
       if (success)
