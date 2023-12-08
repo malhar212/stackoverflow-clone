@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { ToastContainer, toast } from "react-toastify";
 import '../../stylesheets/form.css'
 import MainContent from '../mainContent.js';
 import { DataDao } from '../../models/ModelDAO';
@@ -21,7 +22,7 @@ function AddQuestionsPage() {
         titleError: '',
         textError: '',
         tagsError: '',
-        // usernameError: ''
+        reputationError: '',
     });
 
     // Handle form input change
@@ -103,6 +104,21 @@ function AddQuestionsPage() {
             }
         }
 
+        const handleError = (err) =>
+        toast.error(err, {
+          position: "bottom-left",
+        });
+
+        // Validate reputation
+        if (user.reputation <= 50) {
+            isValid = false;
+            setFormErrors((prevState) => ({
+            ...prevState,
+            }));
+            handleError('Reputation score must be above 50 to post a question')
+        }
+
+
         if (isValid) {
             const question = {
                 title: formData.title.trim(),
@@ -115,6 +131,7 @@ function AddQuestionsPage() {
             
             await DataDao.getInstance().addNewQuestion(question);
             setSearchQuery('');
+
             setPageAndParams('questions');
         }
 
@@ -128,6 +145,7 @@ function AddQuestionsPage() {
 
     return (
         <MainContent>
+
         <div className="form">
             <h1>Ask a Question</h1>
             <form id='questionForm' onSubmit={handleSubmit}>
@@ -149,6 +167,7 @@ function AddQuestionsPage() {
                 <span className='error'>* indicates mandatory fields</span>
             </form>
             </div>
+            <ToastContainer />
         </MainContent>
     )
 }
