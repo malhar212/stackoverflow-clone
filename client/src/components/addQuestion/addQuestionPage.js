@@ -8,20 +8,20 @@ import { SearchTextContext } from '../searchTextContext.js';
 
 // Add New Questions Page
 function AddQuestionsPage() {
-    const { setPageAndParams } = useLocationContext();
+    const { setPageAndParams, user } = useLocationContext();
     const { setSearchQuery } = useContext(SearchTextContext);
     const [formData, setFormData] = useState({
         title: '',
         text: '',
         tags: '',
-        username: ''
+        user: user.username,
     });
 
     const [formErrors, setFormErrors] = useState({
         titleError: '',
         textError: '',
         tagsError: '',
-        usernameError: ''
+        // usernameError: ''
     });
 
     // Handle form input change
@@ -40,7 +40,7 @@ function AddQuestionsPage() {
             titleError: '',
             textError: '',
             tagsError: '',
-            usernameError: '',
+            // usernameError: '',
         });
 
         let isValid = true;
@@ -104,20 +104,21 @@ function AddQuestionsPage() {
         }
 
         // Validate username
-        if (formData.username.trim() === '') {
-            isValid = false;
-            setFormErrors((prevState) => ({
-                ...prevState,
-                usernameError: 'Username cannot be empty',
-            }));
-        }
+        // if (formData.username.trim() === '') {
+        //     isValid = false;
+        //     setFormErrors((prevState) => ({
+        //         ...prevState,
+        //         usernameError: 'Username cannot be empty',
+        //     }));
+        // }
 
         if (isValid) {
             const question = {
                 title: formData.title.trim(),
                 text: formData.text.trim(),
                 tags: tagsArray,
-                askedBy: formData.username.trim(),
+                // askedBy: formData.username.trim(),
+                askedBy: user.username,
 
             };
             
@@ -152,10 +153,6 @@ function AddQuestionsPage() {
                 <span className='limits'>Add tags separated by whitespace</span>
                 <input type='text' id='formTagInput' name='tags' value={formData.tags} onChange={handleChange} />
                 <span id='tagsError' className='error'>{formErrors.tagsError}</span>
-{/* 
-                <label htmlFor='formUsernameInput'>Your Username*:</label>
-                <input type='text' id='formUsernameInput' name='username' value={formData.username} onChange={handleChange} />
-                <span id='usernameError' className='error'>{formErrors.usernameError}</span> */}
 
                 <button type='submit' id='postQuestionButton'>Post Question</button>
                 <span className='error'>* indicates mandatory fields</span>
