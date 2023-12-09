@@ -1,19 +1,16 @@
 // Template test file. Change the file to add more tests.
-before(() => {
-    // Seed the database before each test
-    const { stdout, stderr } = cy.exec('node ../server/init.js', { log: true });
-    console.log("Done insert");
-});
-after(() => {
-    // Clear the database after each test
-    cy.exec('node ../server/destroy.js', { log: true });
-    console.log("Done destroy")
-});
-
 beforeEach(() => {
+    // Seed the database before each test
+    cy.exec('node ../server/init.js');
+    console.log("Done insert");
     cy.visit('http://localhost:3000');
     cy.contains('Guest').click();
 })
+afterEach(() => {
+    // Clear the database after each test
+    cy.exec('node ../server/destroy.js');
+    console.log("Done destroy")
+});
 
 describe('Home Page', () => {
 
@@ -75,7 +72,7 @@ describe('Home Page', () => {
     });
 
     it('Successfully shows all question stats on page 1', () => {
-        const answers = ['2 answers', '4 answers', '0 answers', '0 answers', '0 answers'];
+        const answers = ['2 answers', '7 answers', '0 answers', '0 answers', '0 answers'];
         const views = ['0 views', '121 views', '14 views', '141 views', '12 views'];
         const votes = ['10 votes', '0 votes', '2 votes', '5 votes', '0 votes'];
         cy.get('.postStats').each(($el, index, $list) => {
@@ -89,6 +86,15 @@ describe('Home Page', () => {
         const summary = ['the alert shows the proper index for the li clicked, and when I alert the variab...', 'I am using bottom navigation view but am using custom navigation, so my fragment...', 'Question 5 text', 'Question 4 text', 'Question 3 text'];
         cy.get('.summary').each(($el, index, $list) => {
             cy.wrap($el).should('contain', summary[index]);
+        })
+    })
+
+    it('Successfully shows all question tags on page 1', () => {
+        const tags = [['react', 'javascript'], ['javascript', 'android-studio', 'shared-preferences'], ['javascript', 'shared-preferences'], ['javascript', 'shared-preferences'], ['android-studio']];
+        cy.get('.pillContainer').each(($el, index, $list) => {
+            cy.wrap($el).find('.pill').each(($el2, index2, $list) => {
+                cy.wrap($el2).should('contain', tags[index][index2]);
+            })
         })
     })
 
@@ -229,4 +235,166 @@ describe('Home Page', () => {
             cy.wrap($el).should('contain', qTitles[index]);
         })
     })
+})
+
+describe('Answer Page', () => {
+
+    beforeEach(() => {
+        cy.contains('android studio save string shared preference, start activity and load the saved string').click();
+    })
+
+    it('Answer Page displays expected header', () => {
+        cy.get('#answersHeader').should('contain', 'android studio save string shared preference, start activity and load the saved string');
+        cy.get('#answersHeader').should('contain', '7 answers');
+        cy.get('#answersHeader').should('not.contain', 'Ask a Question');
+        cy.get('#sideBarNav').should('contain', 'Questions');
+        cy.get('#sideBarNav').should('contain', 'Tags');
+    })
+
+    it('Answer Page should not show vote buttons to guest', () => {
+        cy.get('.vote-component button').should('not.exist');
+    });
+
+    it('Answer Page should not show add comment field to guest', () => {
+        cy.get('.comment-form').should('not.exist');
+    });
+
+    it('Answer Page should not show Add answer button to guest', () => {
+        cy.get('#addAnswerBtn').should('not.exist');
+    })
+
+    it('Answer Page displays expected question text and metadata', () => {
+        const text = "I am using bottom navigation view but am using custom navigation, so my fragments are not recreated every time i switch to a different view. I just hide/show my fragments depending on the icon selected. The problem i am facing is that whenever a config change happens (dark/light theme), my app crashes. I have 2 fragments in this activity and the below code is what i am using to refrain them from being recreated.";
+        cy.get('#questionBody').should('contain', text);
+        cy.get('#questionBody').should('contain', 'newGuy');
+        cy.get('#questionBody').should('contain', 'Oct 06, 2023');
+        cy.get('#questionBody').should('contain', '11:24');
+        cy.get('#questionBody').should('contain', '122 views');
+        cy.get('#questionBody').should('contain', '0 votes');
+    })
+
+    it('Answer Page displays expected question tags', () => {
+        const tags = ['javascript', 'android-studio', 'shared-preferences'];
+        cy.get('#questionBody').find('.pillContainer').each(($el) => {
+            cy.wrap($el).find('.pill').each(($el2, index2) => {
+                cy.wrap($el2).should('contain', tags[index2]);
+            })
+        })
+    })
+
+    it('Answer Page displays expected comments on the question and its stats', () => {
+        const text = ['Comment 1\n Some more text'];
+        const username = ['newGuy'];
+        const votes = ['10 votes'];
+        cy.get('#questionBody').find('.comment-list').each(($el) => {
+            cy.wrap($el).find('.comment').each(($el2, index2) => {
+                cy.wrap($el2).should('contain', text[index2]);
+                cy.wrap($el2).should('contain', username[index2]);
+                cy.wrap($el2).should('contain', votes[index2]);
+            })
+        })
+    })
+
+    function verifyAnswersOnPage1() {
+        const answers = ['Answer 7', 'answer text', 'Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background.', 'YourPreference yourPrefrence = YourPreference.getInstance(context); yourPreference.saveData(YOUR_KEY,YOUR_VALUE);', 'I just found all the above examples just too confusing, so I wrote my own. '];
+        cy.get('.answerText').each(($el, index) => {
+            cy.wrap($el).should('contain', answers[index]);
+        });
+    }
+
+    it('Answer Page displays expected answers ', () => {
+        verifyAnswersOnPage1();
+    });
+
+    it('Answer Page displays expected metadata and stats and vote', () => {
+        const authors = ['samZ', 'samZ', 'samZ', 'samZ', 'newGuy'];
+        const date = ['Oct 09', 'Nov 24', 'Nov 18', 'Nov 12', 'Nov 01'];
+        const times = ['15:24', '08:24', '09:24', '03:30', '15:24'];
+        const votes = ['0 votes', '10 votes', '0 votes', '0 votes', '0 votes'];
+        cy.get('.answerAuthor').each(($el, index) => {
+            cy.wrap($el).should('contain', authors[index]);
+            cy.wrap($el).should('contain', date[index]);
+            cy.wrap($el).should('contain', times[index]);
+
+        });
+        cy.get('.answer .vote-component').each(($el, index) => {
+            cy.wrap($el).should('contain', votes[index]);
+        })
+    });
+
+    function verifyAnswersOnPage2() {
+        const answers = ['Answer 7', 'Answer 6', 'Answer 5'];
+        cy.get('.answerText').each(($el, index) => {
+            cy.wrap($el).should('contain', answers[index]);
+        });
+    }
+
+    it('Verify pagination of answers. \nVerify accepted answer is pinned to the top of every page. \nVerify thier metadata', () => {
+        cy.get('.answer-list .paginationControls').contains('button', 'Next').click();
+        verifyAnswersOnPage2();
+        const authors = ['samZ', 'newGuy2', 'newGuy'];
+        const date = ['Oct 09', 'Oct 08', 'Oct 07'];
+        const times = ['15:24', '15:24', '15:24'];
+        const votes = ['0 votes', '0 votes', '0 votes'];
+        cy.get('.answerAuthor').each(($el, index) => {
+            cy.wrap($el).should('contain', authors[index]);
+            cy.wrap($el).should('contain', date[index]);
+            cy.wrap($el).should('contain', times[index]);
+
+        });
+        cy.get('.answer .vote-component').each(($el, index) => {
+            cy.wrap($el).should('contain', votes[index]);
+        })
+    });
+
+    it('Verify next button on last page of answers rolls over to first page ', () => {
+        verifyAnswersOnPage1();
+        cy.get('.answer-list .paginationControls').contains('button', 'Next').click();
+        verifyAnswersOnPage2();
+        cy.get('.answer-list .paginationControls').contains('button', 'Next').click();
+        verifyAnswersOnPage1();
+    });
+
+    it('Verify accepted answer is marked.', () => {
+        const answerText = 'Answer 7';
+        cy.get('.answerText').first().should('contain', answerText);
+        cy.get('.answer').each(($el, index) => {
+            if (index === 0) {
+                cy.wrap($el).find('.svg-icon.iconCheckmarkLg').should('exist');
+            }
+            else {
+                cy.wrap($el).find('.svg-icon.iconCheckmarkLg').should('not.exist');
+            }
+        });
+    });
+
+    it('Verify comments on answer.', () => {
+        const text = ['Comment 2. Some more text', 'Comment 1', 'Comment 3'];
+        const username = ['newGuy2','newGuy2','samZ' ];
+        const votes = ['10 votes', '10 votes', '0 votes' ];
+        cy.contains('.answer', 'Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background.').within(() => {
+            cy.get('.comment-list').should('exist');
+            cy.get('.comment-list .comment').each(($comment, index) => {
+                cy.wrap($comment).should('contain', text[index]);
+                cy.wrap($comment).should('contain', username[index]);
+                cy.wrap($comment).should('contain', votes[index]);
+            });
+        });
+    });
+
+    it('Verify pagination of comments', () => {
+        const text = ['Comment 2', 'Comment 4'];
+        const username = ['newGuy', 'newGuy2' ];
+        const votes = ['1 votes', '10 votes' ];
+        cy.contains('.answer', 'Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background.').within(() => {
+            cy.get('.comment-list').should('exist');
+            cy.get('.comment-list .paginationControls').contains('button', 'Next').click();
+            cy.get('.comment-list .comment').each(($comment, index) => {
+                cy.wrap($comment).should('contain', text[index]);
+                cy.wrap($comment).should('contain', username[index]);
+                cy.wrap($comment).should('contain', votes[index]);
+            });
+        });
+    });
+
 })
