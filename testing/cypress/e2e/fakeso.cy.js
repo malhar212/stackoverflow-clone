@@ -283,7 +283,7 @@ describe('Answer Page', () => {
     })
 
     it('Answer Page displays expected comments on the question and its stats', () => {
-        const text = ['Comment 1\n Some more text'];
+        const text = ['Comment 1. Some more text'];
         const username = ['newGuy'];
         const votes = ['10 votes'];
         cy.get('#questionBody').find('.comment-list').each(($el) => {
