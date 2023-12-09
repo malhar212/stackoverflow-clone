@@ -354,6 +354,18 @@ async updateAnswerById(ansId, { text: answerText }) {
     return [];
   }
 
+  async fetchTagsByUsername(username) {
+    try {
+      const response = await this.instance.get(`tags/byUsername/${username}`);
+      const { success, data } = response.data;
+      if (success)
+        return data;
+    } catch (error) {
+      throw new Error('Error fetching tags by user:', error);
+    }
+    return [];
+  }
+
   async getTagsAndQuestionCount() {
         try {
       const response = await this.instance.get(`tags/questionCount`);

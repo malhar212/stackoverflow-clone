@@ -1,5 +1,6 @@
 const Question = require("../models/questions");
 const Tag = require("../models/tags");
+const User = require("../models/users");
 const BuilderFactory = require("./builders/builderFactory");
 
 // Function to convert database results to the desired format for UI
@@ -55,6 +56,7 @@ exports.getTagById = async (req, res) => {
   }
 };
 
+
 exports.getTagByName = async (req, res) => {
   try {
     const name = req.params.name;
@@ -67,6 +69,19 @@ exports.getTagByName = async (req, res) => {
     res.status(200).json({ success: true, data: formattedTags });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+exports.getTagsByUsername = async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    const user = await User.findOne({ username });
+    const tags = await Tag.find({ createdBy: user });
+    res.status(200).json({ success: true, data: tags });
+  } catch (error) {
+    console.error('Error fetching tags by user:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
 
