@@ -208,6 +208,20 @@ export class DataDao {
     return [];
 }
 
+
+  // // Get a specific answer by its ID
+  // async getAnswerById(aid) {
+  //   try {
+  //     const response = await this.instance.get(`answers/${aid}`);
+  //     const { success, data } = response.data;
+  //     if (success)
+  //         return data;
+  //     } catch (error) {
+  //         console.error('Error fetching data:', error);
+  //     }
+  //     return [];
+  // }
+
   // Add new Answer
   async addAnswer(answer, qid) {
     try {

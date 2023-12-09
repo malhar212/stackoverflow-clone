@@ -9,5 +9,6 @@ router.get('/question/:id', answerController.filterAnswersBasedOnQuestionId);
 // router.post('/add', answerController.addAnswer);
 router.post('/add', isLoggedIn, answerController.addAnswer);
 router.get('/fetchUserAnswers', answerController.fetchUserAnswers);
+// router.get('/:id', answerController.getAnswerById);
 
 module.exports = router;

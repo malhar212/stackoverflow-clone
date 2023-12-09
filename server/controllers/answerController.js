@@ -40,6 +40,7 @@ exports.getAllAnswers = async (req, res) => {
 //localhost:8000/answers/filterByIds?ids=656cf2553306392f5c8119f9
 exports.filterAnswersBasedOnAnsIds = async (req, res) => {
   try {
+    console.log("IN filter answers by ans ids")
     const { ids } = req.query;
     if (ids === undefined || ids.length <= 0) {
       res.status(404).json({ success: false, error: "Provide a valid list of ids in query" });

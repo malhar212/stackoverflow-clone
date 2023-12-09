@@ -11,6 +11,7 @@ import { SearchTextContextProvider } from './searchTextContext';
 import PropTypes from 'prop-types';
 import WelcomePage from "./welcome/welcomePage.js";
 import { DataDao } from '../models/ModelDAO.js';
+import EditAnswerPage from './answers/editAnswerPage.js';
 
 const LocationContext = createContext();
 
@@ -76,6 +77,9 @@ export function LocationContextProvider({ children }) {
         }
         if (page ==="profile") {
             return <ProfilePage />
+        }
+        if (page === 'editAnswer') {
+            return <EditAnswerPage />
         }
     }
 
