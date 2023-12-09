@@ -106,6 +106,7 @@ exports.filterAnswersBasedOnQuestionId = async (req, res) => {
 
 
 exports.fetchUserAnswers = async (req, res) => {
+  console.log("+++++IN FETCH USER ANSWERSSSSSSS+++++++")
   try {
     console.log("++====++==++==++==", req.session.user)
     const username  = req.session.user.username

@@ -89,6 +89,22 @@ export class DataDao {
     }
   }
 
+  async fetchUserQuestions() {
+    try {
+      console.log("In fetchUserQuestions 1")
+      const response = await this.instance.get(`questions/fetchUserQuestions`);
+      console.log("In fetchUserQuestions 2")
+      const { success, data } = response.data;
+      if (success) {
+        console.log("Response is... " + JSON.stringify(response.data, null, 4))
+        return data;
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+    return [];
+  }
+
   // Filter unanswered questions
   async getUnansweredQuestions() {
         try {
@@ -193,7 +209,7 @@ export class DataDao {
 }
 
   // Get answers for the question
-  async fetchAnswersBasedOnUser() {
+  async fetchUserAnswers() {
     try {
       console.log("IN FILTERANSWERSBASEDONUSER ")
       const response = await this.instance.get(`answers/fetchUserAnswers`);

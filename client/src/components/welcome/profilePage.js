@@ -10,14 +10,13 @@ import { DataDao } from '../../models/ModelDAO';
 
 const ProfilePage = () => {
   const dao = DataDao.getInstance();
-  const { user, setPageAndParams} = useLocationContext();
+  const { user, setPageAndParams } = useLocationContext();
   const { setSearchQuery } = useContext(SearchTextContext);
 
   // the data loaded into the page
   const [selectedData, setSelectedData] = useState();
   // the selection of which data (questions, answeers or tags) should be on the page
-  const [dataType, setDataType] = useState('profileQuestions');
-  const [selectedAnswers, setSelectedAnswers] = useState([]);
+  const [dataType, setDataType] = useState();
 
   // for upper banner w/ welcome and user stats
   const username = user.username;
@@ -32,16 +31,18 @@ const ProfilePage = () => {
       let tempData;
       switch (dataType) {
         case "profileQuestions": {
-          // tempData = await dao.fetchQuestionsBasedOnUser();
+          tempData = await dao.fetchUserQuestions();
+          console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
+          // tempData.sort((a, b) => new Date(b.ans_date_time) - new Date(a.ans_date_time));
+          // console.log("SORTED Temp data is: " + JSON.stringify(tempData, null, 4))
+          setSelectedData(tempData)
           break;
         }
         case "profileAnswers": {
-          tempData = await dao.fetchAnswersBasedOnUser();
+          tempData = await dao.fetchUserAnswers();
           console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
           tempData.sort((a, b) => new Date(b.ans_date_time) - new Date(a.ans_date_time));
           console.log("SORTED Temp data is: " + JSON.stringify(tempData, null, 4))
-          setSelectedAnswers(tempData)
-          console.log(selectedAnswers)
           setSelectedData(tempData)
           break;
         }
@@ -62,7 +63,7 @@ const ProfilePage = () => {
   }, [dataType]);
 
 
-  function handleClick(answerId) {
+  function handleAnswerClick(answerId) {
     return function (event) {
         event.preventDefault();
         setSearchQuery(" ".repeat(Math.floor(Math.random() * 10)));
@@ -88,13 +89,26 @@ const ProfilePage = () => {
                   <ul>
                     {selectedData.map((answer) => (
                       <li key={answer.id}>
-                      <a href='' title={answer.text} onClick={handleClick(answer._id)}>
+                      <a href='' title={answer.text} onClick={handleAnswerClick(answer._id)}>
                         {answer.text && answer.text.slice(0, 50)} {answer.text && answer.text.length > 50 ? '...' : ''}
                       </a>
                       </li>
                     ))}
                   </ul>
                 )}
+
+              {dataType === 'profileQuestions' && selectedData && (
+                  <ul>
+                    <h1> test test test test test test test test </h1>
+                    {selectedData.map((question) => (
+                      <li key={question.id}>
+                      <a href='' title={question.title} onClick={handleAnswerClick(question._id)}>
+                        {question.title && question.title.slice(0, 50)} {question.title && question.title.length > 50 ? '...' : ''}
+                      </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}  
       </div>
     </MainContent>
   );

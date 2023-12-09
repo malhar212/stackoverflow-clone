@@ -10,8 +10,8 @@ router.post('/add', isLoggedIn, answerController.addAnswer);
 router.get('/fetchUserAnswers', answerController.fetchUserAnswers);
 
 // const response = await this.instance.put(`/answers/${ansId}`, { text: answerText });
-router.put('/:ansId', answerController.editAnswerById)
-router.delete('/:ansId', answerController.deleteAnswerById)
+router.put('/:ansId', answerController.editAnswerById);
+router.delete('/:ansId', answerController.deleteAnswerById);
 
 
 module.exports = router;
