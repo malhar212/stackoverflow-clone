@@ -26,7 +26,7 @@ Add design docs in *images/*
 1. Search:
     - ~~Search results can be ordered according to sort buttons~~
 1. New Question:
-    - ~~New tags can only be added by users with reputation of 50 or more. ~~NOTE: get clarificaiton if shoudl addnew question w/o the new tags
+    - ~~New tags can only be added by users with reputation of 50 or more.~~ NOTE: get clarificaiton if shoudl addnew question w/o the new tags
 1. Answers: 
     - ~~Show set of tags of the question~~
     - ~~No. of votes of the question~~
@@ -67,7 +67,7 @@ Add design docs in *images/*
     - Menu: 
         - Link to view all questions of user
         - Link to view all tags of user
-        - Link to view all answers of user
+        - ~~Link to view all answers of user~~
     - Sub views, show/hide based on link clicked:
         - Questions posted by the user:
             - Display question titles
@@ -81,9 +81,9 @@ Add design docs in *images/*
             - User has options to edit or delete tag
             - Editing/Deleting tag is allowed only if it is not in use by other users. It is allowed if it's used by only this user.
         - Answers posted by the user:
-            - All answers displayed as links of 50 characters
-            - Newest order
-            - Clicking link shows answer form pre-filled, user can repost or delete
+            - ~~All answers displayed as links of 50 characters~~
+            - ~~Newest order~~
+            - ~~licking link shows answer form pre-filled, user can repost or delete~~
             - Deleting answer deletes it's votes and comments
             - Deleting answer has no effect on reputation
             - Repost/Delete of answer makes question active. i.e. update lastActivity date

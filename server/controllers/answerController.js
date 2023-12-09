@@ -40,6 +40,7 @@ exports.getAllAnswers = async (req, res) => {
 //localhost:8000/answers/filterByIds?ids=656cf2553306392f5c8119f9
 exports.filterAnswersBasedOnAnsIds = async (req, res) => {
   try {
+    console.log("IN filter answers by ans ids")
     const { ids } = req.query;
     if (ids === undefined || ids.length <= 0) {
       res.status(404).json({ success: false, error: "Provide a valid list of ids in query" });
@@ -106,7 +107,7 @@ exports.filterAnswersBasedOnQuestionId = async (req, res) => {
 
 exports.fetchUserAnswers = async (req, res) => {
   try {
-    console.log("++====++==++==++==")
+    console.log("++====++==++==++==", req.session.user)
     const username  = req.session.user.username
     console.log("++++++++ USERNAMEM: " + username)
     if (username === undefined) {
@@ -215,3 +216,32 @@ const validateAnswer = (formData) => {
   }
   return { isValid, error };
 }; 
+
+exports.editAnswerById = async (req, res) => {
+  const { ansId } = req.params;
+  const { text } = req.body;
+  try {
+    const updatedAnswer = await Answer.findByIdAndUpdate(ansId, { text }, { new: true });
+    if (!updatedAnswer) {
+      return res.status(404).json({ success: false, message: 'Answer not found.' });
+    }
+    res.status(200).json({ success: true, data: updatedAnswer });
+  } catch (error) {
+    console.error('Error updating answer:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+exports.deleteAnswerById = async (req, res) => {
+  const { ansId } = req.params;
+  try {
+    const deletedAnswer = await Answer.findByIdAndDelete(ansId);
+    if (!deletedAnswer) {
+      return res.status(404).json({ success: false, message: 'Answer not found.' });
+    }
+    res.status(200).json({ success: true, data: deletedAnswer });
+  } catch (error) {
+    console.error('Error deleting answer:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+}

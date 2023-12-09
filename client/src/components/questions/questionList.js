@@ -44,8 +44,8 @@ function QuestionList() {
             setQuestions(tempQuestions);
             setQuestionCount(tempQuestions.length);
         }
-        console.log(searchQuery);
-        console.log(sortState);
+        // console.log(searchQuery);
+        // console.log(sortState); 
         if (searchQuery === undefined || searchQuery.trim().length == 0) {
             fetchData();
         }

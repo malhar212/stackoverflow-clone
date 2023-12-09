@@ -200,12 +200,50 @@ export class DataDao {
       console.log("GOT RESPONSE IN FILTERANSWERSBASEDONUSER")
       const { success, data } = response.data;
       if (success)
+        console.log("Response is... " + JSON.stringify(response.data, null, 4))
         return data;
     } catch (error) {
       console.error('Error fetching data:', error);
     }
     return [];
 }
+
+// called from editAnswersPage
+// await dao.updateAnswerById(params, { text: answerText });
+async updateAnswerById(ansId, { text: answerText }) {
+    try {
+      console.log(JSON.stringify(ansId, null, 4));
+      console.log(JSON.stringify(answerText, null, 4));
+      const response = await this.instance.put(`/answers/${ansId}`, { text: answerText });
+      const { success, data } = response.data;
+  
+      if (success) {
+        console.log('Answer updated successfully:', data);
+        return data;
+      } else {
+        console.error('Failed to update answer:', data.message);
+      }
+    } catch (error) {
+      console.error('Error updating answer:', error);
+    }
+    return null;
+  }
+
+  async deleteAnswerById(ansId) {
+    try {
+      const response = await this.instance.delete(`/answers/${ansId}`);
+      const { success, data } = response.data;
+      if (success) {
+        console.log('Answer deleted successfully:', data);
+        return data;
+      } else {
+        console.error('Failed to delete answer:', data.message);
+      }
+    } catch (error) {
+      console.error('Error deleting answer:', error);
+    }
+    return null;
+  }
 
   // Add new Answer
   async addAnswer(answer, qid) {

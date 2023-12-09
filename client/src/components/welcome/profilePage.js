@@ -1,15 +1,17 @@
-import React , { useEffect, useState} from 'react';
+import React , { useEffect, useState, useContext } from 'react';
 import { useLocationContext } from '../locationContext.js';
 import MainContent from '../mainContent.js';
+import { SearchTextContext } from '../searchTextContext';
 import './stylesheets/profilePage.css'
 import '../questions/questionList.js'
 // import QuestionList from '../questions/questionList.js';
-import AnswersList from '../answers/answersList.js';
+// import AnswersList from '../answers/answersList.js';
 import { DataDao } from '../../models/ModelDAO';
 
 const ProfilePage = () => {
   const dao = DataDao.getInstance();
-  const { user } = useLocationContext();
+  const { user, setPageAndParams} = useLocationContext();
+  const { setSearchQuery } = useContext(SearchTextContext);
 
   // the data loaded into the page
   const [selectedData, setSelectedData] = useState();
@@ -20,6 +22,7 @@ const ProfilePage = () => {
   // for upper banner w/ welcome and user stats
   const username = user.username;
   const reputation = user.reputation;
+
   // const createdAt = user.createdAt;
   const daysAgo = Math.floor((new Date() - new Date(user.createdAt)) / (1000 * 60 * 60 * 24));
 
@@ -34,9 +37,12 @@ const ProfilePage = () => {
         }
         case "profileAnswers": {
           tempData = await dao.fetchAnswersBasedOnUser();
+          console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
+          tempData.sort((a, b) => new Date(b.ans_date_time) - new Date(a.ans_date_time));
+          console.log("SORTED Temp data is: " + JSON.stringify(tempData, null, 4))
           setSelectedAnswers(tempData)
           console.log(selectedAnswers)
-
+          setSelectedData(tempData)
           break;
         }
         case "profileTags": {
@@ -45,14 +51,25 @@ const ProfilePage = () => {
         }
         default:
           // Default to fetching answers if the dataType doesn't match any case
-          tempData = await dao.fetchAnswersBasedOnUser();
-          console.log(tempData);
+          // tempData = await dao.fetchAnswersBasedOnUser();
+          // console.log(tempData);
+          break;
       }
       setSelectedData(tempData);
     };
   
     fetchData(); 
   }, [dataType]);
+
+
+  function handleClick(answerId) {
+    return function (event) {
+        event.preventDefault();
+        setSearchQuery(" ".repeat(Math.floor(Math.random() * 10)));
+        console.log("in profile page: answer clicked has id: " + answerId)
+        setPageAndParams('editAnswer', answerId);
+    }
+}
 
   return (
     <MainContent>
@@ -67,13 +84,17 @@ const ProfilePage = () => {
         </div>
       </div>
       <div className = "profileContent">
-                {/* <QuestionList /> */}
-                {/* should conditinoally render based on page params */}
-                <AnswersList qid={null} selectedAnswers={selectedAnswers} setAnswers={setSelectedAnswers}/>
-                {console.log("IN PROFILE PAGE: " + JSON.stringify(selectedData, null, 4))}
-                {/* {console.log(user.username)} */}
-                {console.log(dataType)}
-        
+                {dataType === 'profileAnswers' && selectedData && (
+                  <ul>
+                    {selectedData.map((answer) => (
+                      <li key={answer.id}>
+                      <a href='' title={answer.text} onClick={handleClick(answer._id)}>
+                        {answer.text && answer.text.slice(0, 50)} {answer.text && answer.text.length > 50 ? '...' : ''}
+                      </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
       </div>
     </MainContent>
   );
