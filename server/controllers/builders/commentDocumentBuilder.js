@@ -10,20 +10,20 @@ class CommentDocumentBuilder {
         return this;
     }
 
-    // setPostedBy(postedBy) {
-    //     this.comment.postedBy = postedBy;
-    //     return this;
-    // }
+    setPostedBy(postedBy) {
+        this.comment.postedBy = postedBy;
+        return this;
+    }
 
-    // setAssociatedObjectType(associatedObjectType) {
-    //     this.comment.associatedObjectType = associatedObjectType;
-    //     return this;
-    // }
+    setAssociatedObjectType(associatedObjectType) {
+        this.comment.associatedObjectType = associatedObjectType;
+        return this;
+    }
 
-    // setAssociatedObjectId(associatedObjectId) {
-    //     this.comment.associatedObjectId = associatedObjectId;
-    //     return this;
-    // }
+    setAssociatedObjectId(associatedObjectId) {
+        this.comment.associatedObjectId = associatedObjectId;
+        return this;
+    }
 
     setVotes(votes) {
         this.comment.votes = votes;

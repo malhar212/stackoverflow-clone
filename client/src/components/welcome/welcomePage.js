@@ -2,14 +2,12 @@ import React, { useCallback, useState } from 'react'
 import Login from "./Login.js";
 import Signup from "./Signup.js"
 import { useLocationContext } from '../locationContext.js';
-import { DataDao } from '../../models/ModelDAO.js';
 
 const WelcomePage = () => {
 
   console.log("in welcome ")
   const { setPageAndParams, setLoggedIn } = useLocationContext();
   const [showLogin, setShowLogin] = useState(true);
-  DataDao.getInstance().getCSRFToken();
   const handleButtonClick = useCallback((e) => {
     e.preventDefault();
     setShowLogin(!showLogin);

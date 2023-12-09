@@ -54,12 +54,29 @@
 
 /* Styling for the comment form */
 .comment-form {
+  display: flex;
   padding-left: 20px;
   font-size: 0.75em;
   border-top: 1px dotted #ccc;
-  max-height: 100px;
-  overflow: auto;
+  width: fit-content;
 }
+
+.comment-form input[type="text"],
+.comment-form button {
+  font-size: 0.75em; /* 75% of the parent font size */
+  margin-right: 10px; /* Adjust margin between elements */
+  padding: 5px; /* Adjust input padding */
+}
+
+.comment-form input[type="text"] {
+  width: 75%;
+}
+
+.comment-form button {
+  flex: 1; /* Allow input to take remaining space */
+  margin-right: 10px; /* Adjust margin between elements */
+}
+
 
 .paginationControls {
 
