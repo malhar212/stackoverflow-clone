@@ -90,6 +90,7 @@ Add design docs in *images/*
 
 Bugs:
     - When new question is created with no tags, all tags are added to it
+    - First population of ProfilePage gets error in front-end console but still functions
 
 ## Instructions to setup and run project
 
