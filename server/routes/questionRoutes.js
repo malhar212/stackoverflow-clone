@@ -8,9 +8,15 @@ router.get('/newest', questionController.sortQuestionsByNewest);
 router.get('/activity', questionController.sortQuestionsByActivity);
 router.get('/unanswered', questionController.getUnansweredQuestions);
 router.get('/search/:query?', questionController.search);
-router.get('/fetchUserQuestions', questionController.fetchUserQuestions); // Corrected route path
-router.get('/:id/incrementViewCount', questionController.incrementViewCount);
+router.get('/fetchUserQuestions', questionController.fetchUserQuestions);
+
+
 router.get('/:id', questionController.getQuestionById);
+// updating question
+router.put('/:id/update', questionController.updateQuestionById);
+router.get('/:id/incrementViewCount', questionController.incrementViewCount);
+
+
 router.post('/add', isLoggedIn, questionController.addNewQuestion);
 
 module.exports = router;

@@ -13,11 +13,12 @@ const EditQuestionPage = () => {
   useEffect(() => {
     const fetchQuestionData = async () => {
       const questionId = params; 
-      const existingQuestionData = await dao.filterAnswersBasedOnAnsIds([questionId]);
-
-
+      const existingQuestionDataList = await dao.getQuestionById(questionId);
+      const existingQuestionData = existingQuestionDataList[0];
       console.log(JSON.stringify(existingQuestionData, null, 4))
-      // Update the answer text
+      console.log("now the text property:")
+      console.log(JSON.stringify(existingQuestionData.text, null, 4))
+      // Update Question Text
       setQuestionText(existingQuestionData.text);
     };
     fetchQuestionData();

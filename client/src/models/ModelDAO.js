@@ -145,6 +145,30 @@ export class DataDao {
     return [];
   }
 
+// called from editQuestionPage
+// await dao.updateQuestionById(params, { text: questionText });
+async updateQuestionById(questionId, { text: questionText }) {
+  try {
+    console.log("in update q by id: " + JSON.stringify(questionId, null, 4));
+    const response = await this.instance.put(`/questions/${questionId}/update`, { text: questionText });
+    console.log("got response? " + response.data)
+    const { success, data } = response.data;
+
+    if (success) {
+      console.log('Question updated successfully:', data);
+      return data;
+    } else {
+      console.error('Failed to update question:', data.message);
+    }
+  } catch (error) {
+    console.error('Error updating question:', error);
+  }
+  return null;
+}
+
+
+
+
   // Add new Question
   async addNewQuestion(question) {
     try {

@@ -218,10 +218,12 @@ const validateAnswer = (formData) => {
   return { isValid, error };
 }; 
 
-exports.editAnswerById = async (req, res) => {
+exports.updateAnswerById = async (req, res) => {
   const { ansId } = req.params;
   const { text } = req.body;
   try {
+    console.log("In the try!")
+    console.log("Ansid! " + ansId)
     const updatedAnswer = await Answer.findByIdAndUpdate(ansId, { text }, { new: true });
     if (!updatedAnswer) {
       return res.status(404).json({ success: false, message: 'Answer not found.' });
