@@ -216,3 +216,21 @@ const validateAnswer = (formData) => {
   }
   return { isValid, error };
 }; 
+
+exports.editAnswerById = async (req, res) => {
+  const { ansId } = req.params;
+  const { text } = req.body;
+
+  try {
+    const updatedAnswer = await Answer.findByIdAndUpdate(ansId, { text }, { new: true });
+
+    if (!updatedAnswer) {
+      return res.status(404).json({ success: false, message: 'Answer not found.' });
+    }
+
+    res.status(200).json({ success: true, data: updatedAnswer });
+  } catch (error) {
+    console.error('Error updating answer:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};

@@ -5,7 +5,7 @@ import { DataDao } from '../../models/ModelDAO';
 
 const EditAnswerPage = () => {
   const dao = DataDao.getInstance();
-  const { params, setPage } = useLocationContext();
+  const { params, setPageAndParams } = useLocationContext();
   const [answerText, setAnswerText] = useState('');
 
   console.log("in edit answer page with params: " + params)
@@ -24,18 +24,18 @@ const EditAnswerPage = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    // WRITE THIS
+    // params is the answerID, the text from the form is answerText
     await dao.updateAnswerById(params, { text: answerText });
 
     // after submitting update to answer, redirects to 
-    setPage('profile');
+    setPageAndParams('profile');
   };
 
   const handleDelete = async () => {
     // WRITE THIS
     await dao.deleteAnswerById(params);
     // after deleting answer, redirects to
-    setPage('profile');
+    setPageAndParams('profile');
   };
 
   return (
