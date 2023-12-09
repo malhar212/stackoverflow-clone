@@ -4,6 +4,7 @@ import MainContent from '../mainContent.js';
 import './stylesheets/profilePage.css'
 import '../questions/questionList.js'
 import { DataDao } from '../../models/ModelDAO';
+import TagsList from '../tags/tagList.js';
 
 // Questions posted by the user: 
 // Displays a set of question titles 
@@ -147,9 +148,9 @@ function handleQuestionClick(questionId) {
         </ul>
     )}
 
-    {dataType === "profileTags" && selectedData && (
-      <h1> tags will go here ............. </h1>
-    )}
+      {dataType === "profileTags" && selectedData && (
+          <TagsList selectedData={selectedData} />
+      )}
       </div>
     </MainContent>
   );

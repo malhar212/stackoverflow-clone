@@ -74,9 +74,10 @@ exports.getTagByName = async (req, res) => {
 
 exports.getTagsByUsername = async (req, res) => {
   const { username } = req.params;
-
+  console.log(username + "____________")
   try {
     const user = await User.findOne({ username });
+    console.log("User object " + JSON.stringify(user, null, 3))
     const tags = await Tag.find({ createdBy: user });
     res.status(200).json({ success: true, data: tags });
   } catch (error) {
