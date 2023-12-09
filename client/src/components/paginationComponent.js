@@ -15,18 +15,18 @@ const PaginationComponent = ({ items, itemsPerPage, renderItem }) => {
         if (items[0].accepted) {
             accepted = true;
             nonAcceptedItems = [...items].slice(1);
-            perPage = perPage - 1; 
+            perPage = perPage - 1;
         }
         const startIndex = (currentPage - 1) * perPage;
         let pageItems = nonAcceptedItems.slice(startIndex, startIndex + perPage);
-        return (items[0].accepted)  ? [items[0], ...pageItems] : pageItems;
+        return (items[0].accepted) ? [items[0], ...pageItems] : pageItems;
     };
 
 
     const currentItems = getPaginatedItems();
 
     console.log(currentItems);
-    
+
     const handlePrevClick = () => {
         setCurrentPage((prevPage) => prevPage - 1);
     };
@@ -47,13 +47,15 @@ const PaginationComponent = ({ items, itemsPerPage, renderItem }) => {
             ))}
 
             {/* Pagination controls */}
-            <button onClick={handlePrevClick} disabled={currentPage === 1}>
-                Prev
-            </button>
-            <span>Page {currentPage}</span>
-            <button onClick={handleNextClick} disabled={totalPages === 1}>
-                Next
-            </button>
+            <div className='paginationControls'>
+                <button onClick={handlePrevClick} disabled={currentPage === 1}>
+                    Prev
+                </button>
+                <span>Page {currentPage}</span>
+                <button onClick={handleNextClick} disabled={totalPages === 1}>
+                    Next
+                </button>
+            </div>
         </div>
     );
 };

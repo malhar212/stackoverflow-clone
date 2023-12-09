@@ -33,42 +33,8 @@
   text-align: right;
 }
 
-.answer svg {
+.svg-icon.iconCheckmarkLg {
   fill: green !important;
-}
-
-/* Styling for the comment list */
-.comment-list {
-  font-size: 0.75em;
-  border-top: 1px dotted #ccc;
-  max-height: 100px;
-  overflow: auto;
-}
-
-/* Styling for individual comment */
-.comment {
-  border-bottom: dotted;
-  flex-flow: column wrap;
-}
-
-.commentText {
-  text-align: left;
-  margin: 10px;
-  overflow-wrap: normal;
-  white-space: pre-line;
-}
-
-.commentAuthor {
-  font-size: 0.75em;
-  text-align: right;
-}
-
-/* Styling for the comment form */
-.comment-form {
-  font-size: 0.75em;
-  border-top: 1px dotted #ccc;
-  max-height: 100px;
-  overflow: auto;
 }
 
 /* Question stylings */
