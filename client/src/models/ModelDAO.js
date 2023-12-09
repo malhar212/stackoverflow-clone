@@ -229,6 +229,22 @@ async updateAnswerById(ansId, { text: answerText }) {
     return null;
   }
 
+  async deleteAnswerById(ansId) {
+    try {
+      const response = await this.instance.delete(`/answers/${ansId}`);
+      const { success, data } = response.data;
+      if (success) {
+        console.log('Answer deleted successfully:', data);
+        return data;
+      } else {
+        console.error('Failed to delete answer:', data.message);
+      }
+    } catch (error) {
+      console.error('Error deleting answer:', error);
+    }
+    return null;
+  }
+
   // Add new Answer
   async addAnswer(answer, qid) {
     try {

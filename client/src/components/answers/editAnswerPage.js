@@ -32,7 +32,7 @@ const EditAnswerPage = () => {
   };
 
   const handleDelete = async () => {
-    // WRITE THIS
+    // params is the answerID
     await dao.deleteAnswerById(params);
     // after deleting answer, redirects to
     setPageAndParams('profile');
