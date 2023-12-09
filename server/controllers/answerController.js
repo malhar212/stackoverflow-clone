@@ -106,6 +106,7 @@ exports.filterAnswersBasedOnQuestionId = async (req, res) => {
 
 
 exports.fetchUserAnswers = async (req, res) => {
+  console.log("+++++IN FETCH USER ANSWERSSSSSSS+++++++")
   try {
     console.log("++====++==++==++==", req.session.user)
     const username  = req.session.user.username
@@ -217,11 +218,13 @@ const validateAnswer = (formData) => {
   return { isValid, error };
 }; 
 
-exports.editAnswerById = async (req, res) => {
+
+exports.updateAnswerById = async (req, res) => {
   const { ansId } = req.params;
   const { text } = req.body;
+  
   try {
-    const updatedAnswer = await Answer.findByIdAndUpdate(ansId, { text }, { new: true });
+    const updatedAnswer = await Answer.findByIdAndUpdate(ansId, { $set: { text: text } }, { new: true });
     if (!updatedAnswer) {
       return res.status(404).json({ success: false, message: 'Answer not found.' });
     }
@@ -231,7 +234,6 @@ exports.editAnswerById = async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
-
 exports.deleteAnswerById = async (req, res) => {
   const { ansId } = req.params;
   try {

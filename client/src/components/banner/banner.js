@@ -6,7 +6,7 @@ import { useLocationContext } from '../locationContext';
 
 
 function Banner() {
-  const { setPageAndParams, user, isLoggedIn } = useLocationContext();
+  const { setPageAndParams, user, loggedIn} = useLocationContext();
 
   const handleClick = (newpage) => (event) => {
     if(user) {
@@ -15,7 +15,7 @@ function Banner() {
     else {
       console.log("No current user!")
     }
-    console.log("Login state is: " + isLoggedIn);
+    console.log("Login state is: " + loggedIn);
     event.preventDefault();
     setPageAndParams(newpage, {});
   };

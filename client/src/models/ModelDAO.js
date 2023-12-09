@@ -89,6 +89,22 @@ export class DataDao {
     }
   }
 
+  async fetchUserQuestions() {
+    try {
+      console.log("In fetchUserQuestions 1")
+      const response = await this.instance.get(`questions/fetchUserQuestions`);
+      console.log("In fetchUserQuestions 2")
+      const { success, data } = response.data;
+      if (success) {
+        console.log("Response is... " + JSON.stringify(response.data, null, 4))
+        return data;
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+    return [];
+  }
+
   // Filter unanswered questions
   async getUnansweredQuestions() {
         try {
@@ -129,6 +145,30 @@ export class DataDao {
     return [];
   }
 
+// called from editQuestionPage
+// await dao.updateQuestionById(params, { text: questionText });
+async updateQuestionById(questionId, { text: questionText }) {
+  try {
+    console.log("in update q by id: " + JSON.stringify(questionId, null, 4));
+    const response = await this.instance.put(`/questions/${questionId}/update`, { text: questionText });
+    console.log("got response? " + response.data)
+    const { success, data } = response.data;
+
+    if (success) {
+      console.log('Question updated successfully:', data);
+      return data;
+    } else {
+      console.error('Failed to update question:', data.message);
+    }
+  } catch (error) {
+    console.error('Error updating question:', error);
+  }
+  return null;
+}
+
+
+
+
   // Add new Question
   async addNewQuestion(question) {
     try {
@@ -158,6 +198,24 @@ export class DataDao {
     }
     return [];
   }
+
+
+  async deleteQuestionById(questionId) {
+    try {
+      const response = await this.instance.delete(`/questions/${questionId}`);
+      const { success, data } = response.data;
+      if (success) {
+        console.log('Question deleted successfully:', data);
+        return data;
+      } else {
+        console.error('Failed to delete question:', data.message);
+      }
+    } catch (error) {
+      console.error('Error deleting question:', error);
+    }
+    return null;
+  }
+
 
   // Get answers for the question
   async filterAnswersBasedOnAnsIds(ansIdsList) {
@@ -193,7 +251,7 @@ export class DataDao {
 }
 
   // Get answers for the question
-  async fetchAnswersBasedOnUser() {
+  async fetchUserAnswers() {
     try {
       console.log("IN FILTERANSWERSBASEDONUSER ")
       const response = await this.instance.get(`answers/fetchUserAnswers`);

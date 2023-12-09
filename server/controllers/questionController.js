@@ -46,6 +46,38 @@ exports.getAllQuestions = async (req, res) => {
     }
 };
 
+exports.fetchUserQuestions = async (req, res) => {
+    console.log("+++++IN FETCH USER QUESITON SBEFORE TRYYYY++++++++")
+    try {
+      console.log("++====FETCH USER QUESTIONS", req.session.user);
+      const username = req.session.user?.username; // Use optional chaining for safer access
+  
+      if (!username) {
+        return res.status(404).json({ success: false, error: "Username is undefined" });
+      }
+  
+      try {
+        // get the user object based on username
+        const user = await User.findOne({ username });
+  
+        if (!user) {
+          return res.status(404).json({ success: false, error: "User not found" });
+        }
+  
+        const questions = await Question.find({ 'asked_by': user._id }).sort({ ask_date_time: -1 });
+        console.log("222222222++====+FETCH USER QUESTIONS=");
+        console.log(questions);
+  
+        return res.status(200).json({ success: true, data: questions });
+      } catch (error) {
+        console.error('Error fetching answers:', error);
+        return res.status(500).json({ success: false, error: 'Internal Server Error' });
+      }
+    } catch (err) {
+      return res.status(500).json({ success: false, error: err.message });
+    }
+  };
+
 exports.sortQuestionsByNewest = async (req, res) => {
     try {
         const questions = await Question.aggregate([
@@ -449,6 +481,40 @@ exports.addNewQuestion = async (req, res) => {
         res.status(500).json({ success: false, error: err.message });
     }
 };
+
+exports.updateQuestionById = async (req, res) => {
+    console.log("+++UPDATE QUESTION BY ID!!!!!!!!!!!!!!!!!!!")
+    const { id } = req.params;
+    const { text } = req.body;
+    try {
+      const updatedQuestion = await Question.findByIdAndUpdate(id, { $set: { text: text } }, { new: true });
+      if (!updatedQuestion) {
+        return res.status(404).json({ success: false, message: 'Question not found.' });
+      }
+      res.status(200).json({ success: true, data: updatedQuestion });
+    } catch (error) {
+      console.error('Error updating question:', error);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+  };
+
+  exports.deleteQuestionById = async (req, res) => {
+    const { id } = req.params;
+    try {
+      const deletedQuestion = await Question.findByIdAndDelete(id);
+      if (!deletedQuestion) {
+        return res.status(404).json({ success: false, message: 'Question not found.' });
+      }
+      res.status(200).json({ success: true, data: deletedQuestion });
+    } catch (error) {
+      console.error('Error deleting question:', error);
+      res.status(500).json({ success: false, message: 'Internal Server Error' });
+    }
+  }
+
+
+
+
 
 // Removes duplicates from input tags list
 const removeDuplicatesIgnoreCase = (arr) => {

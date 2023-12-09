@@ -26,7 +26,7 @@ Add design docs in *images/*
 1. Search:
     - ~~Search results can be ordered according to sort buttons~~
 1. New Question:
-    - ~~New tags can only be added by users with reputation of 50 or more.~~ NOTE: get clarificaiton if shoudl addnew question w/o the new tags
+    - ~~New tags can only be added by users with reputation of 50 or more piazza.com/class/lm9ji6ba2ct7ew/post/218~~
 1. Answers: 
     - ~~Show set of tags of the question~~
     - ~~No. of votes of the question~~
@@ -65,15 +65,15 @@ Add design docs in *images/*
 1. User Profile Page:
     - ~~User Information: No. days since user joined, reputation points~~
     - Menu: 
-        - Link to view all questions of user
+        - ~~Link to view all questions of user~~
         - Link to view all tags of user
         - ~~Link to view all answers of user~~
     - Sub views, show/hide based on link clicked:
         - Questions posted by the user:
-            - Display question titles
+            - ~~Display question titles~~
             - Display 5 at a time, prev and next button like homepage
-            - Clicking on question title takes to edit form pre-filled, user can repost or delete.
-            - original date does not change in reposting
+            - ~~Clicking on question title takes to edit form pre-filled, user can repost or delete.~~
+            - ~~original date does not change in reposting~~
             - reposting updated lastActivity date
             - Deleting question deletes answers and comments and tag if not used in other questions
         - Tags created by the user:
@@ -90,6 +90,7 @@ Add design docs in *images/*
 
 Bugs:
     - When new question is created with no tags, all tags are added to it
+    - First population of ProfilePage gets error in front-end console but still functions
 
 ## Instructions to setup and run project
 

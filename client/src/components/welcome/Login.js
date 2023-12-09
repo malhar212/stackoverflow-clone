@@ -5,7 +5,7 @@ import MainContent from '../mainContent.js';
 import { DataDao } from '../../models/ModelDAO.js';
 
 const Login = ({ handleButtonClick }) => {
-  const { setPageAndParams, setLoggedIn, setUser } = useLocationContext();
+  const { setPageAndParams, setLoggedIn, setUser, user, loggedIn } = useLocationContext();
 
   console.log("in login")
 
@@ -51,6 +51,8 @@ const Login = ({ handleButtonClick }) => {
       handleSuccess("Success!")
       setLoggedIn(true);
       setUser(userData.data); // saving state of who is logged in
+      console.log("In login: " + loggedIn)
+      console.log("User is: " + JSON.stringify(user, null, 4))
       setTimeout(() => {
         { setPageAndParams('questions', '') }
       }, 1000);
