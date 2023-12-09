@@ -38,6 +38,8 @@ const ProfilePage = () => {
         case "profileAnswers": {
           tempData = await dao.fetchAnswersBasedOnUser();
           console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
+          tempData.sort((a, b) => new Date(b.ans_date_time) - new Date(a.ans_date_time));
+          console.log("SORTED Temp data is: " + JSON.stringify(tempData, null, 4))
           setSelectedAnswers(tempData)
           console.log(selectedAnswers)
           setSelectedData(tempData)
@@ -81,17 +83,7 @@ const ProfilePage = () => {
             <button id='profileTagsButton' onClick={()=>setDataType('profileTags')}>My Tags</button>
         </div>
       </div>
-
-      
       <div className = "profileContent">
-                {/* <QuestionList /> */}
-                {/* should conditinoally render based on page params */}
-                {/* <AnswersList qid={null} selectedAnswers={selectedAnswers} setAnswers={setSelectedAnswers}/> */}
-                {/* {console.log("IN PROFILE PAGE: " + JSON.stringify(selectedData, null, 4))} */}
-                {/* {console.log(user.username)} */}
-                {/* {console.log(dataType)} */}
-
-
                 {dataType === 'profileAnswers' && selectedData && (
                   <ul>
                     {selectedData.map((answer) => (
