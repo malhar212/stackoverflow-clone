@@ -4,7 +4,7 @@ import { QuestionPageContext } from './questionsPage';
 // Sort buttons for Questions Page
 function SortButtonsGroup() {
   const { sortState, setSortState } = useContext(QuestionPageContext);
-  console.log(sortState)
+  // console.log(sortState)
   return (
     <div className='btn-group'>
       <button id='newestButton' className={sortState === 'newest' || sortState === undefined ? 'active' : ''} onClick={()=>setSortState('newest')}>Newest</button>

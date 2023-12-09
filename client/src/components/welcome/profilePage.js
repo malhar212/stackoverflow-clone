@@ -4,7 +4,7 @@ import MainContent from '../mainContent.js';
 import './stylesheets/profilePage.css'
 import '../questions/questionList.js'
 // import QuestionList from '../questions/questionList.js';
-import AnswersList from '../answers/answersList.js';
+// import AnswersList from '../answers/answersList.js';
 import { DataDao } from '../../models/ModelDAO';
 
 const ProfilePage = () => {
@@ -20,6 +20,7 @@ const ProfilePage = () => {
   // for upper banner w/ welcome and user stats
   const username = user.username;
   const reputation = user.reputation;
+
   // const createdAt = user.createdAt;
   const daysAgo = Math.floor((new Date() - new Date(user.createdAt)) / (1000 * 60 * 60 * 24));
 
@@ -34,9 +35,11 @@ const ProfilePage = () => {
         }
         case "profileAnswers": {
           tempData = await dao.fetchAnswersBasedOnUser();
+          console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
           setSelectedAnswers(tempData)
           console.log(selectedAnswers)
-
+          setSelectedData(tempData)
+          console.log(selectedData)
           break;
         }
         case "profileTags": {
@@ -45,8 +48,9 @@ const ProfilePage = () => {
         }
         default:
           // Default to fetching answers if the dataType doesn't match any case
-          tempData = await dao.fetchAnswersBasedOnUser();
-          console.log(tempData);
+          // tempData = await dao.fetchAnswersBasedOnUser();
+          // console.log(tempData);
+          break;
       }
       setSelectedData(tempData);
     };
@@ -66,15 +70,32 @@ const ProfilePage = () => {
             <button id='profileTagsButton' onClick={()=>setDataType('profileTags')}>My Tags</button>
         </div>
       </div>
+
+      
       <div className = "profileContent">
                 {/* <QuestionList /> */}
                 {/* should conditinoally render based on page params */}
-                <AnswersList qid={null} selectedAnswers={selectedAnswers} setAnswers={setSelectedAnswers}/>
-                {console.log("IN PROFILE PAGE: " + JSON.stringify(selectedData, null, 4))}
+                {/* <AnswersList qid={null} selectedAnswers={selectedAnswers} setAnswers={setSelectedAnswers}/> */}
+                {/* {console.log("IN PROFILE PAGE: " + JSON.stringify(selectedData, null, 4))} */}
                 {/* {console.log(user.username)} */}
-                {console.log(dataType)}
-        
+                {/* {console.log(dataType)} */}
+
+
+                {dataType === 'profileAnswers' && selectedData && (
+                  <ul>
+                    {selectedData.map((answer) => (
+                       <li key={answer.id}>
+                        <a href={`/answer/${answer.id}`} title={answer.text}>
+                        {answer.text && answer.text.slice(0, 50)}{answer.text && answer.text.length > 50 ? '...' : ''}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
       </div>
+
+
     </MainContent>
   );
 

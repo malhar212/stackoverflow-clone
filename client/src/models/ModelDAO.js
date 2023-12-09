@@ -200,6 +200,7 @@ export class DataDao {
       console.log("GOT RESPONSE IN FILTERANSWERSBASEDONUSER")
       const { success, data } = response.data;
       if (success)
+        console.log("Response is... " + JSON.stringify(response.data, null, 4))
         return data;
     } catch (error) {
       console.error('Error fetching data:', error);
