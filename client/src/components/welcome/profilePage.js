@@ -1,7 +1,6 @@
-import React , { useEffect, useState, useContext } from 'react';
+import React , { useEffect, useState } from 'react';
 import { useLocationContext } from '../locationContext.js';
 import MainContent from '../mainContent.js';
-import { SearchTextContext } from '../searchTextContext';
 import './stylesheets/profilePage.css'
 import '../questions/questionList.js'
 // import QuestionList from '../questions/questionList.js';
@@ -11,12 +10,11 @@ import { DataDao } from '../../models/ModelDAO';
 const ProfilePage = () => {
   const dao = DataDao.getInstance();
   const { user, setPageAndParams } = useLocationContext();
-  const { setSearchQuery } = useContext(SearchTextContext);
 
   // the data loaded into the page
   const [selectedData, setSelectedData] = useState();
   // the selection of which data (questions, answeers or tags) should be on the page
-  const [dataType, setDataType] = useState();
+  const [dataType, setDataType] = useState('profileQuestions');
 
   // for upper banner w/ welcome and user stats
   const username = user.username;
@@ -66,7 +64,7 @@ const ProfilePage = () => {
   function handleAnswerClick(answerId) {
     return function (event) {
         event.preventDefault();
-        setSearchQuery(" ".repeat(Math.floor(Math.random() * 10)));
+        // setSearchQuery(" ".repeat(Math.floor(Math.random() * 10)));
         console.log("in profile page: answer clicked has id: " + answerId)
         setPageAndParams('editAnswer', answerId);
     }
@@ -85,30 +83,29 @@ const ProfilePage = () => {
         </div>
       </div>
       <div className = "profileContent">
-                {dataType === 'profileAnswers' && selectedData && (
-                  <ul>
-                    {selectedData.map((answer) => (
-                      <li key={answer.id}>
-                      <a href='' title={answer.text} onClick={handleAnswerClick(answer._id)}>
-                        {answer.text && answer.text.slice(0, 50)} {answer.text && answer.text.length > 50 ? '...' : ''}
-                      </a>
-                      </li>
-                    ))}
-                  </ul>
-                )}
+      {dataType === 'profileAnswers' && selectedData && (
+  <ul>
+    {selectedData.map((answer) => (
+      <li key={answer.id}>
+        <a href='' title={answer.text} onClick={handleAnswerClick(answer._id)}>
+          {answer.text && answer.text.slice(0, 50)} {answer.text && answer.text.length > 50 ? '...' : ''}
+        </a>
+      </li>
+    ))}
+  </ul>
+)}
 
-              {dataType === 'profileQuestions' && selectedData && (
-                  <ul>
-                    <h1> test test test test test test test test </h1>
-                    {selectedData.map((question) => (
-                      <li key={question.id}>
-                      <a href='' title={question.title} onClick={handleAnswerClick(question._id)}>
-                        {question.title && question.title.slice(0, 50)} {question.title && question.title.length > 50 ? '...' : ''}
-                      </a>
-                      </li>
-                    ))}
-                  </ul>
-                )}  
+{dataType === 'profileQuestions' && selectedData && (
+  <ul>
+    {selectedData.map((question) => (
+      <li key={question.id}>
+        <a href='' title={question.title} onClick={handleAnswerClick(question._id)}>
+          {question.title && question.title.slice(0, 50)} {question.title && question.title.length > 50 ? '...' : ''}
+        </a>
+      </li>
+    ))}
+  </ul>
+)}
       </div>
     </MainContent>
   );
