@@ -21,8 +21,8 @@ function Question({question}) {
     function handleClick(qid) {
 
         return async function(event) {
-            await dao.incrementViewCount(qid)
             event.preventDefault();
+            await dao.incrementViewCount(qid)
             setPageAndParams("answers", {qid});
         }
     }
@@ -36,7 +36,7 @@ function Question({question}) {
     }, []);
     return (
         <div className="question">
-            <a href='#content' onClick={handleClick(question.qid)} className="postTitle">{question.title}</a>
+            <a href='' onClick={handleClick(question.qid)} className="postTitle">{question.title}</a>
             <div className="postStats">
                 {question.answerCount} answers | {question.views} views | {question.votes} votes
             </div>

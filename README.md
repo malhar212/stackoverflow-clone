@@ -4,6 +4,7 @@ Login with your Northeastern credentials and read the Project Specifications [he
 Add design docs in *images/*
 
 ## To-Do
+1. Fetch reputation after loading add question, answer or comments page
 1. Welcome page options to register or login or continue as guest user
 1. Create Account
     - ~~Create Account Form Fields: username, email, and a secret password, repeat password~~

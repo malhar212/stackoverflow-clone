@@ -4,6 +4,8 @@ export class DataDao {
   static #instance;
   instance;
   #csrfToken;
+  setLoggedInFunc;
+  setPageAndParamsFunc;
   constructor() {
     if (!DataDao.#instance) {
       this.instance = axios.create({
@@ -18,7 +20,34 @@ export class DataDao {
       }, function (error) {
         return Promise.reject(error);
       });
-      Object.seal(DataDao.#instance);
+      // Add a response interceptor
+      this.instance.interceptors.response.use(
+        response => {
+          // If the request succeeds, just return the response
+          return response;
+        },
+        async error => {
+          const { config, response: { status } } = error;
+
+          // If the response status is 401 (Unauthorized)
+          if (status === 401) {
+            this.setLoggedInFunc(false);
+            sessionStorage.clear();
+            this.setPageAndParamsFunc('welcome', {})
+          }
+
+          // If the response status is 403 (Forbidden) and the request was not retried
+          if (status === 403 && !config.__isRetryRequest) {
+            config.__isRetryRequest = true;
+              await DataDao.getInstance().getCSRFToken();
+              config.headers['X-CSRF-TOKEN'] = DataDao.getInstance().#csrfToken;
+              const res = await this.instance(config);
+              return res;
+          }
+          throw error;
+        }
+      );
+      //Object.seal(DataDao.#instance);
     }
     return DataDao.#instance;
   }
@@ -27,21 +56,18 @@ export class DataDao {
     return new DataDao();
   }
 
-  #handleResponse(response) {
-    if (response.status >= 200 && response.status < 300) {
-      return response.data; // Assuming response is in JSON format
-    } else {
-      throw new Error(`Request failed with status ${response.status}`);
-    }
+   // Method to set context/state handling functions
+   setContextFunctions(setLoggedIn, setPageAndParams) {
+    this.setLoggedInFunc = setLoggedIn;
+    this.setPageAndParamsFunc = setPageAndParams;
   }
 
   async getCSRFToken() {
     try {
       const response = await this.instance.get('csrf-token');
       // const { success, data } = response.data;
-      if (response.data.csrfToken) {
+      if (response.data && response.data.csrfToken) {
         this.#csrfToken = response.data.csrfToken;
-        // axios.defaults.headers.common['X-CSRF-Token'] = response.data.csrfToken;
       }
     } catch (error) {
       console.log("in csrf token failure")
@@ -54,8 +80,8 @@ export class DataDao {
 
   // Sort questions by newest and re-display
   async sortQuestionsByNewest() {
-        try {
-      const response = await this.instance.get('questions/newest', );
+    try {
+      const response = await this.instance.get('questions/newest',);
       const { success, data } = response.data;
       if (success)
         return data;
@@ -77,7 +103,7 @@ export class DataDao {
 
   // Sort the questions based on the most recent answer date
   async sortQuestionsByActivity() {
-        try {
+    try {
       const response = await this.instance.get('questions/activity');
       const { success, data } = response.data;
       if (success)
@@ -107,7 +133,7 @@ export class DataDao {
 
   // Filter unanswered questions
   async getUnansweredQuestions() {
-        try {
+    try {
       const response = await this.instance.get('questions/unanswered');
       const { success, data } = response.data;
       if (success)
@@ -134,7 +160,7 @@ export class DataDao {
 
   // Get a specific question by its ID
   async getQuestionById(qid) {
-        try {
+    try {
       const response = await this.instance.get(`questions/${qid}`);
       const { success, data } = response.data;
       if (success)
@@ -219,7 +245,7 @@ async updateQuestionById(questionId, { text: questionText }) {
 
   // Get answers for the question
   async filterAnswersBasedOnAnsIds(ansIdsList) {
-        try {
+    try {
       if (ansIdsList.length === 0) {
         return []
       }
@@ -248,7 +274,7 @@ async updateQuestionById(questionId, { text: questionText }) {
       console.error('Error fetching data:', error);
     }
     return [];
-}
+  }
 
   // Get answers for the question
   async fetchUserAnswers() {
@@ -264,7 +290,7 @@ async updateQuestionById(questionId, { text: questionText }) {
       console.error('Error fetching data:', error);
     }
     return [];
-}
+  }
 
 // called from editAnswersPage
 // await dao.updateAnswerById(params, { text: answerText });
@@ -314,7 +340,7 @@ async updateAnswerById(ansId, { text: answerText }) {
       console.log("IN ADD ANSWER DAO 3 ")
       if (success)
         console.log("IN ADD ANSWER DAO SUCCESS ");
-        return data;
+      return data;
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -326,20 +352,20 @@ async updateAnswerById(ansId, { text: answerText }) {
 
   // Get a tag by ID
   async getTagById(tagId) {
-        try {
+    try {
       const response = await this.instance.get(`tags/${tagId}`);
       const { success, data } = response.data;
       if (success)
         return data;
     } catch (error) {
-      throw new Error('Error fetching data:', error);
+      console.error('Error fetching data:', error);
     }
     return [];
   }
 
   // Get a tag by ID
   async getTagsById(tagIds) {
-        try {
+    try {
       const response = await this.instance.get(`tags`, {
         params: {
           ids: tagIds.join(',')
@@ -349,13 +375,13 @@ async updateAnswerById(ansId, { text: answerText }) {
       if (success)
         return data;
     } catch (error) {
-      throw new Error('Error fetching data:', error);
+      console.error('Error fetching data:', error);
     }
     return [];
   }
 
   async getTagsAndQuestionCount() {
-        try {
+    try {
       const response = await this.instance.get(`tags/questionCount`);
       const { success, data } = response.data;
       if (success)
@@ -376,7 +402,20 @@ async updateAnswerById(ansId, { text: answerText }) {
       if (success)
         return data;
     } catch (error) {
-      throw new Error('Error fetching data:', error);
+      console.error('Error fetching data:', error);
+    }
+    return [];
+  }
+
+  // Add new Answer
+  async addComment(comment) {
+    try {
+      const response = await this.instance.post('comments/add', { comment });
+      const { success, data } = response.data;
+      if (success)
+        return data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
     return [];
   }
@@ -385,7 +424,7 @@ async updateAnswerById(ansId, { text: answerText }) {
 
   // Get all questions
   async getAllQuestions() {
-        try {
+    try {
       const response = await this.instance.get('questions');
       const { success, data } = response.data;
       if (success)
@@ -398,7 +437,7 @@ async updateAnswerById(ansId, { text: answerText }) {
 
   // Get all tags
   async getAllTags() {
-        try {
+    try {
       const response = await this.instance.get('tags');
       const { success, data } = response.data;
       if (success)
@@ -411,7 +450,7 @@ async updateAnswerById(ansId, { text: answerText }) {
 
   // Get all answers
   async getAllAnswers() {
-        try {
+    try {
       const response = await this.instance.get('answers');
       const { success, data } = response.data;
       if (success)
@@ -422,98 +461,98 @@ async updateAnswerById(ansId, { text: answerText }) {
     return [];
   }
 
-// Login method
-async login(credentials) {
-  try {
-    const response = await this.instance.post('auth/login', credentials);
-    console.log(JSON.stringify(response.data, null, 4))
-    console.log("HERERERERER", response.data);
-    const { success, data } = response.data;
-    if (success) {
-      console.log(success, data);
-      return { success, data }; // Return as an object
-    }
-  } catch (error) {
-    console.error('Error logging in:', error);
-  }
-  console.log("Login failed :(");
-  return null; // lets login.jsx know that it was not successful
-}
-
-
-// Logout method
-async logout() {
-  try {
-    const response = await this.instance.post('auth/logout', null);
-    const { success, data } = response.data;
-    if (success) {
-      return { success, data }; // Return as an object
-    }
-  } catch (error) {
-    console.error('Error logging in:', error);
-  }
-  console.log("Login failed :(");
-  return null; // lets login.jsx know that it was not successful
-}
-
-
-async signup(credentials) {
-  try {
-    // const data = await this.getCSRFToken();
-    // const csrfToken = data.csrfToken;
-    // console.log("in signup: ", csrfToken)
-      // if(csrfToken) {
-        const response = await this.instance.post('auth/signup', credentials);
-        if (response.data && response.data.success && response.data.success ==  true && response.data.data.csrfToken) {
-            return true;
-        } else {
-            console.log("Signup failed:", response.data);
-            return false;
-        }
-  
-  } catch (error) {
-    console.error('Error signing up:', error);
-    return false;
-  }
-}
-
-
-    // get userName based on uid of user
-    async getUsernameByUid(userId) {
-      try {
-        const response = await this.instance.get('getUsername', userId)
-        const { success, data } = response.data
-        if (success) {
-          return data;
-        }
-      } catch (error) {
-        console.error('Error getting username', error);
+  // Login method
+  async login(credentials) {
+    try {
+      const response = await this.instance.post('auth/login', credentials);
+      console.log(JSON.stringify(response.data, null, 4))
+      console.log("HERERERERER", response.data);
+      const { success, data } = response.data;
+      if (success) {
+        console.log(success, data);
+        return { success, data }; // Return as an object
       }
-      return null; 
+    } catch (error) {
+      console.error('Error logging in:', error);
     }
+    console.log("Login failed :(");
+    return null; // lets login.jsx know that it was not successful
+  }
+
+
+  // Logout method
+  async logout() {
+    try {
+      const response = await this.instance.post('auth/logout', null);
+      const { success, data } = response.data;
+      if (success) {
+        return { success, data }; // Return as an object
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
+    console.log("Login failed :(");
+    return null; // lets login.jsx know that it was not successful
+  }
+
+
+  async signup(credentials) {
+    try {
+      // const data = await this.getCSRFToken();
+      // const csrfToken = data.csrfToken;
+      // console.log("in signup: ", csrfToken)
+      // if(csrfToken) {
+      const response = await this.instance.post('auth/signup', credentials);
+      if (response.data && response.data.success && response.data.success == true && response.data.data.csrfToken) {
+        return true;
+      } else {
+        console.log("Signup failed:", response.data);
+        return false;
+      }
+
+    } catch (error) {
+      console.error('Error signing up:', error);
+      return false;
+    }
+  }
+
+
+  // get userName based on uid of user
+  async getUsernameByUid(userId) {
+    try {
+      const response = await this.instance.get('getUsername', userId)
+      const { success, data } = response.data
+      if (success) {
+        return data;
+      }
+    } catch (error) {
+      console.error('Error getting username', error);
+    }
+    return null;
+  }
 
   async checkLoginGetUsername(credentials) {
-      try {
-                const response = await this.instance.post('auth/checkLoginGetUsername', credentials);
-          const { success, data } = response.data
-          if (success) {
-            return success, data;
-          }
-        } catch (error) {
-          console.error('Error logging in:', error);
-        }
-        return null; 
+    try {
+      const response = await this.instance.post('auth/checkLoginGetUsername', credentials);
+      const { success, data } = response.data
+      if (success) {
+        return success, data;
       }
-      
-    async test() {
-      try {
-        fetch('http://localhost:8000/auth/csrf-token', {
+    } catch (error) {
+      console.error('Error logging in:', error);
+    }
+    return null;
+  }
+
+  async test() {
+    try {
+      fetch('http://localhost:8000/auth/csrf-token', {
         method: 'GET',
         credentials: 'include',
       })
-      .then(response => response.json())
-      .then(data => console.log('In test - CSRF Token:', data.csrfToken))
-      .catch(error => console.error('Error fetching CSRF token:', error));
+        .then(response => response.json())
+        .then(data => console.log('In test - CSRF Token:', data.csrfToken))
+        .catch(error => console.error('Error fetching CSRF token:', error));
     }
     catch {
       console.log("in test catch");

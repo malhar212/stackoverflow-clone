@@ -41,6 +41,7 @@ app.use(session({
   secret: `${secret}`,
   cookie: {
     httpOnly: true,
+    // secure: true,
     sameSite: true,
   },
   resave: false,
