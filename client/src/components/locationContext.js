@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import WelcomePage from "./welcome/welcomePage.js";
 import { DataDao } from '../models/ModelDAO.js';
 import EditAnswerPage from './answers/editAnswerPage.js';
+import EditQuestionPage from './questions/editQuestionPage.js';
 
 const LocationContext = createContext();
 
@@ -80,6 +81,9 @@ export function LocationContextProvider({ children }) {
         }
         if (page === 'editAnswer') {
             return <EditAnswerPage />
+        }
+        if (page === 'editQuestion') {
+            return <EditQuestionPage />
         }
     }
 
