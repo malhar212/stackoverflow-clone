@@ -72,8 +72,8 @@ Add design docs in *images/*
         - Questions posted by the user:
             - ~~Display question titles~~
             - Display 5 at a time, prev and next button like homepage
-            - Clicking on question title takes to edit form pre-filled, user can repost or delete.
-            - original date does not change in reposting
+            - ~~Clicking on question title takes to edit form pre-filled, user can repost or delete.~~
+            - ~~original date does not change in reposting~~
             - reposting updated lastActivity date
             - Deleting question deletes answers and comments and tag if not used in other questions
         - Tags created by the user:

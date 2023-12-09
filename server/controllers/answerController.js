@@ -218,13 +218,13 @@ const validateAnswer = (formData) => {
   return { isValid, error };
 }; 
 
+
 exports.updateAnswerById = async (req, res) => {
   const { ansId } = req.params;
   const { text } = req.body;
+  
   try {
-    console.log("In the try!")
-    console.log("Ansid! " + ansId)
-    const updatedAnswer = await Answer.findByIdAndUpdate(ansId, { text }, { new: true });
+    const updatedAnswer = await Answer.findByIdAndUpdate(ansId, { $set: { text: text } }, { new: true });
     if (!updatedAnswer) {
       return res.status(404).json({ success: false, message: 'Answer not found.' });
     }
@@ -234,7 +234,6 @@ exports.updateAnswerById = async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
-
 exports.deleteAnswerById = async (req, res) => {
   const { ansId } = req.params;
   try {

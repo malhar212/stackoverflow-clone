@@ -483,21 +483,17 @@ exports.addNewQuestion = async (req, res) => {
 };
 
 exports.updateQuestionById = async (req, res) => {
-    console.log("+++UPDATE QUESITON BY ID!!!!!!!!!!!!!!!!!!!")
-    console.log("question id: " + req.params);
+    console.log("+++UPDATE QUESTION BY ID!!!!!!!!!!!!!!!!!!!")
     const { id } = req.params;
-    console.log("questionId :" + id)
     const { text } = req.body;
-    console.log(text)
     try {
-        console.log("In the try!")
-        const updatedQuestion = await Question.findByIdAndUpdate(id, { text: text }, { new: true });
-        if (!updatedQuestion) {
+      const updatedQuestion = await Question.findByIdAndUpdate(id, { $set: { text: text } }, { new: true });
+      if (!updatedQuestion) {
         return res.status(404).json({ success: false, message: 'Question not found.' });
       }
       res.status(200).json({ success: true, data: updatedQuestion });
     } catch (error) {
-      console.error('Error updating answer:', error);
+      console.error('Error updating question:', error);
       res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
   };
