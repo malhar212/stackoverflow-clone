@@ -199,6 +199,24 @@ async updateQuestionById(questionId, { text: questionText }) {
     return [];
   }
 
+
+  async deleteQuestionById(questionId) {
+    try {
+      const response = await this.instance.delete(`/questions/${questionId}`);
+      const { success, data } = response.data;
+      if (success) {
+        console.log('Question deleted successfully:', data);
+        return data;
+      } else {
+        console.error('Failed to delete question:', data.message);
+      }
+    } catch (error) {
+      console.error('Error deleting question:', error);
+    }
+    return null;
+  }
+
+
   // Get answers for the question
   async filterAnswersBasedOnAnsIds(ansIdsList) {
         try {

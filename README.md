@@ -65,12 +65,12 @@ Add design docs in *images/*
 1. User Profile Page:
     - ~~User Information: No. days since user joined, reputation points~~
     - Menu: 
-        - Link to view all questions of user
+        - ~~Link to view all questions of user~~
         - Link to view all tags of user
         - ~~Link to view all answers of user~~
     - Sub views, show/hide based on link clicked:
         - Questions posted by the user:
-            - Display question titles
+            - ~~Display question titles~~
             - Display 5 at a time, prev and next button like homepage
             - Clicking on question title takes to edit form pre-filled, user can repost or delete.
             - original date does not change in reposting

@@ -19,4 +19,6 @@ router.get('/:id/incrementViewCount', questionController.incrementViewCount);
 
 router.post('/add', isLoggedIn, questionController.addNewQuestion);
 
+router.delete('/:id', questionController.deleteQuestionById);
+
 module.exports = router;
