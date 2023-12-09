@@ -82,7 +82,7 @@ Add design docs in *images/*
             - Editing/Deleting tag is allowed only if it is not in use by other users. It is allowed if it's used by only this user.
         - Answers posted by the user:
             - ~~All answers displayed as links of 50 characters~~
-            - Newest order
+            - ~~Newest order~~
             - ~~licking link shows answer form pre-filled, user can repost or delete~~
             - Deleting answer deletes it's votes and comments
             - Deleting answer has no effect on reputation
