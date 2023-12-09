@@ -20,8 +20,8 @@ function Question({question}) {
 
     function handleClick(qid) {
 
-        return function(event) {
-            dao.incrementViewCount(qid)
+        return async function(event) {
+            await dao.incrementViewCount(qid)
             event.preventDefault();
             setPageAndParams("answers", {qid});
         }

@@ -20,7 +20,7 @@ function addTagPill(tag) {
 function AnswerQuestionBody(props) {
     const [tags, setTags] = useState([]);
     useEffect(() => {
-        const getData = async () => { 
+        const getData = async () => {
             let temp = await DataDao.getInstance().getTagsById(props.question.tagIds);
             setTags(temp);
         }
@@ -32,13 +32,13 @@ function AnswerQuestionBody(props) {
             <div className='questionMetadata'>
                 {metadataFormatter(props.question, OBJECT_TYPES.QUESTION)}
             </div>
-            <VoteComponent initialCount={props.question.votes} parentId={props.question.qid}/><span id="questionViews">{props.question.views} views</span>
+            <VoteComponent initialCount={props.question.votes} parentId={props.question.qid} /><span id="questionViews">{props.question.views} views</span>
             <div className="pillContainer">
                 {tags.map((tag) => addTagPill(tag))}
             </div>
+            <hr></hr>
+            <CommentsComponent associatedType={OBJECT_TYPES.QUESTION} associatedId={props.question.qid} />
         </div>
-        <hr></hr>
-        <CommentsComponent associatedType={OBJECT_TYPES.QUESTION} associatedId={props.question.qid}/>
         </>
     )
 }
