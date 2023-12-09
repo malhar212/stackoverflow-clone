@@ -26,7 +26,7 @@ Add design docs in *images/*
 1. Search:
     - ~~Search results can be ordered according to sort buttons~~
 1. New Question:
-    - ~~New tags can only be added by users with reputation of 50 or more. ~~NOTE: get clarificaiton if shoudl addnew question w/o the new tags
+    - ~~New tags can only be added by users with reputation of 50 or more.~~ NOTE: get clarificaiton if shoudl addnew question w/o the new tags
 1. Answers: 
     - ~~Show set of tags of the question~~
     - ~~No. of votes of the question~~
@@ -67,7 +67,7 @@ Add design docs in *images/*
     - Menu: 
         - Link to view all questions of user
         - Link to view all tags of user
-        - Link to view all answers of user
+        - ~~Link to view all answers of user~~
     - Sub views, show/hide based on link clicked:
         - Questions posted by the user:
             - Display question titles
