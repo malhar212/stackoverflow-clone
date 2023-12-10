@@ -116,19 +116,6 @@ function handleQuestionClick(questionId) {
         </ul>
       )}
 
-      {/* {dataType === 'profileQuestions' && selectedData && (
-        <ul>
-            {selectedData.slice(0, itemsToShow).map((question) => (
-          <li key={question.id}>
-          <a href='' title={question.title} onClick={handleQuestionClick(question._id)}>
-          {question.title && question.title.slice(0, 50)} {question.title && question.title.length > 50 ? '...' : ''}
-          </a>
-          </li>
-          
-      ))}
-        </ul>
-    )} */}
-
 {/* (console.log(JSON.stringify(selectedData, null, 4))) && */}
       {dataType === 'profileQuestions' && selectedData  && (
         <PaginationComponent

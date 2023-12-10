@@ -72,7 +72,7 @@ Add design docs in *images/*
     - Sub views, show/hide based on link clicked:
         - Questions posted by the user:
             - ~~Display question titles~~
-            - Display 5 at a time, prev and next button like homepage
+            - ~~Display 5 at a time, prev and next button like homepage~~
             - ~~Clicking on question title takes to edit form pre-filled, user can repost or delete.~~
             - ~~original date does not change in reposting~~
             - reposting updated lastActivity date

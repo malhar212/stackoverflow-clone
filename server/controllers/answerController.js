@@ -193,6 +193,9 @@ exports.addAnswer = async (req, res) => {
     // console.log("+++++++++ADDANSWER 9 ") 
     await question.save();
     // console.log("+++++++++ADDANSWER 10 ") 
+
+    // updates the answer's Question so the last_activity shows the answer being created
+    await Question.findByIdAndUpdate(answer.qid, { $set: { last_activity : Date.now}}, { new: true });
     res.status(200).json({ success: true, data: savedAnswer });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -228,6 +231,8 @@ exports.updateAnswerById = async (req, res) => {
     if (!updatedAnswer) {
       return res.status(404).json({ success: false, message: 'Answer not found.' });
     }
+    // The updated answer also updates the "last_activity" of the question it's associated with 
+    await Question.findByIdAndUpdate(updatedAnswer.qid, { $set: { last_activity : Date.now}}, { new: true });
     res.status(200).json({ success: true, data: updatedAnswer });
   } catch (error) {
     console.error('Error updating answer:', error);

@@ -9,19 +9,21 @@ const PaginationComponent = ({ items, itemsPerPage, renderItem }) => {
     // const indexOfLastItem = currentPage * itemsPerPage;
     // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-    console.log("in pagination!==================")
 
     const getPaginatedItems = () => {
         let nonAcceptedItems = [...items];
         let perPage = itemsPerPage;
-        if (items[0].accepted) {
+        
+        if (items.length > 0 && items[0].accepted) {
             accepted = true;
             nonAcceptedItems = [...items].slice(1);
             perPage = perPage - 1;
         }
+        
         const startIndex = (currentPage - 1) * perPage;
         let pageItems = nonAcceptedItems.slice(startIndex, startIndex + perPage);
-        return (items[0].accepted) ? [items[0], ...pageItems] : pageItems;
+        
+        return accepted ? [items[0], ...pageItems] : pageItems;
     };
 
 
