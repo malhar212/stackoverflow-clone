@@ -1,9 +1,12 @@
-// Template test file. Change the file to add more tests.
+before(() => {// Clear the database after each test
+    cy.exec('node ../server/destroy.js');
+    console.log("Done destroy")})
 beforeEach(() => {
     // Seed the database before each test
     cy.exec('node ../server/init.js');
     console.log("Done insert");
     cy.visit('http://localhost:3000');
+    cy.writeFile('logs.txt', `| ${Cypress.currentTest.titlePath[0].padEnd(15)} | ${Cypress.currentTest.titlePath[1].padEnd(90)} |\n`, { flag: 'a+' });
     cy.contains('Guest').click();
 })
 afterEach(() => {
@@ -324,13 +327,14 @@ describe('Answer Page', () => {
 
     function verifyAnswersOnPage2() {
         const answers = ['Answer 7', 'Answer 6', 'Answer 5'];
-        cy.get('.answerText').each(($el, index) => {
-            cy.wrap($el).invoke('text').then(($el1)=>{ cy.log($el1); cy.wrap($el1).should('contain', answers[index]) });
+        cy.get('.answer-list .answer .answerText').each(($el, index) => {
+            cy.wrap($el).invoke('text').then(($el1) => { cy.log($el1); cy.wrap($el1).should('contain', answers[index]) });
         });
     }
 
     it('Verify pagination of answers. \nVerify accepted answer is pinned to the top of every page. \nVerify thier metadata', () => {
-        cy.get('.answer-list .paginationControls').contains('button', 'Next').click();
+        cy.get('.answer-list .paginationControls').contains('button', 'Next').last().click();
+        cy.wait(1000);
         verifyAnswersOnPage2();
         const authors = ['samZ', 'newGuy2', 'newGuy'];
         const date = ['Oct 09', 'Oct 08', 'Oct 07'];
@@ -349,9 +353,10 @@ describe('Answer Page', () => {
 
     it('Verify next button on last page of answers rolls over to first page ', () => {
         verifyAnswersOnPage1();
-        cy.get('.answer-list .paginationControls').contains('button', 'Next').click().wait(2000);
+        cy.get('.answer-list .paginationControls').contains('button', 'Next').last().click();
+        cy.wait(1000);
         verifyAnswersOnPage2();
-        cy.get('.answer-list .paginationControls').contains('button', 'Next').click().wait(2000);
+        cy.get('.answer-list .paginationControls', {timeout: 1000}).contains('button', 'Next').last().click();
         verifyAnswersOnPage1();
     });
 

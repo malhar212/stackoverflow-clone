@@ -73,7 +73,7 @@ exports.addComment = async (req, res) => {
       res.status(500).json({ success: false, error: "Comment body not provided" });
       return;
     }
-    if (res.locals.user.reputation < 50) {
+    if (req.user.reputation < 50) {
       res.status(500).json({ success: false, error: "User does not have enough reputation" });
       return;
     }

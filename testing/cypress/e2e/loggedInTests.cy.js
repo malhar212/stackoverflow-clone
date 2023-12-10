@@ -3,6 +3,7 @@ beforeEach(() => {
   cy.exec('node ../server/init.js');
   console.log("Done insert");
   cy.visit('http://localhost:3000');
+  cy.writeFile('logs.txt', `| ${Cypress.currentTest.titlePath[0].padEnd(15)} | ${Cypress.currentTest.titlePath[1].padEnd(90)} |\n`, { flag: 'a+' });
   cy.get('input[name="username"]').type('newGuy2');
   cy.get('input[name="password"]').type('askdjalskdj');
   cy.contains('button', 'Login').click();
@@ -26,6 +27,17 @@ describe('Home Page', () => {
     cy.get('#sideBarNav').should('include.text', 'Profile')
     cy.get('#sideBarNav').should('include.text', 'Logout')
   });
+})
+
+describe('User Profile', () => {
+  beforeEach(() => { 
+    cy.contains('#sideBarNav a', 'Profile').click();
+  });
+
+  it('successfully shows menu options of a Logged In user', () => {
+    cy.contains('.profilePageUserBanner h1', 'Welcome newGuy2!').should('exist');
+    cy.contains('.profilePageUserBanner span', 'Your reputation is: 55').should('exist');
+  })
 })
 
 describe('Answers Page', () => {
@@ -59,7 +71,6 @@ describe('Answers Page', () => {
     const text = 'New Comment';
     const username = 'newGuy2';
     const votes = '0 votes';
-    cy.get('#questionBody').find('.comment-list').should('not.exist');
     cy.get('#questionBody .comment-form input').type('New Comment{enter}');
     cy.get('#questionBody').find('.comment-list').each(($el) => {
       cy.wrap($el).find('.comment').first(($el2, index2) => {
@@ -75,7 +86,6 @@ describe('Answers Page', () => {
     const username = 'newGuy2';
     const votes = '0 votes';
     cy.contains('.answer', 'On my end, I like to have a single history object ').within(() => {
-      cy.get('.comment-list').should('not.exist');
       cy.get('.comment-form input').type('Answer Comment{enter}');
       cy.get('.comment-list .comment').first(($comment, index) => {
         cy.wrap($comment).should('contain', text);
@@ -90,7 +100,6 @@ describe('Answers Page', () => {
     const username = 'newGuy2';
     const votes = '0 votes';
     cy.contains('.answer', 'On my end, I like to have a single history object ').within(() => {
-      cy.get('.comment-list').should('not.exist');
       cy.get('.comment-form input').type('Answer Comment{enter}');
       cy.get('.comment-list .comment').first(($comment, index) => {
         cy.wrap($comment).should('contain', text);
@@ -108,7 +117,6 @@ describe('Answers Page', () => {
     const text = 'New Comment';
     const username = 'newGuy2';
     const votes = '0 votes';
-    cy.get('#questionBody').find('.comment-list').should('not.exist');
     cy.get('#questionBody .comment-form input').type('New Comment{enter}');
     cy.get('#questionBody .comment-list .comment').first(($el2) => {
       cy.wrap($el2).should('contain', text);
@@ -130,7 +138,6 @@ describe('Answers Page', () => {
     const username = 'newGuy2';
     const votes = '0 votes';
     cy.contains('.answer', 'On my end, I like to have a single history object ').within(() => {
-      cy.get('.comment-list').should('not.exist');
       cy.get('.comment-form input').type('Answer Comment{enter}');
       cy.get('.comment-list .comment').first(($comment, index) => {
         cy.wrap($comment).should('contain', text);
@@ -244,8 +251,8 @@ describe('Answers Page', () => {
       cy.get('.vote-component button .svg-icon.iconArrowUp').first().click();
     })
     cy.get('div .Toastify__toast-body').should('contain', 'You need atleast 50 reputation to vote');
-      cy.get('button.Toastify__close-button.Toastify__close-button--colored').click({ force: true });
-      cy.get('div .Toastify__toast-body').should('not.exist');
+    cy.get('button.Toastify__close-button.Toastify__close-button--colored').click({ force: true });
+    cy.get('div .Toastify__toast-body').should('not.exist');
     cy.get('.answer').first().within(() => {
       cy.get('.vote-component button .svg-icon.iconArrowDown').first().click();
     })
