@@ -385,8 +385,11 @@ async updateAnswerById(ansId, { text: answerText }) {
 
   async deleteTagByName(tagName) {
     try {
+      console.log("IN DAO DELETETAGBYNAME" + tagName)
       const response = await this.instance.delete(`tags/deleteByName/${tagName}`);
+      console.log("IN DAO DELETETAGBYNAME" + "AFTER RESPONSE")
       const { success } = response.data;
+      console.log(JSON.stringify(response.data, null, 4))
       if (success) {
         console.log(`Tag with name ${tagName} deleted successfully`);
       } else {
