@@ -87,7 +87,7 @@ Add design docs in *images/*
             - ~~licking link shows answer form pre-filled, user can repost or delete~~
             - ~~Deleting answer deletes it's votes and comments~~
             - ~~Deleting answer has no effect on reputation~~
-            - Repost/Delete of answer makes question active. i.e. update lastActivity date
+            - ~~Repost/Delete of answer makes question active. i.e. update lastActivity date~~
 
 Bugs:
     - When new question is created with no tags, all tags are added to it

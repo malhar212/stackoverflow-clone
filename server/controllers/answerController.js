@@ -248,6 +248,7 @@ exports.deleteAnswerById = async (req, res) => {
   try {
     console.log("++++++ in deleteAnswerByID 2" + ansId)
     const answerObj = await Answer.findById(ansId);
+    const qid = answerObj.qid;
     console.log("++++++ in deleteAnswerByID 3" + JSON.stringify(answerObj, null, 5))
     // deleting associated comments
     const status_of_comment_deletion = await Comment.deleteMany({ associatedObjectId: ansId });
@@ -260,6 +261,7 @@ exports.deleteAnswerById = async (req, res) => {
     if (!deletedAnswer) {
       return res.status(404).json({ success: false, message: 'Answer not found.' });
     }
+    await Question.findByIdAndUpdate(qid, { $set: { last_activity : Date.now}}, { new: true });
     console.log("About to send success!")
     res.status(200).json({ success: true, data: deletedAnswer });
   } catch (error) {
