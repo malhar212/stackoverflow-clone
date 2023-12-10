@@ -6,36 +6,6 @@ import '../questions/questionList.js'
 import { DataDao } from '../../models/ModelDAO';
 import TagsList from '../tags/tagList.js';
 
-// Questions posted by the user: 
-// Displays a set of question titles 
-// asked by the user in newest order. 
-// Display 5 at a time with next and 
-// prev buttons like the home page. 
-// Each question title is a link which
-// when clicked shows the new question 
-// page. In this page the user can modify
-// the existing question and repost it or 
-// delete it. 
-  
-// Tags created by the user: 
-// The set of tags are displayed 
-// n the same format as described
-// in the tags page. Additionally,
-// a tag entry has an option 
-// for the user to delete or
-// edit the tag.
-
-// Answers created by the user:
-// All answers are displayed
-// as links of 50 characters.
-// Recently created answer
-// must be displayed first.
-// Pressing the link, shows 
-// the new answer form pre-filled
-// with the answer. 
-// The user can edit 
-// or delete the answer.
-
 const ProfilePage = () => {
   const dao = DataDao.getInstance();
   const { user, setPageAndParams } = useLocationContext();
@@ -44,6 +14,7 @@ const ProfilePage = () => {
   const [selectedData, setSelectedData] = useState();
   // the selection of which data (questions, answeers or tags) should be on the page
   const [dataType, setDataType] = useState();
+  const [itemsToShow, setItemsToShow] = useState(5);
 
   // for upper banner w/ welcome and user stats
   const username = user.username;
@@ -80,9 +51,6 @@ const ProfilePage = () => {
           break;
         }
         default:
-          // Default to fetching answers if the dataType doesn't match any case
-          // tempData = await dao.fetchAnswersBasedOnUser();
-          // console.log(tempData);
           break;
       }
       setSelectedData(tempData);
@@ -108,6 +76,10 @@ function handleQuestionClick(questionId) {
     setPageAndParams('editQuestion', questionId)
   }
 }
+
+const handleShowMoreClick = () => {
+  setItemsToShow(itemsToShow + 5); // Increase the number of items to show
+};
 
 
   return (
@@ -138,20 +110,26 @@ function handleQuestionClick(questionId) {
 
       {dataType === 'profileQuestions' && selectedData && (
         <ul>
-          {selectedData.map((question) => (
+            {selectedData.slice(0, itemsToShow).map((question) => (
           <li key={question.id}>
           <a href='' title={question.title} onClick={handleQuestionClick(question._id)}>
           {question.title && question.title.slice(0, 50)} {question.title && question.title.length > 50 ? '...' : ''}
           </a>
           </li>
+          
       ))}
         </ul>
     )}
 
+
       {dataType === "profileTags" && selectedData && (
           <TagsList selectedData={selectedData} />
       )}
-      </div>
+              </div>
+              {/* Show more button */}
+              {selectedData && itemsToShow < selectedData.length && (
+          <button onClick={handleShowMoreClick}>Show More</button>
+        )}
     </MainContent>
   );
 

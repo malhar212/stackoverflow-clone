@@ -8,6 +8,8 @@ router.get('/name/:name', tagController.getTagByName);
 router.get('/:id', tagController.getTagById);
 router.get('/byUsername/:username', tagController.getTagsByUsername);
 
+router.put('/:oldTagName/update', tagController.updateTagByName);
+
 router.delete('/deleteByName/:name', tagController.deleteByName);
 
 

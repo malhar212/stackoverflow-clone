@@ -12,7 +12,7 @@ router.get('/fetchUserQuestions', questionController.fetchUserQuestions);
 
 
 router.get('/:id', questionController.getQuestionById);
-// updating question
+
 router.put('/:id/update', questionController.updateQuestionById);
 router.get('/:id/incrementViewCount', questionController.incrementViewCount);
 

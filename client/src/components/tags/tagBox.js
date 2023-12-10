@@ -8,10 +8,11 @@ function TagBox(props) {
     const { editDeleteOption, onDeleteSuccess} = props;
     const [isDeleted, setIsDeleted] = useState(false);
   
-    const handleEditClick = async () => {
-      console.log(`Edit clicked for: ${props.name}`);
-      //  edit tag will go here
-    };
+// editing a tag name
+const handleEditClick = () => {
+  console.log("In edit click of tag: " + props.name);
+  setPageAndParams('editTag', props.name);
+};
   
     const handleDeleteClick = async () => {
       console.log(`Delete clicked for: ${props.name}`);
