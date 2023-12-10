@@ -123,3 +123,23 @@ exports.getTagsAndQuestionCount = async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 };
+
+exports.deleteByName = async (req, res) => {
+  try {
+    console.log("In try of deleteTagByNAme +++++ " + req.params.name)
+    const name = req.params.name;
+    if (name === undefined || name.length <= 0) {
+      res.status(404).json({ success: false, error: "No tag name provided" });
+      return;
+    }
+    const result = await Tag.deleteOne({ name: name });
+    if (result.deletedCount > 0) {
+      res.status(200).json({ success: true, message: `Tag '${name}' deleted successfully` });
+    } else {
+      res.status(404).json({ success: false, error: `Tag '${name}' not found` });
+    }
+  } catch (err) {
+    console.error('Error deleting tag by name:', err);
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
