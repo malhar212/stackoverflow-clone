@@ -5,7 +5,7 @@ import { DataDao } from '../../models/ModelDAO';
 function createTag(tag, editDeleteOption, handleTagDelete) {
   return (
     <TagBox
-      key={tag.tid}
+      key={tag.tid}  
       tid={tag.tid}
       name={tag.name}
       questionCount={tag.questionCount}
