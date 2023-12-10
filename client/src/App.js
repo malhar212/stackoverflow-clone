@@ -4,12 +4,14 @@ import React from 'react';
 import Banner from "./components/banner/banner.js"
 import { LocationContextProvider } from "./components/locationContext.js";
 import SideBarNav from './components/sideBarNav/sideBarNav.js';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
     <LocationContextProvider>
       <Banner />
       <SideBarNav />
+      <ToastContainer />
     </LocationContextProvider>
   )
 }

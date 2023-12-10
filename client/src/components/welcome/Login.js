@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useLocationContext } from '../locationContext.js';
-import { ToastContainer, toast } from "react-toastify";
 import MainContent from '../mainContent.js';
 import { DataDao } from '../../models/ModelDAO.js';
+import { toast } from "react-toastify";
 
 const Login = ({ handleButtonClick }) => {
   const { setPageAndParams, setLoggedIn, setUser, user, loggedIn } = useLocationContext();
@@ -97,7 +97,6 @@ const Login = ({ handleButtonClick }) => {
         </div>
       </form>
       </div>
-      <ToastContainer />
     </MainContent>
   );
 };

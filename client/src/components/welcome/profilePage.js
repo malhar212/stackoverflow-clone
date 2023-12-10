@@ -8,7 +8,7 @@ import TagsList from '../tags/tagList.js';
 
 const ProfilePage = () => {
   const dao = DataDao.getInstance();
-  const { user, setPageAndParams } = useLocationContext();
+  const { user, setPageAndParams, setUser} = useLocationContext();
 
   // the actual data loaded into the page (questions, answers, etc.)
   const [selectedData, setSelectedData] = useState();
@@ -16,14 +16,21 @@ const ProfilePage = () => {
   const [dataType, setDataType] = useState();
   const [itemsToShow, setItemsToShow] = useState(5);
 
-  // for upper banner w/ welcome and user stats
-  const username = user.username;
-  const reputation = user.reputation;
-  // const createdAt = user.createdAt;
-  const daysAgo = Math.floor((new Date() - new Date(user.createdAt)) / (1000 * 60 * 60 * 24));
 
   // depending on button clicked will set selectedData to questions, answers or tags of the user
   useEffect(() => {
+    (async () => {
+      try {
+        const responseData = await dao.getUserProfile();
+        if (responseData.length === 0) {
+          setUser(undefined);
+          return;
+        }
+        setUser(responseData);
+      } catch (error) {
+        console.error(error.message);
+      }
+    })();
     const fetchData = async () => {
       let tempData;
       switch (dataType) {
@@ -44,7 +51,7 @@ const ProfilePage = () => {
           break;
         }
         case "profileTags": {
-          tempData = await dao.fetchTagsByUsername(username);
+          tempData = await dao.fetchTagsByUsername(user.username);
           console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
           setSelectedData(tempData)
           console.log("after set selected data")
@@ -81,12 +88,15 @@ const handleShowMoreClick = () => {
   setItemsToShow(itemsToShow + 5); // Increase the number of items to show
 };
 
+// for upper banner w/ welcome and user stats
+  // const createdAt = user.createdAt;
+  const daysAgo = Math.floor((new Date() - new Date(user.createdAt)) / (1000 * 60 * 60 * 24));
 
   return (
     <MainContent>
       <div className="profilePageUserBanner">
-        <h1> Welcome {username}!</h1>
-        <span>Your reputation is: {reputation}</span>
+        <h1> Welcome {user.username}!</h1>
+        <span>Your reputation is: {user.reputation}</span>
         <span> Your account was created {daysAgo} day(s) ago.</span>
         <div className = "profile-btn-group">
             <button id='profileAnswersButton' onClick={()=>setDataType('profileAnswers')}>My Answers</button>
