@@ -98,10 +98,19 @@ Bugs:
 Detailed instructions with all relevant commands go here.
 
 ## Team Member 1 Contribution
-
+1. Profile Page, Add/Edit/Delete for Questions, Answers, Tags.
+2. Tests for Add/Edit/Delete for Questions, Answers, Tags and Login and Sign-up.
+5. CSS stylings
+4. Server implementation.
 
 ## Team Member 2 Contribution
-
+1. Singleton object to interface with server APIs.
+2. Builder pattern in server to build objects in appropriate format for database document or UI objects.
+3. Factory pattern in server to create Builder objects without specifying their concrete classes.
+4. Fix issues with Authentication and Login.
+7. Conditional routing without modifying URL.
+1. Questions, Search, Answers, Comments and Voting functionality.
+1. Questions, Search, Answers, Comments and Voting tests for Guest and LoggedIn user.
 
 ## Test cases
 
@@ -113,9 +122,24 @@ Detailed instructions with all relevant commands go here.
 |                 | Test-2         |
 
 ## Design Patterns Used
+1. 
+    - Design Pattern Name: Singleton pattern
 
-- Design Pattern Name:
+    - Problem Solved: Ensures a single instance of Axios across the application, managing configurations uniformly to prevent duplicate instances, conflicting settings like base URL, default headers, interceptors, etc, and redundant resource usage.
 
-- Problem Solved:
+    - Location in code where pattern is used: client\src\models\ModelDAO.js
+2. 
+    - Design Pattern Name: Builder pattern
 
-- Location in code where pattern is used:
+    - Problem Solved:
+        - Provide flexible object creation to build mongoose objects to save them or to build objects from db results that map to the format that the UI expects.
+        - Abstracts object construction from its final representation.
+        - Enhances code readability and maintainability by encapsulating construction logic.
+
+    - Location in code where pattern is used: server\controllers\builders, server\controllers\questionController.js formatQuestionsForUI
+3. 
+    - Design Pattern Name: Factory Pattern
+
+    - Problem Solved: By delegating the creation process to the factory, it encapsulates the logic to determine which specific builder class to instantiate. This enables the system to create objects (builders in this case) without exposing the intricacies of their instantiation, enhancing flexibility and maintainability.
+
+    - Location in code where pattern is used: server\controllers\builders\builderFactory.js formatQuestionsForUI line 12
