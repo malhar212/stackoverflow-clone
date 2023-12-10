@@ -79,14 +79,14 @@ Add design docs in *images/*
             - Deleting question deletes answers and comments and tag if not used in other questions
         - Tags created by the user:
             - ~~Display in same manner as tags page~~
-            - User has options to edit or delete tag
+            - ~~User has options to edit or delete tag~~
             - Editing/Deleting tag is allowed only if it is not in use by other users. It is allowed if it's used by only this user.
         - Answers posted by the user:
             - ~~All answers displayed as links of 50 characters~~
             - ~~Newest order~~
             - ~~licking link shows answer form pre-filled, user can repost or delete~~
-            - Deleting answer deletes it's votes and comments
-            - Deleting answer has no effect on reputation
+            - ~~Deleting answer deletes it's votes and comments~~
+            - ~~Deleting answer has no effect on reputation~~
             - Repost/Delete of answer makes question active. i.e. update lastActivity date
 
 Bugs:
