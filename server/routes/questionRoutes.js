@@ -12,13 +12,13 @@ router.get('/fetchUserQuestions', questionController.fetchUserQuestions);
 
 
 router.get('/:id', questionController.getQuestionById);
-// updating question
-router.put('/:id/update', questionController.updateQuestionById);
+
+router.put('/:id/update', isLoggedIn, questionController.updateQuestionById);
 router.get('/:id/incrementViewCount', questionController.incrementViewCount);
 
 
 router.post('/add', isLoggedIn, questionController.addNewQuestion);
 
-router.delete('/:id', questionController.deleteQuestionById);
+router.delete('/:id', isLoggedIn, questionController.deleteQuestionById);
 
 module.exports = router;

@@ -13,6 +13,7 @@ import WelcomePage from "./welcome/welcomePage.js";
 import { DataDao } from '../models/ModelDAO.js';
 import EditAnswerPage from './answers/editAnswerPage.js';
 import EditQuestionPage from './questions/editQuestionPage.js';
+import EditTagPage from './tags/editTagPage.js';
 
 const LocationContext = createContext();
 
@@ -90,6 +91,9 @@ export function LocationContextProvider({ children }) {
         }
         if (page === 'editQuestion') {
             return <EditQuestionPage />
+        }
+        if (page === 'editTag') {
+            return <EditTagPage />
         }
     }
 

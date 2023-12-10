@@ -85,6 +85,27 @@ exports.getTagsByUsername = async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
+exports.updateTagByName = async (req, res) => { 
+  const { oldTagName } = req.params;
+  const { name } = req.body;
+
+  try {
+    const updatedTag = await Tag.findOneAndUpdate(
+      { name: oldTagName },
+      { $set: { name: name } },
+      { new: true }
+    );
+
+    if (!updatedTag) {
+      return res.status(404).json({ success: false, message: 'Tag not found.' });
+    }
+
+    res.status(200).json({ success: true, data: updatedTag });
+  } catch (error) {
+    console.error('Error updating tag:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
 
 exports.getTagsAndQuestionCount = async (req, res) => {
   try {

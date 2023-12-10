@@ -379,22 +379,23 @@ async updateAnswerById(ansId, { text: answerText }) {
     return [];
   }
 
-  // Get a tag by ID
-  async getTagsById(tagIds) {
-    try {
-      const response = await this.instance.get(`tags`, {
-        params: {
-          ids: tagIds.join(',')
-        }
-      });
-      const { success, data } = response.data;
-      if (success)
-        return data;
-    } catch (error) {
-      console.error('Error fetching data:', error);
+    // Get a tag by ID
+    async getTagsById(tagIds) {
+      try {
+        const response = await this.instance.get(`tags`, {
+          params: {
+            ids: tagIds.join(',')
+          }
+        });
+        const { success, data } = response.data;
+        if (success)
+          return data;
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+      return [];
     }
-    return [];
-  }
+  
 
   async deleteTagByName(tagName) {
     try {
@@ -412,6 +413,27 @@ async updateAnswerById(ansId, { text: answerText }) {
       throw new Error('Error deleting tag:', error);
     }
   }
+
+// called from editTagePage
+// await dao.updateTagByName(params, {name: tagName});
+async updateTagByName(tagName, { name : newTagName }) {
+  try {
+    console.log(tagName) // previous tag name
+    console.log(newTagName) // new tag name
+    const response = await this.instance.put(`/tags/${tagName}/update`, { name : newTagName });
+    const { success, data } = response.data;
+    if (success) {
+      console.log('Tag updated successfully:', data);
+      return data;
+    } else {
+      console.error('Failed to update tag:', data.message);
+    }
+  } catch (error) {
+    console.error('Error updating tag:', error);
+  }
+
+  return null;
+}
 
   async fetchTagsByUsername(username) {
     try {
