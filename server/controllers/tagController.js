@@ -147,19 +147,120 @@ exports.getTagsAndQuestionCount = async (req, res) => {
   }
 };
 
+// exports.deleteByName = async (req, res) => {
+//   try {
+//     // console.log("In try of deleteTagByNAme +++++ " + req.params.name)
+//     const name = req.params.name;
+//     if (name === undefined || name.length <= 0) {
+//       res.status(404).json({ success: false, error: "No tag name provided" });
+//       return;
+//     }
+//     const result = await Tag.deleteOne({ name: name });
+//     if (result.deletedCount > 0) {
+//       res.status(200).json({ success: true, message: `Tag '${name}' deleted successfully` });
+//     } else {
+//       res.status(404).json({ success: false, error: `Tag '${name}' not found` });
+//     }
+//   } catch (err) {
+//     console.error('Error deleting tag by name:', err);
+//     res.status(500).json({ success: false, error: err.message });
+//   }
+// };
+
+
+
+const deleteTagHelper = async (tagName, user) => {
+  try {
+    if (tagName === undefined || tagName.length <= 0) {
+      return { success: false, error: "No tag name provided" };
+    }
+
+    const userObjectId = user.uid
+
+    const aggregationPipeline = [
+      {
+        $match: {
+          createdBy: userObjectId,
+          name: tagName,
+        },
+      },
+      {
+        $lookup: {
+          from: "questions",
+          localField: "_id",
+          foreignField: "tags",
+          as: "associatedQuestions",
+        },
+      },
+      {
+        $addFields: {
+          editable: {
+            $not: {
+              $gt: [
+                {
+                  $size: {
+                    $filter: {
+                      input: "$associatedQuestions",
+                      as: "question",
+                      cond: {
+                        $ne: [
+                          "$$question.asked_by",
+                          userObjectId,
+                        ],
+                      },
+                    },
+                  },
+                },
+                0,
+              ],
+            },
+          },
+        },
+      },
+      {
+        $unset: "associatedQuestions",
+      },
+    ];
+
+    // Execute the aggregation pipeline
+    const result = await Tag.aggregate(aggregationPipeline);
+
+    if (result.length === 0) {
+      return { success: false, error: `Tag '${tagName}' not found` };
+    }
+
+    const tagInfo = result[0];
+
+    if (tagInfo.editable) {
+      const deleteResult = await Tag.deleteOne({ _id: tagInfo._id });
+      if (deleteResult.deletedCount > 0) {
+        return { success: true, message: `Tag '${tagName}' deleted successfully` };
+      } else {
+        return { success: false, error: `Error deleting tag '${tagName}'` };
+      }
+    } else {
+      return { success: false, error: `Tag '${tagName}' is not editable` };
+    }
+  } catch (err) {
+    console.error('Error deleting tag by name:', err);
+    return { success: false, error: err.message };
+  }
+};
+
 exports.deleteByName = async (req, res) => {
   try {
-    // console.log("In try of deleteTagByNAme +++++ " + req.params.name)
     const name = req.params.name;
-    if (name === undefined || name.length <= 0) {
-      res.status(404).json({ success: false, error: "No tag name provided" });
-      return;
-    }
-    const result = await Tag.deleteOne({ name: name });
-    if (result.deletedCount > 0) {
-      res.status(200).json({ success: true, message: `Tag '${name}' deleted successfully` });
+
+    const deleteResult = await deleteTagHelper(name, req.session.user);
+
+    
+    console.log(JSON.stringify(deleteResult, null, 4))
+
+
+    if (deleteResult.success) {
+      res.status(200).json(deleteResult);
     } else {
-      res.status(404).json({ success: false, error: `Tag '${name}' not found` });
+      res.status(404).json(deleteResult);
     }
   } catch (err) {
     console.error('Error deleting tag by name:', err);
