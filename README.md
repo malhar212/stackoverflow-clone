@@ -43,7 +43,7 @@ Add design docs in *images/*
     - Upvoting a question/answer increases the reputation of the corresponding user by 5. 
     - Downvoting a question/answer decreases the reputation of the corresponding user by 10. 
     - A user can vote if their reputation is 50 or higher.
-    - User who posted the question can mark one of the answers as accepted
+    - ~~User who posted the question can mark one of the answers as accepted~~
     - ~~Accepted answer should appear at top, all others appear in newest order~~
 1. New Answer:
     - Redirect to answers page
@@ -53,10 +53,10 @@ Add design docs in *images/*
     - ~~Comments displayed 3 at a time~~
     - ~~Show text, username, vote.~~
     - ~~Pagination with next and prev buttons. Same behaviour like questions~~
-    - For registerd user, new comment input field below the pagination
-    - New comment is added on pressing enter
-    - Comments limited to 140 characters
-    - Can only be added by users with reputation 50 or more.
+    - ~~For registerd user, new comment input field below the pagination~~
+    - ~~New comment is added on pressing enter~~
+    - ~~Comments limited to 140 characters~~
+    - ~~Can only be added by users with reputation 50 or more.~~
     - Comments only have upvotes. Increments by 1.
     - Upvoting comment has no impact on reputation.
     - Upvoting a comment makes corresponsing question active

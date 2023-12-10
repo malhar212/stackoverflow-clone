@@ -4,7 +4,6 @@ const Question = require('../models/questions');
 const User = require("../models/users");
 const BuilderFactory = require('./builders/builderFactory');
 const { validateLinks } = require('./hyperlinkParser');
-// const { JsonWebTokenError } = require('jsonwebtoken');
 
 // Function to convert database results to the desired format for UI
 function formatAnswersForUI(results) {
@@ -63,40 +62,40 @@ exports.filterAnswersBasedOnQuestionId = async (req, res) => {
   try {
     const id = req.params.id;
     if (id === undefined || id.length <= 0) {
-        res.status(404).json({ success: false, error: "No QID provided" });
-        return;
+      res.status(404).json({ success: false, error: "No QID provided" });
+      return;
     }
     const answers = await Answer.aggregate(
       [
-          {
-            $match: {
-              qid: new ObjectId(id),
+        {
+          $match: {
+            qid: new ObjectId(id),
+          },
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "ans_by",
+            foreignField: "_id",
+            as: "ans_by",
+          },
+        },
+        {
+          $addFields: {
+            ans_by: {
+              $arrayElemAt: ["$ans_by.username", 0],
             },
           },
-          {
-            $lookup: {
-              from: "users",
-              localField: "ans_by",
-              foreignField: "_id",
-              as: "ans_by",
-            },
+        },
+        {
+          $sort: {
+            accepted: -1,
+            ans_date_time: -1,
           },
-          {
-            $addFields: {
-              ans_by: {
-                $arrayElemAt: ["$ans_by.username", 0],
-              },
-            },
-          },
-          {
-            $sort: {
-              accepted: -1,
-              ans_date_time: -1,
-            },
-          },
+        },
       ]
-  );
-  console.log(answers);
+    );
+    console.log(answers);
     const formattedAnswers = formatAnswersForUI(answers);
     res.status(200).json({ success: true, data: formattedAnswers });
   } catch (err) {
@@ -109,7 +108,7 @@ exports.fetchUserAnswers = async (req, res) => {
   console.log("+++++IN FETCH USER ANSWERSSSSSSS+++++++")
   try {
     console.log("++====++==++==++==", req.session.user)
-    const username  = req.session.user.username
+    const username = req.session.user.username
     console.log("++++++++ USERNAMEM: " + username)
     if (username === undefined) {
       res.status(404).json({ success: false, error: "Username is undefined" });
@@ -139,7 +138,7 @@ exports.fetchUserAnswers = async (req, res) => {
 };
 
 exports.addAnswer = async (req, res) => {
-  console.log("++++++++ADDANSWER 1" + (JSON.stringify(req.body, null, 4 )))
+  console.log("++++++++ADDANSWER 1" + (JSON.stringify(req.body, null, 4)))
   try {
     if (req.body === undefined || req.body.answer === undefined) {
       console.log("++++++++ADDANSWER 2" + req.body.answer)
@@ -216,13 +215,13 @@ const validateAnswer = (formData) => {
     return { isValid, error };
   }
   return { isValid, error };
-}; 
+};
 
 
 exports.updateAnswerById = async (req, res) => {
   const { ansId } = req.params;
   const { text } = req.body;
-  
+
   try {
     const updatedAnswer = await Answer.findByIdAndUpdate(ansId, { $set: { text: text } }, { new: true });
     if (!updatedAnswer) {
@@ -247,3 +246,40 @@ exports.deleteAnswerById = async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 }
+
+exports.acceptAnswer = async (req, res) => {
+  if (req.params === undefined && req.params.ansId === undefined || req.params.ansId.trim().length === 0) {
+    res.status(500).json({ success: false, error: "Answer ID not provided" });
+  }
+  const { ansId } = req.params;
+  try {
+    const answer = await Answer.findById(ansId);
+    if (!answer) {
+      return res.status(404).json({ success: false, message: 'Answer not found.' });
+    }
+    // Find other answers with the same qid and accepted: true
+    const otherAcceptedAnswers = await Answer.find({
+      qid: answer.qid,
+      accepted: true
+    });
+    if (otherAcceptedAnswers.length > 0) {
+      console.log('There are other accepted answers for this question.');
+      return res.status(403).json({ success: false, message: 'There are other accepted answers for this question.' });
+    }
+    console.log("Locals:", req.locals);
+    console.log("Answer :", answer.ans_by.toString());
+    console.log("Session :", req.session.user.uid);
+    const question = await Question.findById(answer.qid);
+    if (question.asked_by.toString() !== req.session.user.uid) {
+      return res.status(403).json({ success: false, message: 'Not authorized to accept answer' });
+    }
+    answer.accepted = true;
+    question.last_activity = Date.now();
+    await question.save();
+    await answer.save();
+    res.status(200).json({ success: true, data: formatAnswersForUI([answer]) });
+  } catch (error) {
+    console.error('Error updating answer:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
