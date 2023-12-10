@@ -20,7 +20,7 @@ exports.login = async (req, res) => {
       // Passwords match, login successful
       console.log(user)
       req.session.user = { username: user.username, uid: user._id };
-      return res.status(200).json({ success: true, data : { uid: user._id, username : user.username, reputation : user.reputation, createdAt : user.createdAt } });
+      return res.status(200).json({ success: true, data : { username : user.username, reputation : user.reputation, createdAt : user.createdAt } });
     } else {
       // Passwords don't match, login failed
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
@@ -48,6 +48,7 @@ exports.signup = async (req, res) => {
 
 exports.logout = async (req, res) => {
   req.session.destroy();
+  res.clearCookie('connect.sid');
   res.json({ success: true });
 };
 

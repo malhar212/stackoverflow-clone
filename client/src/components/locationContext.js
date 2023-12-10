@@ -24,11 +24,13 @@ export function LocationContextProvider({ children }) {
     const [user, setUser] = useState("");
     
     useEffect(() => {
-        try {
-            DataDao.getInstance().getCSRFToken();
-        } catch (error) {
-            console.error('Error fetching CSRF token:', error);
-        }
+        // if (page === "welcome" || page === "answers" || page === "addAnswer" || page === "addQuestion") {
+            try {
+                DataDao.getInstance().getCSRFToken();
+            } catch (error) {
+                console.error('Error fetching CSRF token:', error);
+            }
+        // }
     }, []);
 
     // Load state from sessionStorage when the component mounts
@@ -54,6 +56,7 @@ export function LocationContextProvider({ children }) {
         setPage(page);
     };
 
+    DataDao.getInstance().setContextFunctions(setLoggedIn, setPageAndParams);
     // return page components depending on page routine
     function conditionalRendering() {
         if (page === "questions") {
@@ -66,8 +69,10 @@ export function LocationContextProvider({ children }) {
             return <TagsPage />
         }
         if (page === "answers") {
-            if (!Object.hasOwn(params, 'qid') || params.qid === undefined)
+            if (!Object.hasOwn(params, 'qid') || params.qid === undefined) {
+                console.log(params);
                 return <NotFound />;
+            }
             return <AnswersPage />;
         }
         if (page === "addAnswer") {
@@ -76,7 +81,7 @@ export function LocationContextProvider({ children }) {
         if (page === "welcome") {
             return <WelcomePage />
         }
-        if (page ==="profile") {
+        if (page === "profile") {
             return <ProfilePage />
         }
         if (page === 'editAnswer') {

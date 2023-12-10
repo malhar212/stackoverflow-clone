@@ -81,7 +81,7 @@ const populate = async () => {
     
     // Create Users
     let userOne = await userCreate("samZ", "samZ@gmail.com", 'examplePass');
-    let userTwo = await userCreate("newGuy", "newGuy@gmail.com", 'passwordExample', 60);
+    let userTwo = await userCreate("newGuy", "newGuy@gmail.com", 'passExample', 60);
     let userThree = await userCreate("newGuy2", "copiedUsername@gmail.com", 'askdjalskdj', 55);
 
     // Create tags
@@ -113,7 +113,7 @@ const populate = async () => {
     await answerCreate('Answer 6', q2, userThree, new Date('2023-10-08T15:24:19'));
     await answerCreate('Answer 7', q2, userOne, new Date('2023-10-09T15:24:19'), 0, true);
     
-    await commentCreate('Comment 1\n Some more text', userTwo, 'question', q2, 10, new Date('2023-11-25T08:24:00'));
+    await commentCreate('Comment 1. Some more text', userTwo, 'question', q2, 10, new Date('2023-11-25T08:24:00'));
     await commentCreate('Comment 2. Some more text', userThree, 'answer', a3, 10, new Date('2023-11-26T03:24:00'));
     await commentCreate('Comment 1', userThree, 'answer', a3, 10, new Date('2023-11-22T12:24:00'));
     await commentCreate('Comment 2', userTwo, 'answer', a3, 1, new Date('2023-11-21T11:24:00'));
