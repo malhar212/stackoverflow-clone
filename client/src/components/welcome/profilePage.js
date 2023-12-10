@@ -4,6 +4,7 @@ import MainContent from '../mainContent.js';
 import './stylesheets/profilePage.css'
 import '../questions/questionList.js'
 import { DataDao } from '../../models/ModelDAO';
+import TagsList from '../tags/tagList.js';
 
 // Questions posted by the user: 
 // Displays a set of question titles 
@@ -72,7 +73,10 @@ const ProfilePage = () => {
           break;
         }
         case "profileTags": {
-          // tempData = await dao.fetchTagsBasedOnUser();
+          tempData = await dao.fetchTagsByUsername(username);
+          console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
+          setSelectedData(tempData)
+          console.log("after set selected data")
           break;
         }
         default:
@@ -111,7 +115,7 @@ function handleQuestionClick(questionId) {
       <div className="profilePageUserBanner">
         <h1> Welcome {username}!</h1>
         <span>Your reputation is: {reputation}</span>
-        <span> Your account was created {daysAgo} ago.</span>
+        <span> Your account was created {daysAgo} day(s) ago.</span>
         <div className = "profile-btn-group">
             <button id='profileAnswersButton' onClick={()=>setDataType('profileAnswers')}>My Answers</button>
           <button id='profileQuestionsButton' onClick={()=>setDataType('profileQuestions')}>My Questions</button>
@@ -143,6 +147,10 @@ function handleQuestionClick(questionId) {
       ))}
         </ul>
     )}
+
+      {dataType === "profileTags" && selectedData && (
+          <TagsList selectedData={selectedData} />
+      )}
       </div>
     </MainContent>
   );

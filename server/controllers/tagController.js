@@ -1,5 +1,6 @@
 const Question = require("../models/questions");
 const Tag = require("../models/tags");
+const User = require("../models/users");
 const BuilderFactory = require("./builders/builderFactory");
 
 // Function to convert database results to the desired format for UI
@@ -55,6 +56,7 @@ exports.getTagById = async (req, res) => {
   }
 };
 
+
 exports.getTagByName = async (req, res) => {
   try {
     const name = req.params.name;
@@ -67,6 +69,20 @@ exports.getTagByName = async (req, res) => {
     res.status(200).json({ success: true, data: formattedTags });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+exports.getTagsByUsername = async (req, res) => {
+  const { username } = req.params;
+  console.log(username + "____________")
+  try {
+    const user = await User.findOne({ username });
+    console.log("User object " + JSON.stringify(user, null, 3))
+    const tags = await Tag.find({ createdBy: user });
+    res.status(200).json({ success: true, data: tags });
+  } catch (error) {
+    console.error('Error fetching tags by user:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
 
@@ -104,6 +120,26 @@ exports.getTagsAndQuestionCount = async (req, res) => {
     const formattedTags = formatTagsForUI(tags);
     res.status(200).json({ success: true, data: formattedTags });
   } catch (err) {
+    res.status(500).json({ success: false, error: err.message });
+  }
+};
+
+exports.deleteByName = async (req, res) => {
+  try {
+    console.log("In try of deleteTagByNAme +++++ " + req.params.name)
+    const name = req.params.name;
+    if (name === undefined || name.length <= 0) {
+      res.status(404).json({ success: false, error: "No tag name provided" });
+      return;
+    }
+    const result = await Tag.deleteOne({ name: name });
+    if (result.deletedCount > 0) {
+      res.status(200).json({ success: true, message: `Tag '${name}' deleted successfully` });
+    } else {
+      res.status(404).json({ success: false, error: `Tag '${name}' not found` });
+    }
+  } catch (err) {
+    console.error('Error deleting tag by name:', err);
     res.status(500).json({ success: false, error: err.message });
   }
 };

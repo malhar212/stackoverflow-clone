@@ -1,59 +1,80 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import TagBox from './tagBox';
 import { DataDao } from '../../models/ModelDAO';
 
-// Creates individual tag box
-function createTag(tag) {
-    return <TagBox
-        key={tag.tid}
-        tid={tag.tid}
-        name={tag.name}
-        questionCount={tag.questionCount}
+function createTag(tag, editDeleteOption, handleTagDelete) {
+  return (
+    <TagBox
+      key={tag.tid}
+      tid={tag.tid}
+      name={tag.name}
+      questionCount={tag.questionCount}
+      editDeleteOption={editDeleteOption}
+      onDeleteSuccess={handleTagDelete}
     />
+  );
 }
 
-function TagsList() {
-    const [tags, setTags] = useState();
+function TagsList(props) {
+  const [tags, setTags] = useState([]);
+  const [tagCount, setTagCount] = useState(0);
+  const [editDeleteOption, setEditDeleteOption] = useState();
+
+  useEffect(() => {
     const dao = DataDao.getInstance();
-    useEffect(() => {
-      const getData = async () => {
-          const responseData = await dao.getTagsAndQuestionCount();
-          setTags(responseData);
-      };
-  
-      getData();
-    }, []);
-  
-    let tagCount = 0;
-    let rows = []; // Define rows outside of the if (tags) block
-  
-    if (tags) {
-      tagCount = tags.length;
-  
-      for (let i = 0; i < tagCount; i += 3) {
-        const row = tags.slice(i, i + 3);
-        rows.push(row);
+
+    const fetchData = async () => {
+      try {
+        // retrieve all the tags form the dao call
+        const responseData = await dao.getTagsAndQuestionCount();
+        setTags(responseData);
+        setTagCount(responseData.length);
+        setEditDeleteOption(false)
+      } catch (error) {
+        console.error('Error fetching tags:', error);
       }
+    };
+
+    // if there were not props passed in
+    if (!props.selectedData) {
+      fetchData();
     }
-  
-    return (
-      <>
-        {tags?.length === 0 ? (
-          <span id='noTags'></span>
-        ) : (
-          <div className="tagsContainer" id="tagsContainer">
-            <h2>
-              <span id='tagCount'>{tagCount}</span> Tags
-            </h2>
-            {rows?.map((row, rowIndex) => (
-              <div key={rowIndex} className="tagRow">
-                {row.map(createTag)}
-              </div>
-            ))}
-          </div>
-        )}
-      </>
-    );
+    // if there WERE props pass in 
+    else {
+      setTags(props.selectedData);
+      setTagCount(props.selectedData.length);
+      setEditDeleteOption(true)
+    }
+  }, [props.selectedData]);
+
+  const handleTagDelete = () => {
+    setTagCount((prevTagCount) => prevTagCount - 1);
+  };
+
+  const rows = [];
+  for (let i = 0; i < tagCount; i += 3) {
+    const row = tags.slice(i, i + 3);
+    rows.push(row);
   }
-  
-  export default TagsList;
+
+  return (
+    <>
+      {tagCount === 0 ? (
+        <span id='noTags'></span>
+      ) : (
+        <div className="tagsContainer" id="tagsContainer">
+          <h2>
+            <span id='tagCount'>{tagCount}</span> Tags
+          </h2>
+          {rows.map((row, rowIndex) => (
+            <div key={rowIndex} className="tagRow">
+              {row.map((tag) => createTag(tag, editDeleteOption, handleTagDelete))}
+            </div>
+          ))}
+        </div>
+      )}
+    </>
+  );
+}
+
+export default TagsList;

@@ -380,6 +380,35 @@ async updateAnswerById(ansId, { text: answerText }) {
     return [];
   }
 
+  async deleteTagByName(tagName) {
+    try {
+      console.log("in delete tag by name 1")
+      const response = await this.instance.delete(`tags/deleteByName/${tagName}`);
+      console.log("in delete tag by name 2")
+      const { success } = response.data;
+      if (success) {
+        console.log(`Tag with name ${tagName} deleted successfully`);
+      } else {
+        console.error(`Error deleting tag with name ${tagName}`);
+      }
+    } catch (error) {
+      console.error('Error deleting tag:', error);
+      throw new Error('Error deleting tag:', error);
+    }
+  }
+
+  async fetchTagsByUsername(username) {
+    try {
+      const response = await this.instance.get(`tags/byUsername/${username}`);
+      const { success, data } = response.data;
+      if (success)
+        return data;
+    } catch (error) {
+      throw new Error('Error fetching tags by user:', error);
+    }
+    return [];
+  }
+
   async getTagsAndQuestionCount() {
     try {
       const response = await this.instance.get(`tags/questionCount`);
