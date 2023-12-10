@@ -51,7 +51,7 @@ function AnswersPage() {
 
     if (selectedQuestion) {
         const showAcceptButton = user && user.username && selectedQuestion.askedBy === user.username;
-        console.log(showAcceptButton)
+        // // console.log(showAcceptButton)
         return (
             <MainContent>
                 <AnswerHeader

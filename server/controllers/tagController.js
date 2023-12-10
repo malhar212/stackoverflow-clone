@@ -43,12 +43,13 @@ exports.getAllTags = async (req, res) => {
 
 exports.getTagById = async (req, res) => {
   try {
-    const id = req.params.id;
-    if (id === undefined || id.length <= 0) {
+    console.log("in get TagByID "+ req.params.ids)
+    const ids = req.params.ids;
+    if (ids === undefined || ids.length <= 0) {
       res.status(404).json({ success: false, error: "No TID provided" });
       return;
     }
-    const tags = await Tag.findById(id);
+    const tags = await Tag.findById(ids);
     const formattedTags = formatTagsForUI([tags]);
     res.status(200).json({ success: true, data: formattedTags });
   } catch (err) {
@@ -74,10 +75,11 @@ exports.getTagByName = async (req, res) => {
 
 exports.getTagsByUsername = async (req, res) => {
   const { username } = req.params;
-  console.log(username + "____________")
+  // console.log(username + "____________")
   try {
+    // const user = req.user;
     const user = await User.findOne({ username });
-    console.log("User object " + JSON.stringify(user, null, 3))
+    // console.log("User object " + JSON.stringify(user, null, 3))
     const tags = await Tag.find({ createdBy: user });
     res.status(200).json({ success: true, data: tags });
   } catch (error) {
@@ -147,7 +149,7 @@ exports.getTagsAndQuestionCount = async (req, res) => {
 
 exports.deleteByName = async (req, res) => {
   try {
-    console.log("In try of deleteTagByNAme +++++ " + req.params.name)
+    // console.log("In try of deleteTagByNAme +++++ " + req.params.name)
     const name = req.params.name;
     if (name === undefined || name.length <= 0) {
       res.status(404).json({ success: false, error: "No tag name provided" });

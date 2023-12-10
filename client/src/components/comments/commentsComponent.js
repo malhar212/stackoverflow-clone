@@ -18,7 +18,7 @@ function createComment(comment) {
 // Display Comment section
 // recieves question object as prop (FIRST)
 function CommentsComponent({ associatedType, associatedId }) {
-    const { loggedIn, user, params } = useLocationContext();
+    const { loggedIn, user } = useLocationContext();
     const dao = DataDao.getInstance();
     const itemsPerPage = 3;
     const [comments, setComments] = useState([]);
@@ -57,8 +57,8 @@ function CommentsComponent({ associatedType, associatedId }) {
             });
 
             let isValid = true;
-            console.log(user);
-            console.log(user.reputation);
+            // console.log(user);
+            // console.log(user.reputation);
             // Validate text
             if (user.reputation !== undefined && user.reputation < 50) {
                 isValid = false;
@@ -100,10 +100,10 @@ function CommentsComponent({ associatedType, associatedId }) {
                     associatedObjectId: associatedId
                 };
 
-                console.log("Comment: ", comment)
-                console.log(params);
+                // console.log("Comment: ", comment)
+                // console.log(params);
                 let data = await DataDao.getInstance().addComment(comment);
-                console.log(data);
+                // console.log(data);
                 setComments([...data, ...comments]);
                 formRef.current.reset();
             }

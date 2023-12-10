@@ -10,7 +10,7 @@ function Header() {
     return (
         <header>
             <PageTitle />
-            {/* {console.log("Header... logged in: ", loggedIn)} */}
+            {/* {// console.log("Header... logged in: ", loggedIn)} */}
             { loggedIn ? <AskButton /> : <></> }
         </header>
     )

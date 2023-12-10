@@ -8,16 +8,16 @@ const EditAnswerPage = () => {
   const { params, setPageAndParams } = useLocationContext();
   const [answerText, setAnswerText] = useState('');
 
-  console.log("in edit answer page with params: " + params)
+  // // console.log("in edit answer page with params: " + params)
 
   useEffect(() => {
     const fetchAnswerData = async () => {
       const answerId = params; 
       const existingAnswerDataList = await dao.filterAnswersBasedOnAnsIds([answerId]);
       const existingAnswerData = existingAnswerDataList[0];
-      console.log(JSON.stringify(existingAnswerData, null, 4))
+      // // console.log(JSON.stringify(existingAnswerData, null, 4))
       // Update the answer text
-      setAnswerText(existingAnswerData.text);
+      setAnswerText(existingAnswerData.text.trim());
     };
     fetchAnswerData();
   }, [params]);
@@ -25,7 +25,7 @@ const EditAnswerPage = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     // params is the answerID, the text from the form is answerText
-    await dao.updateAnswerById(params, { text: answerText });
+    await dao.updateAnswerById(params, { text: answerText.trim() });
 
     // after submitting update to answer, redirects to 
     setPageAndParams('profile');

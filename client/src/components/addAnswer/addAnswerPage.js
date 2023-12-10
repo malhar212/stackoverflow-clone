@@ -57,14 +57,11 @@ function AddAnswerPage() {
 
         if (isValid) {
             const answer = {
-                text: formData.text,
+                text: formData.text.trim(),
                 // ansBy: formData.username,
                 ans_by : user.username,
                 ansDate: new Date()
             };
-
-            console.log("In answers page: " + user.username)
-            // needs answer and qid as parameters
             await DataDao.getInstance().addAnswer(answer, params.question.qid);
             setPageAndParams('answers', params.question);
         }

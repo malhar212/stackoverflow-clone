@@ -5,9 +5,9 @@ import { DataDao } from '../../models/ModelDAO.js';
 import { toast } from "react-toastify";
 
 const Login = ({ handleButtonClick }) => {
-  const { setPageAndParams, setLoggedIn, setUser, user, loggedIn } = useLocationContext();
+  const { setPageAndParams, setLoggedIn, setUser } = useLocationContext();
 
-  console.log("in login")
+  // console.log("in login")
 
   const [inputValue, setInputValue] = useState({
     username: "",
@@ -51,8 +51,8 @@ const Login = ({ handleButtonClick }) => {
       handleSuccess("Success!")
       setLoggedIn(true);
       setUser(userData.data); // saving state of who is logged in
-      console.log("In login: " + loggedIn)
-      console.log("User is: " + JSON.stringify(user, null, 4))
+      // console.log("In login: " + loggedIn)
+      // console.log("User is: " + JSON.stringify(user, null, 4))
       setTimeout(() => {
         { setPageAndParams('questions', '') }
       }, 1000);

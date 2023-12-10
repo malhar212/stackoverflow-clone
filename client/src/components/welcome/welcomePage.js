@@ -5,7 +5,7 @@ import { useLocationContext } from '../locationContext.js';
 
 const WelcomePage = () => {
 
-  console.log("in welcome ")
+  // console.log("in welcome ")
   const { setPageAndParams, setLoggedIn } = useLocationContext();
   const [showLogin, setShowLogin] = useState(true);
   const handleButtonClick = useCallback((e) => {
