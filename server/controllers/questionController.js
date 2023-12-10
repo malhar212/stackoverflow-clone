@@ -60,8 +60,8 @@ exports.fetchUserQuestions = async (req, res) => {
   
       try {
         // get the user object based on username
-        // const user = await User.findOne({ username });
-        const user = req.user;
+        const user = await User.findOne({ username });
+        // const user = req.user;
   
         if (!user) {
           return res.status(404).json({ success: false, error: "User not found" });
@@ -407,11 +407,11 @@ exports.addNewQuestion = async (req, res) => {
             return;
         }
         // extracting username from formData
-        // const username = formData.askedBy
+        const username = formData.askedBy
         // finding the user object from database based on username
-        // const user = await User.findOne({ username });
+        const user = await User.findOne({ username });
 
-        const user = req.user;
+        // const user = req.user;
         let tagIds = [];
         // if there are tags to be added to this question
         if (formData.tags !== undefined && formData.tags.length > 0) {

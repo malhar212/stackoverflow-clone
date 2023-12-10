@@ -1,6 +1,6 @@
 const Question = require("../models/questions");
 const Tag = require("../models/tags");
-// const User = require("../models/users");
+const User = require("../models/users");
 const BuilderFactory = require("./builders/builderFactory");
 
 // Function to convert database results to the desired format for UI
@@ -74,11 +74,11 @@ exports.getTagByName = async (req, res) => {
 };
 
 exports.getTagsByUsername = async (req, res) => {
-  // const {  } =req.params;
+  const { username } = req.params;
   // console.log(username + "____________")
   try {
-    const user = req.user;
-    // const user = await User.findOne({ username });
+    // const user = req.user;
+    const user = await User.findOne({ username });
     // console.log("User object " + JSON.stringify(user, null, 3))
     const tags = await Tag.find({ createdBy: user });
     res.status(200).json({ success: true, data: tags });
