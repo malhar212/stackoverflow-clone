@@ -1,6 +1,6 @@
+const { ObjectId } = require("mongodb");
 const Question = require("../models/questions");
 const Tag = require("../models/tags");
-const User = require("../models/users");
 const BuilderFactory = require("./builders/builderFactory");
 
 // Function to convert database results to the desired format for UI
@@ -8,9 +8,12 @@ function formatTagsForUI(results) {
   const formattedTags = results.map(result => {
     let builder = new BuilderFactory().createBuilder({ builderType: 'tagUI' });
 
-    const { _id, name, questionCount } = result;
+    const { _id, name, questionCount, editable } = result;
     if (questionCount !== undefined) {
       builder = builder.setQuestionCount(questionCount);
+    }
+    if (editable !== undefined) {
+      builder = builder.setEditable(editable);
     }
     // Setting the fields using the builder pattern
     return builder
@@ -43,7 +46,7 @@ exports.getAllTags = async (req, res) => {
 
 exports.getTagById = async (req, res) => {
   try {
-    console.log("in get TagByID "+ req.params.ids)
+    console.log("in get TagByID " + req.params.ids)
     const ids = req.params.ids;
     if (ids === undefined || ids.length <= 0) {
       res.status(404).json({ success: false, error: "No TID provided" });
@@ -74,20 +77,64 @@ exports.getTagByName = async (req, res) => {
 };
 
 exports.getTagsByUsername = async (req, res) => {
-  const { username } = req.params;
   // console.log(username + "____________")
   try {
-    // const user = req.user;
-    const user = await User.findOne({ username });
     // console.log("User object " + JSON.stringify(user, null, 3))
-    const tags = await Tag.find({ createdBy: user });
-    res.status(200).json({ success: true, data: tags });
+    const tags = await Tag.aggregate([
+      {
+        $match: {
+          createdBy: new ObjectId(
+            req.session.user.uid
+          ),
+        },
+      },
+      {
+        $lookup: {
+          from: "questions",
+          localField: "_id",
+          foreignField: "tags",
+          as: "associatedQuestions",
+        },
+      },
+      {
+        $addFields: {
+          editable: {
+            $not: {
+              $gt: [
+                {
+                  $size: {
+                    $filter: {
+                      input: "$associatedQuestions",
+                      as: "question",
+                      cond: {
+                        $ne: [
+                          "$$question.asked_by",
+                          new ObjectId(
+                            req.session.user.uid
+                          ),
+                        ],
+                      },
+                    },
+                  },
+                },
+                0,
+              ],
+            },
+          },
+        },
+      },
+      {
+        $unset:
+          "associatedQuestions",
+      },
+    ]);
+    res.status(200).json({ success: true, data: formatTagsForUI(tags) });
   } catch (error) {
     console.error('Error fetching tags by user:', error);
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
-exports.updateTagByName = async (req, res) => { 
+exports.updateTagByName = async (req, res) => {
   const { oldTagName } = req.params;
   const { name } = req.body;
 
@@ -175,7 +222,7 @@ const deleteTagHelper = async (tagName, user) => {
       return { success: false, error: "No tag name provided" };
     }
 
-    const userObjectId = user.uid
+    const userObjectId = new ObjectId(user.uid);
 
     const aggregationPipeline = [
       {
@@ -224,7 +271,7 @@ const deleteTagHelper = async (tagName, user) => {
 
     // Execute the aggregation pipeline
     const result = await Tag.aggregate(aggregationPipeline);
-
+    console.log(result)
     if (result.length === 0) {
       return { success: false, error: `Tag '${tagName}' not found` };
     }
@@ -253,7 +300,7 @@ exports.deleteByName = async (req, res) => {
 
     const deleteResult = await deleteTagHelper(name, req.session.user);
 
-    
+
     console.log(JSON.stringify(deleteResult, null, 4))
 
 
