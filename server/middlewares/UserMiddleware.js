@@ -9,8 +9,10 @@ const isLoggedIn = async (req, res, next) => {
       const user = await User.findById(req.session.user.uid);
 
       if (user) {
-        // console.log('User found:', user);
-        res.locals.user = user; 
+
+        console.log('User found:', user);
+        req.user = user; 
+
         // User exists
         next();
       } else {

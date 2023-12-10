@@ -42,15 +42,15 @@ export function LocationContextProvider({ children }) {
             setPage(parsedState.page);
             setParams(parsedState.params);
             setLoggedIn(parsedState.loggedIn);
-            setUser(parsedState.user);
+            //setUser(parsedState.user);
         }
     }, []);
 
     // Save state to sessionStorage when it changes
     useEffect(() => {
-        const stateToStore = JSON.stringify({ page, params, loggedIn, user });
+        const stateToStore = JSON.stringify({ page, params, loggedIn });
         sessionStorage.setItem('locationContextState', stateToStore);
-    }, [page, params, loggedIn, user]);
+    }, [page, params, loggedIn]);
 
     const setPageAndParams = (page, params) => {
         setParams(params);
