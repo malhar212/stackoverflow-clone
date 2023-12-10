@@ -67,7 +67,7 @@ Add design docs in *images/*
     - ~~User Information: No. days since user joined, reputation points~~
     - Menu: 
         - ~~Link to view all questions of user~~
-        - Link to view all tags of user
+        - ~~Link to view all tags of user~~
         - ~~Link to view all answers of user~~
     - Sub views, show/hide based on link clicked:
         - Questions posted by the user:

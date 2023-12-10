@@ -316,7 +316,9 @@ async updateAnswerById(ansId, { text: answerText }) {
   async deleteAnswerById(ansId) {
     try {
       const response = await this.instance.delete(`/answers/${ansId}`);
+      console.log("Model dao deleteAnswerByID")
       const { success, data } = response.data;
+      console.log("deleteANswer response " + data);
       if (success) {
         console.log('Answer deleted successfully:', data);
         return data;

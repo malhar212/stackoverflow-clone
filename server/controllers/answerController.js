@@ -2,6 +2,7 @@ const { ObjectId } = require('mongodb');
 const Answer = require('../models/answers');
 const Question = require('../models/questions');
 const User = require("../models/users");
+const Comment = require("../models/comments");
 const BuilderFactory = require('./builders/builderFactory');
 const { validateLinks } = require('./hyperlinkParser');
 
@@ -233,13 +234,28 @@ exports.updateAnswerById = async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
+
+// delete answer should delete its votes and comments
+// the answer is the "associatedObject" of the comment
 exports.deleteAnswerById = async (req, res) => {
+  console.log("++++++ in deleteAnswerByID 1")
   const { ansId } = req.params;
   try {
+    console.log("++++++ in deleteAnswerByID 2" + ansId)
+    const answerObj = await Answer.findById(ansId);
+    console.log("++++++ in deleteAnswerByID 3" + JSON.stringify(answerObj, null, 5))
+    // deleting associated comments
+    const status_of_comment_deletion = await Comment.deleteMany({ associatedObjectId: ansId });
+    console.log(status_of_comment_deletion);
+    console.log("+++++ Comments deleted?")
+    
     const deletedAnswer = await Answer.findByIdAndDelete(ansId);
+    console.log("+++++++ Answer deleted")
+
     if (!deletedAnswer) {
       return res.status(404).json({ success: false, message: 'Answer not found.' });
     }
+    console.log("About to send success!")
     res.status(200).json({ success: true, data: deletedAnswer });
   } catch (error) {
     console.error('Error deleting answer:', error);
