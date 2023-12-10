@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 const VoteComponent = ({ initialCount, parentId, parent }) => {
     const { loggedIn, user } = useLocationContext();
     const [count, setCount] = useState(initialCount);
-    console.log(loggedIn);
+    // // console.log(loggedIn);
     const toastOptions =  {
         toastId: 'voteError',
         position: "top-center",
@@ -25,18 +25,18 @@ const VoteComponent = ({ initialCount, parentId, parent }) => {
     };
 
     const handleVote = async (type) => {
-        console.log("Handling");
+        // // console.log("Handling");
         if (!checkUserCanVote()) {
-            console.log("here");
+            // // console.log("here");
             toast.error('You need atleast 50 reputation to vote', toastOptions);
             return;
         }
         const vote = { parentId, parent, type };
         try {
             let response = await DataDao.getInstance().vote(vote);
-            console.log(response);
+            // console.log(response);
             if (response.error) {
-                console.log("here too");
+                // // console.log("here too");
                 toast.error('Something went wrong during voting', toastOptions);
                 return;
             }

@@ -10,15 +10,15 @@ function TagBox(props) {
   
 // editing a tag name
 const handleEditClick = () => {
-  console.log("In edit click of tag: " + props.name);
+  // console.log("In edit click of tag: " + props.name);
   setPageAndParams('editTag', props.name);
 };
   
     const handleDeleteClick = async () => {
-      console.log(`Delete clicked for: ${props.name}`);
+      // console.log(`Delete clicked for: ${props.name}`);
       try {
         await dao.deleteTagByName(props.name);
-        console.log("Tag deleted successfully");
+        // console.log("Tag deleted successfully");
         setIsDeleted(true);
         onDeleteSuccess();
       } catch (error) {

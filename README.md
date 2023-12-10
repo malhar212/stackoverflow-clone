@@ -76,7 +76,7 @@ Add design docs in *images/*
             - ~~Clicking on question title takes to edit form pre-filled, user can repost or delete.~~
             - ~~original date does not change in reposting~~
             - ~~reposting updated lastActivity date~~
-            - Deleting question deletes answers and comments and tag if not used in other questions
+            - ~~Deleting question deletes answers and comments~~ and tag if not used in other questions
         - Tags created by the user:
             - ~~Display in same manner as tags page~~
             - ~~User has options to edit or delete tag~~

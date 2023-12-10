@@ -12,8 +12,8 @@ const EditTagPage = () => {
     const fetchTagData = async () => {
         const tagName = params;
         // const tagObject = await dao.getTagByName(tagName);
-        // console.log(JSON.stringify(tagObject, null, 4));
-        console.log("in editTagepage fetch data: " + tagName)
+        // // console.log(JSON.stringify(tagObject, null, 4));
+        // console.log("in editTagepage fetch data: " + tagName)
         setTagName(tagName);
     };
     fetchTagData();

@@ -63,7 +63,7 @@ function AddAnswerPage() {
                 ansDate: new Date()
             };
 
-            console.log("In answers page: " + user.username)
+            // // console.log("In answers page: " + user.username)
             // needs answer and qid as parameters
             await DataDao.getInstance().addAnswer(answer, params.question.qid);
             setPageAndParams('answers', params.question);

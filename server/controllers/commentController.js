@@ -78,7 +78,7 @@ exports.addComment = async (req, res) => {
       return;
     }
     const comment = req.body.comment;
-    console.log(comment);
+    // console.log(comment);
     let associatedObject = undefined;
     if (comment.associatedObjectType === OBJECT_TYPES.QUESTION) {
       associatedObject = await Question.findById(comment.associatedObjectId);
@@ -96,7 +96,7 @@ exports.addComment = async (req, res) => {
       res.status(500).json({ success: false, error: "Valid associated object not found" });
       return;
     }
-    console.log(associatedObject);
+    // console.log(associatedObject);
     if (comment.text === undefined || comment.text.trim().length === 0 || comment.text.trim().length > 140) {
       console.error("Comment text is required and has to be less than 140 characters");
       res.status(500).json({ success: false, error: "Comment text is required and has to be less than 140 characters" });
@@ -118,7 +118,7 @@ exports.addComment = async (req, res) => {
     }
     const formattedComments = formatCommentForUI([savedComment]);
     formattedComments[0].postedBy = req.session.user.username;
-    console.log(formattedComments);
+    // console.log(formattedComments);
     res.status(200).json({ success: true, data: formattedComments });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });

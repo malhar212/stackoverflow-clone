@@ -37,25 +37,25 @@ const ProfilePage = () => {
       switch (dataType) {
         case "profileQuestions": {
           tempData = await dao.fetchUserQuestions(user.username);
-          console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
+          // console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
           tempData.sort((a, b) => new Date(b.asked_date_time) - new Date(a.asked_date_time));
-          // console.log("SORTED Temp data is: " + JSON.stringify(tempData, null, 4))
+          // // console.log("SORTED Temp data is: " + JSON.stringify(tempData, null, 4))
           setSelectedData(tempData)
           break;
         }
         case "profileAnswers": {
           tempData = await dao.fetchUserAnswers();
-          console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
+          // console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
           tempData.sort((a, b) => new Date(b.ans_date_time) - new Date(a.ans_date_time));
-          console.log("SORTED Temp data is: " + JSON.stringify(tempData, null, 4))
+          // console.log("SORTED Temp data is: " + JSON.stringify(tempData, null, 4))
           setSelectedData(tempData)
           break;
         }
         case "profileTags": {
           tempData = await dao.fetchTagsByUsername(user.username);
-          console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
+          // console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
           setSelectedData(tempData)
-          console.log("after set selected data")
+          // console.log("after set selected data")
           break;
         }
         default:
@@ -72,7 +72,7 @@ const ProfilePage = () => {
     return function (event) {
         event.preventDefault();
         // setSearchQuery(" ".repeat(Math.floor(Math.random() * 10)));
-        console.log("in profile page: answer clicked has id: " + answerId)
+        // console.log("in profile page: answer clicked has id: " + answerId)
         setPageAndParams('editAnswer', answerId);
     }
 }
@@ -80,7 +80,7 @@ const ProfilePage = () => {
 function handleQuestionClick(questionId) {
   return function (event) {
     event.preventDefault();
-    console.log("in profile page in handle ANSWER click" + questionId);
+    // console.log("in profile page in handle ANSWER click" + questionId);
     setPageAndParams('editQuestion', questionId)
   }
 }
@@ -116,7 +116,7 @@ function handleQuestionClick(questionId) {
         </ul>
       )}
 
-{/* (console.log(JSON.stringify(selectedData, null, 4))) && */}
+{/* (// console.log(JSON.stringify(selectedData, null, 4))) && */}
       {dataType === 'profileQuestions' && selectedData  && (
         <PaginationComponent
           items={selectedData}

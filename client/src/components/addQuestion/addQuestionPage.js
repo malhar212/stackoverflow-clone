@@ -108,7 +108,7 @@ function AddQuestionsPage() {
 
         // Validate reputation for adding tags
         if (user.reputation <=50) {
-            // console.log(tagsArray)
+            // // console.log(tagsArray)
             isValid = false;
             setFormErrors((prevState) => ({
             ...prevState,

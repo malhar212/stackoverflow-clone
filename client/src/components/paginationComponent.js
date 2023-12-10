@@ -29,7 +29,7 @@ const PaginationComponent = ({ items, itemsPerPage, renderItem }) => {
 
     const currentItems = getPaginatedItems();
 
-    console.log(currentItems);
+    // // console.log(currentItems);
 
     const handlePrevClick = () => {
         setCurrentPage((prevPage) => prevPage - 1);

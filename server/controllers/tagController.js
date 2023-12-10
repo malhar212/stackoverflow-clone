@@ -74,10 +74,10 @@ exports.getTagByName = async (req, res) => {
 
 exports.getTagsByUsername = async (req, res) => {
   const { username } = req.params;
-  console.log(username + "____________")
+  // console.log(username + "____________")
   try {
     const user = await User.findOne({ username });
-    console.log("User object " + JSON.stringify(user, null, 3))
+    // console.log("User object " + JSON.stringify(user, null, 3))
     const tags = await Tag.find({ createdBy: user });
     res.status(200).json({ success: true, data: tags });
   } catch (error) {
@@ -147,7 +147,7 @@ exports.getTagsAndQuestionCount = async (req, res) => {
 
 exports.deleteByName = async (req, res) => {
   try {
-    console.log("In try of deleteTagByNAme +++++ " + req.params.name)
+    // console.log("In try of deleteTagByNAme +++++ " + req.params.name)
     const name = req.params.name;
     if (name === undefined || name.length <= 0) {
       res.status(404).json({ success: false, error: "No tag name provided" });
