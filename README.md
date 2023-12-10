@@ -94,12 +94,69 @@ Bugs:
     - First population of ProfilePage gets error in front-end console but still functions
 
 ## Instructions to setup and run project
+### Navigate to the Project folder in terminal.
+### Server Side (Node.js/Express):
 
-Detailed instructions with all relevant commands go here.
+1. **Navigate to the server folder:**
+   ```bash
+   cd server
+   ```
 
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+3. **Populate the server database:**
+    ```bash
+   node init.js
+   ```
+3. **Run the server:**
+   ```bash
+   node server.js
+   ```
+
+3. **Delete data from the server database:**
+    ```bash
+   node destroy.js
+   ```
+
+### Client Side (React):
+
+1. **Navigate to the client folder:**
+   ```bash
+   cd client
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Run the React app:**
+   ```bash
+   npm start
+   ```
+
+### Running Tests in Cypress:
+
+
+1. **Navigate to the client folder:**
+   ```bash
+   cd testing
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Run the React app:**
+   ```bash
+   npx cypress run --config watchForFileChanges=false
+   ```
 ## Team Member 1 Contribution
 1. Profile Page, Add/Edit/Delete for Questions, Answers, Tags.
-2. Tests for Add/Edit/Delete for Questions, Answers, Tags and Login and Sign-up.
+2. Tests for Add/Edit/Delete for Questions, Answers, Tags.
 5. CSS stylings
 4. Server implementation.
 
@@ -111,6 +168,7 @@ Detailed instructions with all relevant commands go here.
 7. Conditional routing without modifying URL.
 1. Questions, Search, Answers, Comments and Voting functionality.
 1. Questions, Search, Answers, Comments and Voting tests for Guest and LoggedIn user.
+1. Tests for Login and Sign-up and Profile Page
 
 ## Test cases
 
