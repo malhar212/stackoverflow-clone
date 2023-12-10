@@ -3,6 +3,7 @@ const { ObjectId } = require('mongoose').Types;
 const Question = require('../models/questions');
 const Tag = require('../models/tags');
 const User = require("../models/users");
+const Answer = require("../models/answers");
 const BuilderFactory = require('./builders/builderFactory');
 const { validateLinks } = require('./hyperlinkParser');
 
@@ -499,6 +500,7 @@ exports.updateQuestionById = async (req, res) => {
     }
   };
 
+  // deleting a question should also delete its answers, comments, and any tags NOT used by another question
   exports.deleteQuestionById = async (req, res) => {
     const { id } = req.params;
     try {
@@ -506,6 +508,12 @@ exports.updateQuestionById = async (req, res) => {
       if (!deletedQuestion) {
         return res.status(404).json({ success: false, message: 'Question not found.' });
       }
+      // deleting associated comments
+      const commentDeletion = await Comment.deleteMany({ associatedObjectId: id});
+      console.log("Comment deletion: " + commentDeletion)
+      // deleting associated answers
+      const answerDeletion = await Answer.deleteMany({ qid : id})
+      console.log("Answer deletion: " + answerDeletion)
       res.status(200).json({ success: true, data: deletedQuestion });
     } catch (error) {
       console.error('Error deleting question:', error);

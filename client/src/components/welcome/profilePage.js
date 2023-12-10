@@ -36,7 +36,7 @@ const ProfilePage = () => {
       let tempData;
       switch (dataType) {
         case "profileQuestions": {
-          tempData = await dao.fetchUserQuestions();
+          tempData = await dao.fetchUserQuestions(user.username);
           console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
           tempData.sort((a, b) => new Date(b.asked_date_time) - new Date(a.asked_date_time));
           // console.log("SORTED Temp data is: " + JSON.stringify(tempData, null, 4))

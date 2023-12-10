@@ -2,6 +2,7 @@ const User = require("../models/users");
 
 const isLoggedIn = async (req, res, next) => {
   // Check if the session contains information about the logged-in user
+  console.log("+++ ISLOGGEDIN MIDDLEWARE ++++ ")
   if (req.session && req.session.user && req.session.user.uid && req.session.user.uid.trim().length > 0) {
     try {
       // Find a user by their ID

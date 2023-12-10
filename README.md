@@ -46,8 +46,8 @@ Add design docs in *images/*
     - ~~User who posted the question can mark one of the answers as accepted~~
     - ~~Accepted answer should appear at top, all others appear in newest order~~
 1. New Answer:
-    - Redirect to answers page
-    - update question's lastActivity date
+    - ~~Redirect to answers page~~
+    - ~~update question's lastActivity date~~
 1. Comments:
     - ~~Most recent comment displayed on top~~
     - ~~Comments displayed 3 at a time~~
@@ -75,7 +75,7 @@ Add design docs in *images/*
             - ~~Display 5 at a time, prev and next button like homepage~~
             - ~~Clicking on question title takes to edit form pre-filled, user can repost or delete.~~
             - ~~original date does not change in reposting~~
-            - reposting updated lastActivity date
+            - ~~reposting updated lastActivity date~~
             - Deleting question deletes answers and comments and tag if not used in other questions
         - Tags created by the user:
             - ~~Display in same manner as tags page~~

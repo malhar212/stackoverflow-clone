@@ -115,10 +115,10 @@ export class DataDao {
     }
   }
 
-  async fetchUserQuestions() {
+  async fetchUserQuestions(username) {
     try {
       console.log("In fetchUserQuestions 1")
-      const response = await this.instance.get(`questions/fetchUserQuestions`);
+      const response = await this.instance.get(`questions/user/${username}/questions`);
       console.log("In fetchUserQuestions 2")
       const { success, data } = response.data;
       if (success) {
