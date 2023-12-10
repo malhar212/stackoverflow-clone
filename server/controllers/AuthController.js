@@ -3,23 +3,27 @@ const User = require('../models/users');
 
 exports.login = async (req, res) => {
   try {
+    console.log("AUTH CONTROLLER LOGIN")
     const { username, password } = req.body;
-
+    console.log("AUTH CONTROLLER LOGIN 2")
     // Find the user by username
     const user = await User.findOne({ username });
-
+    console.log("AUTH CONTROLLER LOGIN 3")
     // Check if the user exists
     if (!user) {
       return res.status(401).json({ success: false, message: 'Invalid credentials' });
     }
-
+    console.log("AUTH CONTROLLER LOGIN 4")
     // Compare the provided password with the hashed password in the database
     const passwordMatch = await bcrypt.compare(password, user.password);
-
+    console.log("AUTH CONTROLLER LOGIN 5")
     if (passwordMatch) {
+      console.log("AUTH CONTROLLER LOGIN 6")
       // Passwords match, login successful
       console.log(user)
+      console.log("AUTH CONTROLLER LOGIN 7")
       req.session.user = { username: user.username, uid: user._id };
+      console.log("AUTH CONTROLLER LOGIN 8")
       return res.status(200).json({ success: true, data : { username : user.username, reputation : user.reputation, createdAt : user.createdAt } });
     } else {
       // Passwords don't match, login failed

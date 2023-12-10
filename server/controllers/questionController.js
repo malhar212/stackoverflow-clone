@@ -4,6 +4,7 @@ const Question = require('../models/questions');
 const Tag = require('../models/tags');
 const User = require("../models/users");
 const Answer = require("../models/answers");
+const Comment = require("../models/comments");
 const BuilderFactory = require('./builders/builderFactory');
 const { validateLinks } = require('./hyperlinkParser');
 
@@ -519,19 +520,26 @@ exports.updateQuestionById = async (req, res) => {
     const { id } = req.params;
     const { text } = req.body;
     try {
-      const updatedQuestion = await Question.findByIdAndUpdate(id, { $set: { text: text } }, { new: true });
-      if (!updatedQuestion) {
+        console.log("UPDATEQUESTIONBYID in try")
+        const updatedQuestion = await Question.findByIdAndUpdate(id, { $set: { text: text, last_activity: Date.now() }}, { new: true });
+        console.log("AFTER UPDATED QUESTION: " + JSON.stringify(updatedQuestion, null, 4))
+        if (!updatedQuestion) {
         return res.status(404).json({ success: false, message: 'Question not found.' });
       }
-      await Question.findByIdAndUpdate(updatedQuestion.qid, { $set: { last_activity : Date.now}}, { new: true });
+    else {
+      // await Question.findByIdAndUpdate(updatedQuestion.qid, { $set: { last_activity : Date.now}}, { new: true });
       res.status(200).json({ success: true, data: updatedQuestion });
+    }
     } catch (error) {
       console.error('Error updating question:', error);
       res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
   };
 
-  // deleting a question should also delete its answers, comments, and any tags NOT used by another question
+  // deleting a question should also...
+  // delete its answers
+  // comments
+  // any tags NOT used by another question
   exports.deleteQuestionById = async (req, res) => {
     const { id } = req.params;
     try {

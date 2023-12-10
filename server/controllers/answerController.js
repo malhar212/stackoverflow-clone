@@ -139,27 +139,34 @@ exports.fetchUserAnswers = async (req, res) => {
 };
 
 exports.addAnswer = async (req, res) => {
-  console.log("++++++++ADDANSWER 1" + (JSON.stringify(req.body, null, 4)))
+  console.log("++++++++ADD ANSWER 1" + (JSON.stringify(req.body, null, 4)))
   try {
     if (req.body === undefined || req.body.answer === undefined) {
-      console.log("++++++++ADDANSWER 2" + req.body.answer)
+      console.log("++++++++ADD ANSWER 2" + req.body.answer)
       res.status(500).json({ success: false, error: "Answer body not provided" });
       return;
     }
     if (req.body.qid === undefined || req.body.qid.trim().length === 0) {
-      console.log("++++++++ADDANSWER 3" + req.body.qid)
+      console.log("++++++++ADD ANSWER 3" + req.body.qid)
       res.status(500).json({ success: false, error: "Associated Question ID not provided" });
       return;
     }
     console.log("++++++++ BEFORE GETTING QUESTION ")
-    const question = await Question.findById(req.body.qid);
-    console.log("++++++++ AFTER GETTING QUESTION " + (JSON.stringify(question, null, 4)))
-    if (question === null) {
-      console.log("+++++QUESTION IS NULL!")
-      res.status(500).json({ success: false, error: "No question for provided Question ID" });
+
+    try {
+      const question = await Question.findById(req.body.qid);
+      console.log("++++++++ AFTER GETTING QUESTION " + (JSON.stringify(question, null, 4)))
+      if (!question) {
+        res.status(404).json({ success: false, error: "No question found for the provided Question ID" });
+        return;
+      }
+    } catch (error) {
+      res.status(500).json({ success: false, error: "Error while retrieving the question" });
       return;
     }
-    console.log("+++++FORMDATA ")
+
+
+    console.log("+++++ADD ANSWER 4")
     console.log("++++++ JSON: " + JSON.stringify(req.body.answer, null, 4))
 
     const formData = req.body.answer;
@@ -174,28 +181,22 @@ exports.addAnswer = async (req, res) => {
     const username = formData.ans_by
     // finding the user object from database based on username
     const user = await User.findOne({ username });
-    // console.log("++++++++ADDANSWER 5" + (JSON.stringify(user, null, 4)))
+    console.log("++++++++ADD ANSWER 5" + (JSON.stringify(user, null, 4)))
     const answerBuilder = new BuilderFactory().createBuilder({ builderType: 'answer' });
-    // console.log("+++++++++ADDANSWER 6 ")
-    const answer = answerBuilder.setText(formData.text).setAnsBy(user).setQid(question).setAnsDate(new Date()).build();
-    // console.log("+++++++++ADDANSWER 7 ") 
-    // console.log("+++++++++ANSWER.STRINGY: " + (JSON.stringify(answer, null, 4)))
+    console.log("+++++++++ADD ANSWER 6 ")
+    const answer = answerBuilder.setText(formData.text).setAnsBy(user).setQid(await Question.findById(req.body.qid)).setAnsDate(new Date()).build();
+    console.log("+++++++++ADD ANSWER 7: " + (JSON.stringify(answer, null, 4)))
     try {
       var savedAnswer = await answer.save();
     } catch (err) {
       console.log(err)
       return;
     }
-    // console.log("+++++++++ADDANSWER 8 ") 
-    // console.log("++++ " + question.answers);
-    // console.log("=====" + JSON.stringify(question.answers))
-    question.answers.push(savedAnswer);
-    // console.log("+++++++++ADDANSWER 9 ") 
-    await question.save();
-    // console.log("+++++++++ADDANSWER 10 ") 
-
+    console.log("+++++++++ADD ANSWER 8 ") 
+    
     // updates the answer's Question so the last_activity shows the answer being created
-    await Question.findByIdAndUpdate(answer.qid, { $set: { last_activity : Date.now}}, { new: true });
+    await Question.findByIdAndUpdate(answer.qid, { $set: { last_activity: Date.now() } }, { new: true });
+    console.log("+++++++++ADD ANSWER 9 ");
     res.status(200).json({ success: true, data: savedAnswer });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
@@ -232,7 +233,7 @@ exports.updateAnswerById = async (req, res) => {
       return res.status(404).json({ success: false, message: 'Answer not found.' });
     }
     // The updated answer also updates the "last_activity" of the question it's associated with 
-    await Question.findByIdAndUpdate(updatedAnswer.qid, { $set: { last_activity : Date.now}}, { new: true });
+    await Question.findByIdAndUpdate(updatedAnswer.qid, { $set: { last_activity: Date.now() }}, { new: true });
     res.status(200).json({ success: true, data: updatedAnswer });
   } catch (error) {
     console.error('Error updating answer:', error);

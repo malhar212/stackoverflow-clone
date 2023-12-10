@@ -179,7 +179,6 @@ async updateQuestionById(questionId, { text: questionText }) {
     const response = await this.instance.put(`/questions/${questionId}/update`, { text: questionText });
     console.log("got response? " + response.data)
     const { success, data } = response.data;
-
     if (success) {
       console.log('Question updated successfully:', data);
       return data;
@@ -335,7 +334,7 @@ async updateAnswerById(ansId, { text: answerText }) {
   async addAnswer(answer, qid) {
     try {
       console.log(JSON.stringify(answer, null, 4));
-      console.log("IN ADD ANSWER DAO 1 ")
+      console.log("IN ADD ANSWER DAO 1 " + qid)
       const response = await this.instance.post('answers/add', { answer, qid });
       console.log("IN ADD ANSWER DAO 2 ")
       const { success, data } = response.data;
@@ -381,7 +380,7 @@ async updateAnswerById(ansId, { text: answerText }) {
     return [];
   }
 
-    // Get a tag by ID
+    // Get Tags by ID
     async getTagsById(tagIds) {
       try {
         const response = await this.instance.get(`tags`, {
@@ -550,10 +549,11 @@ async updateTagByName(tagName, { name : newTagName }) {
   async login(credentials) {
     try {
       const response = await this.instance.post('auth/login', credentials);
+      console.log(JSON.stringify(response.data, null, 3))
       const { success, data } = response.data;
       if (success) {
-        console.log(success, data);
-        return { success, data }; // Return as an object
+        console.log("In login: " + success, data);
+        return { success, data };
       }
     } catch (error) {
       console.error('Error logging in:', error);
