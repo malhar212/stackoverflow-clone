@@ -8,8 +8,8 @@ router.get('/filterByIds', answerController.filterAnswersBasedOnAnsIds);
 router.get('/question/:id', answerController.filterAnswersBasedOnQuestionId);
 router.post('/add', isLoggedIn, answerController.addAnswer);
 router.get('/fetchUserAnswers', answerController.fetchUserAnswers);
-router.put('/:ansId', answerController.updateAnswerById);
-router.delete('/:ansId', answerController.deleteAnswerById);
+router.put('/:ansId', isLoggedIn, answerController.updateAnswerById);
+router.delete('/:ansId', isLoggedIn, answerController.deleteAnswerById);
 
 
 module.exports = router;
