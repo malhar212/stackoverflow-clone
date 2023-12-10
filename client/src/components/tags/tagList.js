@@ -10,6 +10,7 @@ function createTag(tag, editDeleteOption, handleTagDelete) {
       name={tag.name}
       questionCount={tag.questionCount}
       editDeleteOption={editDeleteOption}
+      editable={tag.editable}
       onDeleteSuccess={handleTagDelete}
     />
   );

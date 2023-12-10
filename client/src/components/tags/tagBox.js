@@ -39,10 +39,10 @@ const handleEditClick = () => {
         {editDeleteOption ? (
           <div>
             {editDeleteOption && (
-              <button onClick={() => handleDeleteClick('delete')}>Delete</button>
+              <button onClick={() => handleDeleteClick('delete')} disabled={!props.editable}>Delete</button>
             )}
             {editDeleteOption && (
-              <button onClick={() => handleEditClick('edit')}>Edit</button>
+              <button onClick={() => handleEditClick('edit')} disabled={!props.editable}>Edit</button>
             )}
           </div>
         ) : (
