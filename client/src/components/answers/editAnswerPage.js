@@ -25,7 +25,7 @@ const EditAnswerPage = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     // params is the answerID, the text from the form is answerText
-    await dao.updateAnswerById(params, { text: answerText });
+    await dao.updateAnswerById(params, { text: answerText.trim() });
 
     // after submitting update to answer, redirects to 
     setPageAndParams('profile');
