@@ -4,6 +4,7 @@ import MainContent from '../mainContent.js';
 import './stylesheets/profilePage.css'
 import '../questions/questionList.js'
 import { DataDao } from '../../models/ModelDAO';
+import PaginationComponent from '../paginationComponent.js';
 import TagsList from '../tags/tagList.js';
 
 const ProfilePage = () => {
@@ -14,7 +15,7 @@ const ProfilePage = () => {
   const [selectedData, setSelectedData] = useState();
   // the selection of which data (questions, answeers or tags) should be on the page
   const [dataType, setDataType] = useState();
-  const [itemsToShow, setItemsToShow] = useState(5);
+  const itemsToShow = 5;
 
 
   // depending on button clicked will set selectedData to questions, answers or tags of the user
@@ -35,26 +36,26 @@ const ProfilePage = () => {
       let tempData;
       switch (dataType) {
         case "profileQuestions": {
-          tempData = await dao.fetchUserQuestions();
-          console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
+          tempData = await dao.fetchUserQuestions(user.username);
+          // console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
           tempData.sort((a, b) => new Date(b.asked_date_time) - new Date(a.asked_date_time));
-          // console.log("SORTED Temp data is: " + JSON.stringify(tempData, null, 4))
+          // // console.log("SORTED Temp data is: " + JSON.stringify(tempData, null, 4))
           setSelectedData(tempData)
           break;
         }
         case "profileAnswers": {
           tempData = await dao.fetchUserAnswers();
-          console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
+          // console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
           tempData.sort((a, b) => new Date(b.ans_date_time) - new Date(a.ans_date_time));
-          console.log("SORTED Temp data is: " + JSON.stringify(tempData, null, 4))
+          // console.log("SORTED Temp data is: " + JSON.stringify(tempData, null, 4))
           setSelectedData(tempData)
           break;
         }
         case "profileTags": {
           tempData = await dao.fetchTagsByUsername(user.username);
-          console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
+          // console.log("Temp data is: " + JSON.stringify(tempData, null, 4))
           setSelectedData(tempData)
-          console.log("after set selected data")
+          // console.log("after set selected data")
           break;
         }
         default:
@@ -71,7 +72,7 @@ const ProfilePage = () => {
     return function (event) {
         event.preventDefault();
         // setSearchQuery(" ".repeat(Math.floor(Math.random() * 10)));
-        console.log("in profile page: answer clicked has id: " + answerId)
+        // console.log("in profile page: answer clicked has id: " + answerId)
         setPageAndParams('editAnswer', answerId);
     }
 }
@@ -79,14 +80,11 @@ const ProfilePage = () => {
 function handleQuestionClick(questionId) {
   return function (event) {
     event.preventDefault();
-    console.log("in profile page in handle ANSWER click" + questionId);
+    // console.log("in profile page in handle ANSWER click" + questionId);
     setPageAndParams('editQuestion', questionId)
   }
 }
 
-const handleShowMoreClick = () => {
-  setItemsToShow(itemsToShow + 5); // Increase the number of items to show
-};
 
 // for upper banner w/ welcome and user stats
   // const createdAt = user.createdAt;
@@ -118,28 +116,29 @@ const handleShowMoreClick = () => {
         </ul>
       )}
 
-      {dataType === 'profileQuestions' && selectedData && (
-        <ul>
-            {selectedData.slice(0, itemsToShow).map((question) => (
-          <li key={question.id}>
-          <a href='' title={question.title} onClick={handleQuestionClick(question._id)}>
-          {question.title && question.title.slice(0, 50)} {question.title && question.title.length > 50 ? '...' : ''}
-          </a>
-          </li>
-          
-      ))}
-        </ul>
-    )}
+{/* (// console.log(JSON.stringify(selectedData, null, 4))) && */}
+      {dataType === 'profileQuestions' && selectedData  && (
+        <PaginationComponent
+          items={selectedData}
+          itemsPerPage={itemsToShow}
+          renderItem={(question) => (
+            <li key={question.id}>
+              <a href='' title={question.title} onClick={handleQuestionClick(question._id)}>
+                {question.title && question.title.slice(0, 50)} {question.title && question.title.length > 50 ? '...' : ''}
+              </a>
+            </li>
+          )}
+        />
+      )}
 
 
       {dataType === "profileTags" && selectedData && (
           <TagsList selectedData={selectedData} />
       )}
               </div>
-              {/* Show more button */}
-              {selectedData && itemsToShow < selectedData.length && (
-          <button onClick={handleShowMoreClick}>Show More</button>
-        )}
+
+
+
     </MainContent>
   );
 

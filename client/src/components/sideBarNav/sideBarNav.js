@@ -18,8 +18,8 @@ function SideNavBar() {
     page == "tags" ? tagsStyle = "active" : tagsStyle = "";
     page == "profile" ? profileStyle = "active" : profileStyle = "";
 
-    // console.log("Page is: ", page);
-    // console.log("isLoggedIn: ", loggedIn) 
+    // // console.log("Page is: ", page);
+    // // console.log("isLoggedIn: ", loggedIn) 
     
     function handleClick(newpage) {
         return function (event) {

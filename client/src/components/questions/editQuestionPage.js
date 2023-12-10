@@ -8,18 +8,18 @@ const EditQuestionPage = () => {
   const { params, setPageAndParams } = useLocationContext();
   const [questionText, setQuestionText] = useState('');
 
-  console.log("in edit QUESTION page with params: " + params)
+  // console.log("in edit QUESTION page with params: " + params)
 
   useEffect(() => {
     const fetchQuestionData = async () => {
       const questionId = params; 
       const existingQuestionDataList = await dao.getQuestionById(questionId);
       const existingQuestionData = existingQuestionDataList[0];
-      console.log(JSON.stringify(existingQuestionData, null, 4))
-      console.log("now the text property:")
-      console.log(JSON.stringify(existingQuestionData.text, null, 4))
+      // console.log(JSON.stringify(existingQuestionData, null, 4))
+      // console.log("now the text property:")
+      // console.log(JSON.stringify(existingQuestionData.text, null, 4))
       // Update Question Text
-      setQuestionText(existingQuestionData.text);
+      setQuestionText(existingQuestionData.text.trim());
     };
     fetchQuestionData();
   }, [params]);
@@ -27,7 +27,7 @@ const EditQuestionPage = () => {
   const handleFormSubmit = async (event) => {
     event.preventDefault();
     // params is the answerID, the text from the form is answerText
-    await dao.updateQuestionById(params, { text: questionText });
+    await dao.updateQuestionById(params, { text: questionText.trim() });
 
     // after submitting update to answer, redirects to 
     setPageAndParams('profile');

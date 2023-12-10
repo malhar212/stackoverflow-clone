@@ -3,6 +3,8 @@ const { ObjectId } = require('mongoose').Types;
 const Question = require('../models/questions');
 const Tag = require('../models/tags');
 const User = require("../models/users");
+const Answer = require("../models/answers");
+const Comment = require("../models/comments");
 const BuilderFactory = require('./builders/builderFactory');
 const { validateLinks } = require('./hyperlinkParser');
 
@@ -41,15 +43,15 @@ exports.getAllQuestions = async (req, res) => {
         const formattedQuestions = formatQuestionsForUI(questions);
         res.status(200).json({ success: true, data: formattedQuestions });
     } catch (err) {
-        console.log(err.message);
+        // console.log(err.message);
         res.status(500).json({ success: false, error: err.message });
     }
 };
 
 exports.fetchUserQuestions = async (req, res) => {
-    console.log("+++++IN FETCH USER QUESITON SBEFORE TRYYYY++++++++")
+    // console.log("+++++IN FETCH USER QUESITON SBEFORE TRYYYY++++++++")
     try {
-      console.log("++====FETCH USER QUESTIONS", req.session.user);
+      // console.log("++====FETCH USER QUESTIONS", req.session.user);
       const username = req.session.user?.username; // Use optional chaining for safer access
   
       if (!username) {
@@ -59,14 +61,15 @@ exports.fetchUserQuestions = async (req, res) => {
       try {
         // get the user object based on username
         const user = await User.findOne({ username });
+        // const user = req.user;
   
         if (!user) {
           return res.status(404).json({ success: false, error: "User not found" });
         }
   
         const questions = await Question.find({ 'asked_by': user._id }).sort({ ask_date_time: -1 });
-        console.log("222222222++====+FETCH USER QUESTIONS=");
-        console.log(questions);
+        // console.log("222222222++====+FETCH USER QUESTIONS=");
+        // console.log(questions);
   
         return res.status(200).json({ success: true, data: questions });
       } catch (error) {
@@ -117,11 +120,11 @@ exports.sortQuestionsByNewest = async (req, res) => {
                     "answers",
             },
         ]);
-        // console.log(questions);
+        // // console.log(questions);
         const formattedQuestions = formatQuestionsForUI(questions);
         res.status(200).json({ success: true, data: formattedQuestions });
     } catch (err) {
-        console.log(err);
+        // console.log(err);
         res.status(500).json({ success: false, error: err.message });
     }
 };
@@ -310,7 +313,7 @@ exports.search = async (req, res) => {
                     $sort: { ask_date_time: -1 }
                 });
             }
-            // console.log(aggregation);
+            // // console.log(aggregation);
             const questions = await Question.aggregate(aggregation);
             const formattedQuestions = formatQuestionsForUI(questions);
             res.status(200).json({ success: true, data: formattedQuestions });
@@ -358,9 +361,9 @@ exports.getQuestionById = async (req, res) => {
                 },
               ]
         );
-        // console.log(question);
+        // // console.log(question);
         const formattedQuestions = formatQuestionsForUI(question);
-        // console.log(formattedQuestions);
+        // // console.log(formattedQuestions);
         res.status(200).json({ success: true, data: formattedQuestions });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
@@ -379,7 +382,7 @@ exports.incrementViewCount = async (req, res) => {
                 views: 1
             }
         }).then(() => {
-            console.log("Incremented view count");
+            // console.log("Incremented view count");
         })
             .catch(error => {
                 console.error("Error in incrementing view count: ", error.message);
@@ -393,32 +396,26 @@ exports.incrementViewCount = async (req, res) => {
 // '/add'
 exports.addNewQuestion = async (req, res) => {
     try {
-        console.log("+++++++++++ 1")
         if (req.body === undefined || req.body.question === undefined) {
-            console.log("+++++++++++ 2")
             res.status(500).json({ success: false, error: "Question body not provided" });
             return;
         }
-        console.log("+++++++++++ 3")
         const formData = req.body.question;
-        console.log("+++++++++++ 4 "  + formData)
         const { isValid, error } = validateQuestion(formData);
-        console.log("+++++++++++ 5" + isValid + error)
         if (!isValid) {
-            console.log("+++++++++++ 6")
             res.status(500).json({ success: false, error });
             return;
         }
-        console.log("+++++++++++ 7")
         // extracting username from formData
         const username = formData.askedBy
-        console.log("+++++++++++ 8")
         // finding the user object from database based on username
         const user = await User.findOne({ username });
-        console.log("+++++++++++ 9")
+
+        // const user = req.user;
         let tagIds = [];
+        // if there are tags to be added to this question
         if (formData.tags !== undefined && formData.tags.length > 0) {
-            console.log("+++++++++++ 10")
+            console.log("++++there are tags to be created +++++++ ")
             formData.tags = removeDuplicatesIgnoreCase(formData.tags);
             const result = await Tag.aggregate([
                 {
@@ -449,32 +446,56 @@ exports.addNewQuestion = async (req, res) => {
                     },
                 },
             ]);
-            console.log("+++++++++++ 11")
             if (result !== undefined && result[0] !== undefined) {
+            
                 tagIds = tagIds.concat(result[0].matchedTags.map((obj) => obj._id));
                 const tagsToAdd = [];
+            
+                // Creating tags for unmatchedTags
                 result[0].unmatchedTags.forEach((tagName) => {
-                    const tagBuilder = new BuilderFactory().createBuilder({ builderType: 'tag' });
-                    tagsToAdd.push(tagBuilder.setName(tagName).build());
-                })
-                const insertedTags = await Tag.insertMany(tagsToAdd);
-                tagIds = tagIds.concat(insertedTags);
-            }
-            else {
-                const tagsToAdd = [];
-                formData.tags.forEach((tagName) => {
+                    console.log("Creating tag for unmatched tag:", tagName);
                     const tagBuilder = new BuilderFactory().createBuilder({ builderType: 'tag' });
                     tagsToAdd.push(tagBuilder.setName(tagName).setCreatedBy(user).build());
-                })
+                });
+            
+                console.log("Tags to add:", tagsToAdd);
+            
+                if (tagsToAdd.length > 0) {
+                    try {
+                        const insertedTags = await Tag.insertMany(tagsToAdd);
+                        // console.log("Inserted Tags:", insertedTags);
+                    
+                        const insertedTagIds = insertedTags.map(tag => tag._id);
+                        tagIds = tagIds.concat(insertedTagIds);
+                    } catch (error) {
+                        console.error("Error inserting tags:", error);
+                    }
+                } 
+            } else {
+                // console.log("______ in the else");
+                const tagsToAdd = [];
+            
+                formData.tags.forEach((tagName) => {
+                    // console.log("Creating tag for tag:", tagName);
+                    const tagBuilder = new BuilderFactory().createBuilder({ builderType: 'tag' });
+                    tagsToAdd.push(tagBuilder.setName(tagName).setCreatedBy(user).build());
+                });
+            
+                // console.log("Tags to add:", tagsToAdd);
+            
                 const insertedTags = await Tag.insertMany(tagsToAdd);
+                // console.log("Inserted Tags:", insertedTags);
+            
                 tagIds = tagIds.concat(insertedTags);
-            }
+            } 
         }
+        console.log("Tags to add: ", tagIds);
         console.log("++++++++++++++ 12")
         const qBuilder = new BuilderFactory().createBuilder({ builderType: 'question' });
-        console.log("++++++++++++++ 13")
+        // console.log("++++++++++++++ 13")
         const question = qBuilder.setTitle(formData.title).setText(formData.text).setTagIds(tagIds).setAskedBy(user).setAskDate(new Date()).build();
         console.log("++++++++++++++ 14")
+        console.log(JSON.stringify(question, null, 4))
         const savedQuestion = await question.save();
         res.status(200).json({ success: true, data: savedQuestion });
     } catch (err) {
@@ -483,21 +504,30 @@ exports.addNewQuestion = async (req, res) => {
 };
 
 exports.updateQuestionById = async (req, res) => {
-    console.log("+++UPDATE QUESTION BY ID!!!!!!!!!!!!!!!!!!!")
+    // console.log("+++UPDATE QUESTION BY ID!!!!!!!!!!!!!!!!!!!")
     const { id } = req.params;
     const { text } = req.body;
     try {
-      const updatedQuestion = await Question.findByIdAndUpdate(id, { $set: { text: text } }, { new: true });
-      if (!updatedQuestion) {
+        // console.log("UPDATEQUESTIONBYID in try")
+        const updatedQuestion = await Question.findByIdAndUpdate(id, { $set: { text: text, last_activity: Date.now() }}, { new: true });
+        // console.log("AFTER UPDATED QUESTION: " + JSON.stringify(updatedQuestion, null, 4))
+        if (!updatedQuestion) {
         return res.status(404).json({ success: false, message: 'Question not found.' });
       }
+    else {
+      // await Question.findByIdAndUpdate(updatedQuestion.qid, { $set: { last_activity : Date.now}}, { new: true });
       res.status(200).json({ success: true, data: updatedQuestion });
+    }
     } catch (error) {
       console.error('Error updating question:', error);
       res.status(500).json({ success: false, message: 'Internal Server Error' });
     }
   };
 
+  // deleting a question should also...
+  // delete its answers
+  // comments
+  // any tags NOT used by another question
   exports.deleteQuestionById = async (req, res) => {
     const { id } = req.params;
     try {
@@ -505,6 +535,12 @@ exports.updateQuestionById = async (req, res) => {
       if (!deletedQuestion) {
         return res.status(404).json({ success: false, message: 'Question not found.' });
       }
+      // deleting associated comments
+      const commentDeletion = await Comment.deleteMany({ associatedObjectId: id});
+      // console.log("Comment deletion: " + commentDeletion)
+      // deleting associated answers
+      const answerDeletion = await Answer.deleteMany({ qid : id})
+      // console.log("Answer deletion: " + answerDeletion)
       res.status(200).json({ success: true, data: deletedQuestion });
     } catch (error) {
       console.error('Error deleting question:', error);

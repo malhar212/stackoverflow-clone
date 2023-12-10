@@ -21,7 +21,7 @@ function AnswersList({ qid, selectedAnswers, setAnswers, showAcceptButton }) {
     getAnswers();
   }, []);
 
-  console.log(showAcceptButton);
+  // // console.log(showAcceptButton);
   if (selectedAnswers !== undefined && selectedAnswers[0] !== undefined && selectedAnswers[0].accepted === true) {
     showAcceptButton = false;
   }

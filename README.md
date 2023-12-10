@@ -46,8 +46,8 @@ Add design docs in *images/*
     - ~~User who posted the question can mark one of the answers as accepted~~
     - ~~Accepted answer should appear at top, all others appear in newest order~~
 1. New Answer:
-    - Redirect to answers page
-    - update question's lastActivity date
+    - ~~Redirect to answers page~~
+    - ~~update question's lastActivity date~~
 1. Comments:
     - ~~Most recent comment displayed on top~~
     - ~~Comments displayed 3 at a time~~
@@ -67,31 +67,32 @@ Add design docs in *images/*
     - ~~User Information: No. days since user joined, reputation points~~
     - Menu: 
         - ~~Link to view all questions of user~~
-        - Link to view all tags of user
+        - ~~Link to view all tags of user~~
         - ~~Link to view all answers of user~~
     - Sub views, show/hide based on link clicked:
         - Questions posted by the user:
             - ~~Display question titles~~
-            - Display 5 at a time, prev and next button like homepage
+            - ~~Display 5 at a time, prev and next button like homepage~~
             - ~~Clicking on question title takes to edit form pre-filled, user can repost or delete.~~
             - ~~original date does not change in reposting~~
-            - reposting updated lastActivity date
-            - Deleting question deletes answers and comments and tag if not used in other questions
+            - ~~reposting updated lastActivity date~~
+            - ~~Deleting question deletes answers and comments~~ and tag if not used in other questions
         - Tags created by the user:
             - ~~Display in same manner as tags page~~
-            - User has options to edit or delete tag
+            - ~~User has options to edit or delete tag~~
             - Editing/Deleting tag is allowed only if it is not in use by other users. It is allowed if it's used by only this user.
         - Answers posted by the user:
             - ~~All answers displayed as links of 50 characters~~
             - ~~Newest order~~
             - ~~licking link shows answer form pre-filled, user can repost or delete~~
-            - Deleting answer deletes it's votes and comments
-            - Deleting answer has no effect on reputation
-            - Repost/Delete of answer makes question active. i.e. update lastActivity date
+            - ~~Deleting answer deletes it's votes and comments~~
+            - ~~Deleting answer has no effect on reputation~~
+            - ~~Repost/Delete of answer makes question active. i.e. update lastActivity date~~
 
 Bugs:
-    - When new question is created with no tags, all tags are added to it
+    - ~~When new question is created with no tags, all tags are added to it~~
     - First population of ProfilePage gets error in front-end console but still functions
+    - ~~whietspace is saved in new Answers~~
 
 ## Instructions to setup and run project
 ### Navigate to the Project folder in terminal.

@@ -7,7 +7,7 @@ const parenthesisRegex = /\((https:\/\/.+)\)$/gm;
 // Parse hyperlinks in answer and question text
 function HyperLinkParser({ text }) {
     const matches = text.match(linkPattern);
-    // console.log(text);
+    // // console.log(text);
     if (matches) {
         const textParts = text.split(linkPattern);
         const returnParts = textParts.map(

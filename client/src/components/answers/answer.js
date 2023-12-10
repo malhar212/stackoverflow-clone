@@ -8,7 +8,7 @@ import { DataDao } from '../../models/ModelDAO';
 
 // Individual Answer in Answer list
 function Answer({answer, showAcceptButton}) {
-    console.log(showAcceptButton);
+    // // console.log(showAcceptButton);
     const acceptAnswer = (aid) => {
         // params is the answerID
         return async function () {

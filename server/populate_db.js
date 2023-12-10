@@ -82,7 +82,7 @@ const populate = async () => {
   await questionCreate('android studio save string shared preference, start activity and load the saved string', 'I am using bottom navigation view but am using custom navigation, so my fragments are not recreated every time i switch to a different view. I just hide/show my fragments depending on the icon selected. The problem i am facing is that whenever a config change happens (dark/light theme), my app crashes. I have 2 fragments in this activity and the below code is what i am using to refrain them from being recreated.', [t3, t4, t2], [], userTwo, new Date('2023-10-01T11:24:30'), 121);
   
   // order for answer params (text, qid, ans_by, ans_date_time, votes) 
-  await answerCreate('answer text', '6570eab3f116c7ea3f3548cc', userOne, new Date('2023-11-25T08:24:00'));
+  // await answerCreate('answer text', '6570eab3f116c7ea3f3548cc', userOne, new Date('2023-11-25T08:24:00'));
 
   // let a0 = await answerCreate('answer text', userOne, new Date('2023-11-25T08:24:00'));
   // let a1 = await answerCreate('React Router is mostly a wrapper around the history library. history handles interaction with the browser\'s window.history for you with its browser and hash histories. It also provides a memory history which is useful for environments that don\'t have a global history. This is particularly useful in mobile app development (react-native) and unit testing with Node.', userOne, new Date('2023-11-20T03:24:42'));

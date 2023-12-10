@@ -115,14 +115,11 @@ export class DataDao {
     }
   }
 
-  async fetchUserQuestions() {
+  async fetchUserQuestions(username) {
     try {
-      console.log("In fetchUserQuestions 1")
-      const response = await this.instance.get(`questions/fetchUserQuestions`);
-      console.log("In fetchUserQuestions 2")
+      const response = await this.instance.get(`questions/user/${username}/questions`);
       const { success, data } = response.data;
       if (success) {
-        console.log("Response is... " + JSON.stringify(response.data, null, 4))
         return data;
       }
     } catch (error) {
@@ -175,11 +172,8 @@ export class DataDao {
 // await dao.updateQuestionById(params, { text: questionText });
 async updateQuestionById(questionId, { text: questionText }) {
   try {
-    console.log("in update q by id: " + JSON.stringify(questionId, null, 4));
     const response = await this.instance.put(`/questions/${questionId}/update`, { text: questionText });
-    console.log("got response? " + response.data)
     const { success, data } = response.data;
-
     if (success) {
       console.log('Question updated successfully:', data);
       return data;
@@ -198,12 +192,8 @@ async updateQuestionById(questionId, { text: questionText }) {
   // Add new Question
   async addNewQuestion(question) {
     try {
-      console.log("ModelDAO addNewQuestion: ");
-      console.log("NEW Q: " + JSON.stringify(question, null, 4));
       const response = await this.instance.post('questions/add', { question });
-      console.log("++++++++++modelDAO addNewQuestion question" + JSON.stringify(question, null, 5))
       const { success, data } = response.data;
-      console.log("++++++++++modelDAO addNewQuestion resp.data:" + JSON.stringify(response.data, null, 4))
       if (success)
         return data;
     } catch (error) {
@@ -231,7 +221,7 @@ async updateQuestionById(questionId, { text: questionText }) {
       const response = await this.instance.delete(`/questions/${questionId}`);
       const { success, data } = response.data;
       if (success) {
-        console.log('Question deleted successfully:', data);
+        // console.log('Question deleted successfully:', data);
         return data;
       } else {
         console.error('Failed to delete question:', data.message);
@@ -279,12 +269,9 @@ async updateQuestionById(questionId, { text: questionText }) {
   // Get answers for the question
   async fetchUserAnswers() {
     try {
-      console.log("IN FILTERANSWERSBASEDONUSER ")
       const response = await this.instance.get(`answers/fetchUserAnswers`);
-      console.log("GOT RESPONSE IN FILTERANSWERSBASEDONUSER")
       const { success, data } = response.data;
       if (success)
-        console.log("Response is... " + JSON.stringify(response.data, null, 4))
         return data;
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -296,8 +283,6 @@ async updateQuestionById(questionId, { text: questionText }) {
 // await dao.updateAnswerById(params, { text: answerText });
 async updateAnswerById(ansId, { text: answerText }) {
     try {
-      console.log(JSON.stringify(ansId, null, 4));
-      console.log(JSON.stringify(answerText, null, 4));
       const response = await this.instance.put(`/answers/${ansId}`, { text: answerText });
       const { success, data } = response.data;
   
@@ -333,7 +318,7 @@ async updateAnswerById(ansId, { text: answerText }) {
   async addAnswer(answer, qid) {
     try {
       console.log(JSON.stringify(answer, null, 4));
-      console.log("IN ADD ANSWER DAO 1 ")
+      console.log("IN ADD ANSWER DAO 1 " + qid)
       const response = await this.instance.post('answers/add', { answer, qid });
       console.log("IN ADD ANSWER DAO 2 ")
       const { success, data } = response.data;
@@ -349,7 +334,6 @@ async updateAnswerById(ansId, { text: answerText }) {
 
   async acceptAnswer(ansId) {
     try {
-      console.log(ansId);
       const response = await this.instance.put(`/answers/accept/${ansId}`);
       const { success, data } = response.data;
       if (success) {
@@ -379,14 +363,16 @@ async updateAnswerById(ansId, { text: answerText }) {
     return [];
   }
 
-    // Get a tag by ID
+    // Get Tags by ID
     async getTagsById(tagIds) {
+      console.log("++++ IN MODEL TAO GET TAGS BY ID")
       try {
         const response = await this.instance.get(`tags`, {
           params: {
             ids: tagIds.join(',')
           }
         });
+        console.log("+++ REPSONSE IS: " + JSON.stringify(response.data, null, 4))
         const { success, data } = response.data;
         if (success)
           return data;
@@ -399,9 +385,7 @@ async updateAnswerById(ansId, { text: answerText }) {
 
   async deleteTagByName(tagName) {
     try {
-      console.log("in delete tag by name 1")
       const response = await this.instance.delete(`tags/deleteByName/${tagName}`);
-      console.log("in delete tag by name 2")
       const { success } = response.data;
       if (success) {
         console.log(`Tag with name ${tagName} deleted successfully`);
@@ -418,8 +402,6 @@ async updateAnswerById(ansId, { text: answerText }) {
 // await dao.updateTagByName(params, {name: tagName});
 async updateTagByName(tagName, { name : newTagName }) {
   try {
-    console.log(tagName) // previous tag name
-    console.log(newTagName) // new tag name
     const response = await this.instance.put(`/tags/${tagName}/update`, { name : newTagName });
     const { success, data } = response.data;
     if (success) {
@@ -550,14 +532,14 @@ async updateTagByName(tagName, { name : newTagName }) {
       const response = await this.instance.post('auth/login', credentials);
       const { success, data } = response.data;
       if (success) {
-        console.log(success, data);
-        return { success, data }; // Return as an object
+        console.log("In login: " + success, data);
+        return { success, data };
       }
     } catch (error) {
       console.error('Error logging in:', error);
     }
     console.log("Login failed :(");
-    return null; // lets login.jsx know that it was not successful
+    return null; 
   }
 
 
@@ -567,13 +549,13 @@ async updateTagByName(tagName, { name : newTagName }) {
       const response = await this.instance.post('auth/logout', null);
       const { success, data } = response.data;
       if (success) {
-        return { success, data }; // Return as an object
+        return { success, data }; 
       }
     } catch (error) {
       console.error('Error logging in:', error);
     }
     console.log("Login failed :(");
-    return null; // lets login.jsx know that it was not successful
+    return null;
   }
 
 

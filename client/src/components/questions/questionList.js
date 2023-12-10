@@ -44,22 +44,22 @@ function QuestionList() {
             setQuestions(tempQuestions);
             setQuestionCount(tempQuestions.length);
         }
-        // console.log(searchQuery);
-        // console.log(sortState); 
+        // // console.log(searchQuery);
+        // // console.log(sortState); 
         if (searchQuery === undefined || searchQuery.trim().length == 0) {
             fetchData();
         }
         else {
             (async () => {
                 let sort = sortState;
-                console.log(params);
+                // console.log(params);
                 if (params !== undefined && params.sortState !== undefined) {
                     sort = params.sortState;
                     setParams({});
                     setSortState(sort);
                 }
                 if (searchQuery !== undefined) {
-                    console.log(sort);
+                    // console.log(sort);
                     const tempQuestions = await dao.search(searchQuery, sort);       
                     setQuestions(tempQuestions);
                     setQuestionCount(tempQuestions.length);

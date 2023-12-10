@@ -60,7 +60,7 @@ export function LocationContextProvider({ children }) {
     DataDao.getInstance().setContextFunctions(setLoggedIn, setPageAndParams);
     // return page components depending on page routine
     function conditionalRendering() {
-        console.log(params);
+        // // console.log(params);
         if (page === "questions") {
             return <QuestionsPage />
         }
@@ -72,7 +72,7 @@ export function LocationContextProvider({ children }) {
         }
         if (page === "answers") {
             if (!Object.hasOwn(params, 'qid') || params.qid === undefined) {
-                console.log(params);
+                // console.log(params);
                 return <NotFound />;
             }
             return <AnswersPage />;
@@ -101,7 +101,7 @@ export function LocationContextProvider({ children }) {
         <LocationContext.Provider value={{ page, params, setParams, setPageAndParams, loggedIn, setLoggedIn, user, setUser }}>
             <SearchTextContextProvider>
                 {children}
-                {console.log("Re-Rendering")}
+                {/* {// console.log("Re-Rendering")} */}
                 {conditionalRendering(page)}
             </SearchTextContextProvider>
         </LocationContext.Provider>
