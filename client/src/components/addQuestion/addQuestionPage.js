@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import '../../stylesheets/form.css'
 import MainContent from '../mainContent.js';
 import { DataDao } from '../../models/ModelDAO';
@@ -163,7 +163,6 @@ function AddQuestionsPage() {
                 <span className='error'>* indicates mandatory fields</span>
             </form>
             </div>
-            <ToastContainer />
         </MainContent>
     )
 }

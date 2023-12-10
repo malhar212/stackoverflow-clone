@@ -1,5 +1,10 @@
 const OBJECT_TYPES = Object.freeze({
     QUESTION: "question",
-    ANSWER: "answer"
+    ANSWER: "answer",
+    COMMENT: "comment"
 })
-module.exports = OBJECT_TYPES;
+const VOTES = Object.freeze({
+    UPVOTE: "upvote",
+    DOWNVOTE: "downvote"
+})
+module.exports = { OBJECT_TYPES, VOTES };

@@ -1,4 +1,3 @@
-const { ObjectId } = require("mongodb");
 const User = require("../models/users");
 
 const isLoggedIn = async (req, res, next) => {
@@ -6,7 +5,7 @@ const isLoggedIn = async (req, res, next) => {
   if (req.session && req.session.user && req.session.user.uid && req.session.user.uid.trim().length > 0) {
     try {
       // Find a user by their ID
-      const user = await User.findById(new ObjectId(req.session.user.uid));
+      const user = await User.findById(req.session.user.uid);
 
       if (user) {
         console.log('User found:', user);

@@ -32,7 +32,7 @@ function AnswerQuestionBody(props) {
             <div className='questionMetadata'>
                 {metadataFormatter(props.question, OBJECT_TYPES.QUESTION)}
             </div>
-            <VoteComponent initialCount={props.question.votes} parentId={props.question.qid} /><span id="questionViews">{props.question.views} views</span>
+            <VoteComponent initialCount={props.question.votes} parentId={props.question.qid} parent={OBJECT_TYPES.QUESTION}/><span id="questionViews">{props.question.views} views</span>
             <div className="pillContainer">
                 {tags.map((tag) => addTagPill(tag))}
             </div>
