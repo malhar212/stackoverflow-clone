@@ -38,11 +38,11 @@ Add design docs in *images/*
     - ~~Show comments of each answer~~
     - ~~pagination like questions 5 at  a time~~
     - ~~Only logged in Users see new answer button~~
-    - Question, Answer have button to upvote or downvote
-    - Upvoting increases the vote by 1 and downvoting decreases the vote by 1.
-    - Upvoting a question/answer increases the reputation of the corresponding user by 5. 
-    - Downvoting a question/answer decreases the reputation of the corresponding user by 10. 
-    - A user can vote if their reputation is 50 or higher.
+    - ~~Question, Answer have button to upvote or downvote~~
+    - ~~Upvoting increases the vote by 1 and downvoting decreases the vote by 1.~~
+    - ~~Upvoting a question/answer increases the reputation of the corresponding user by 5.~~
+    - ~~Downvoting a question/answer decreases the reputation of the corresponding user by 10.~~
+    - ~~A user can vote if their reputation is 50 or higher.~~
     - ~~User who posted the question can mark one of the answers as accepted~~
     - ~~Accepted answer should appear at top, all others appear in newest order~~
 1. New Answer:
@@ -57,12 +57,12 @@ Add design docs in *images/*
     - ~~New comment is added on pressing enter~~
     - ~~Comments limited to 140 characters~~
     - ~~Can only be added by users with reputation 50 or more.~~
-    - Comments only have upvotes. Increments by 1.
-    - Upvoting comment has no impact on reputation.
-    - Upvoting a comment makes corresponsing question active
+    - ~~Comments only have upvotes. Increments by 1.~~
+    - ~~Upvoting comment has no impact on reputation.~~
+    - ~~Upvoting a comment makes corresponsing question active~~
 1. Voting:
-    - user can vote any number of times @180 piazza
-    - voting on question/answer/comment updates question's lastActivity date
+    - ~~user can vote any number of times @180 piazza~~
+    - ~~voting on question/answer/comment updates question's lastActivity date~~
 1. User Profile Page:
     - ~~User Information: No. days since user joined, reputation points~~
     - Menu: 

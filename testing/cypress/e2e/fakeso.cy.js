@@ -325,7 +325,7 @@ describe('Answer Page', () => {
     function verifyAnswersOnPage2() {
         const answers = ['Answer 7', 'Answer 6', 'Answer 5'];
         cy.get('.answerText').each(($el, index) => {
-            cy.wrap($el).should('contain', answers[index]);
+            cy.wrap($el).invoke('text').then(($el1)=>{ cy.log($el1); cy.wrap($el1).should('contain', answers[index]) });
         });
     }
 
@@ -349,9 +349,9 @@ describe('Answer Page', () => {
 
     it('Verify next button on last page of answers rolls over to first page ', () => {
         verifyAnswersOnPage1();
-        cy.get('.answer-list .paginationControls').contains('button', 'Next').click();
+        cy.get('.answer-list .paginationControls').contains('button', 'Next').click().wait(2000);
         verifyAnswersOnPage2();
-        cy.get('.answer-list .paginationControls').contains('button', 'Next').click();
+        cy.get('.answer-list .paginationControls').contains('button', 'Next').click().wait(2000);
         verifyAnswersOnPage1();
     });
 

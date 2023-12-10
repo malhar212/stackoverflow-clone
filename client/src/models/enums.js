@@ -3,3 +3,8 @@ export const OBJECT_TYPES = Object.freeze({
     ANSWER: "answer",
     COMMENT: "comment"
 })
+
+export const VOTES = Object.freeze({
+    UPVOTE: "upvote",
+    DOWNVOTE: "downvote"
+})

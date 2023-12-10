@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { DataDao } from '../../models/ModelDAO';
 import { useLocationContext } from '../locationContext';
 
@@ -142,7 +142,6 @@ function Signup({ handleButtonClick }) {
           <button type='submit' id='guestButton' href='' onClick={(e) => { e.preventDefault(); setLoggedIn(false); setPageAndParams('questions') }}>Guest</button>
         </div>
       </form>
-      <ToastContainer />
     </div>
   );
 }

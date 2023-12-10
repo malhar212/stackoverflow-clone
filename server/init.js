@@ -105,7 +105,7 @@ const populate = async () => {
 
     await answerCreate('answer text', q2, userOne, new Date('2023-11-24T08:24:00'), 10);
     await answerCreate('React Router is mostly a wrapper around the history library. history handles interaction with the browser\'s window.history for you with its browser and hash histories. It also provides a memory history which is useful for environments that don\'t have a global history. This is particularly useful in mobile app development (react-native) and unit testing with Node.', q1,  userOne, new Date('2023-11-20T03:24:42'), 30);
-    await answerCreate('On my end, I like to have a single history object that I can carry even outside components. I like to have a single history.js file that I import on demand, and just manipulate it. You just have to change BrowserRouter to Router, and specify the history prop. This doesn\'t change anything for you, except that you have your own history object that you can manipulate as you want. You need to install history, the library used by react-router.', q1, userTwo, new Date('2023-11-25T08:24:00'), 20);
+    let a1 = await answerCreate('On my end, I like to have a single history object that I can carry even outside components. I like to have a single history.js file that I import on demand, and just manipulate it. You just have to change BrowserRouter to Router, and specify the history prop. This doesn\'t change anything for you, except that you have your own history object that you can manipulate as you want. You need to install history, the library used by react-router.', q1, userTwo, new Date('2023-11-25T08:24:00'), 20);
     let a3 = await answerCreate('Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background.', q2, userOne, new Date('2023-11-18T09:24:00'));
     await answerCreate('YourPreference yourPrefrence = YourPreference.getInstance(context); yourPreference.saveData(YOUR_KEY,YOUR_VALUE);', q2, userOne, new Date('2023-11-12T03:30:00'));
     await answerCreate('I just found all the above examples just too confusing, so I wrote my own. ', q2, userTwo, new Date('2023-11-01T15:24:19'));
@@ -119,6 +119,8 @@ const populate = async () => {
     await commentCreate('Comment 2', userTwo, 'answer', a3, 1, new Date('2023-11-21T11:24:00'));
     await commentCreate('Comment 3', userOne, 'answer', a3, 0, new Date('2023-11-21T12:24:00'));
     await commentCreate('Comment 4', userThree, 'answer', a3, 10, new Date('2023-11-20T12:24:00'));
+    await commentCreate('First Comment 1', userTwo, 'answer', a1, 10, new Date('2023-11-19T11:24:00'));
+    await commentCreate('Second Comment 1', userTwo, 'question', q1, 0, new Date('2023-11-19T12:24:00'));
     if (db) db.close();
     console.log('done');
 }

@@ -21,6 +21,7 @@ const tagRoutes = require('./routes/tagRoutes');
 const authRoutes = require('./routes/AuthRoutes');
 const userRoutes = require('./routes/userRoutes');
 const commentRoutes = require('./routes/commentRoutes');
+const voteRoutes = require('./routes/voteRoutes');
 
 app.use(cors({
   origin: 'http://localhost:3000',
@@ -64,6 +65,7 @@ app.use('/tags', tagRoutes);
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
 app.use('/comments', commentRoutes);
+app.use('/vote', voteRoutes);
 
 // When the server starts
 app.listen(port, () => {

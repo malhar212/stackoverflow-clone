@@ -22,7 +22,7 @@ function Answer({answer, showAcceptButton}) {
             <div className="answerText">
                 <HyperLinkParser text={answer.text} />
             </div>
-            <VoteComponent initialCount={answer.votes} parentId={answer.qid}/>
+            <VoteComponent initialCount={answer.votes} parentId={answer.aid} parent={OBJECT_TYPES.ANSWER}/>
             {answer.accepted ? <svg aria-hidden="true" className="svg-icon iconCheckmarkLg" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg>: <></>}
             {showAcceptButton ? <button onClick={acceptAnswer(answer.aid)} >Accept Answer</button> : <></> }
             <div className = "answerAuthor">{metadataFormatter(answer, OBJECT_TYPES.ANSWER)}</div>

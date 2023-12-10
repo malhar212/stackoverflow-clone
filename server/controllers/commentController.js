@@ -1,7 +1,7 @@
 const { ObjectId } = require("mongodb");
 const Comment = require("../models/comments");
 const BuilderFactory = require("./builders/builderFactory");
-const OBJECT_TYPES = require('../config/enums');
+const { OBJECT_TYPES } = require('../config/enums');
 const Question = require("../models/questions");
 const Answer = require("../models/answers");
 

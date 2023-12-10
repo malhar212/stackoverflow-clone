@@ -523,6 +523,22 @@ async updateTagByName(tagName, { name : newTagName }) {
       if (success)
         return data;
     } catch (error) {
+      console.error('Error fetching data:', error.message);
+    }
+    return [];
+  }
+
+  // vote 
+  async vote(vote) {
+    try {
+      const response = await this.instance.post(`vote`, { vote });
+      const { success, data } = response.data;
+      if (success)
+        return data;
+      else {
+        return data;
+      }
+    } catch (error) {
       console.error('Error fetching data:', error);
     }
     return [];
@@ -532,8 +548,6 @@ async updateTagByName(tagName, { name : newTagName }) {
   async login(credentials) {
     try {
       const response = await this.instance.post('auth/login', credentials);
-      console.log(JSON.stringify(response.data, null, 4))
-      console.log("HERERERERER", response.data);
       const { success, data } = response.data;
       if (success) {
         console.log(success, data);
@@ -565,10 +579,6 @@ async updateTagByName(tagName, { name : newTagName }) {
 
   async signup(credentials) {
     try {
-      // const data = await this.getCSRFToken();
-      // const csrfToken = data.csrfToken;
-      // console.log("in signup: ", csrfToken)
-      // if(csrfToken) {
       const response = await this.instance.post('auth/signup', credentials);
       if (response.data && response.data.success && response.data.success == true && response.data.data.csrfToken) {
         return true;
@@ -585,9 +595,9 @@ async updateTagByName(tagName, { name : newTagName }) {
 
 
   // get userName based on uid of user
-  async getUsernameByUid(userId) {
+  async getUserProfile() {
     try {
-      const response = await this.instance.get('getUsername', userId)
+      const response = await this.instance.get('users/getUserProfile')
       const { success, data } = response.data
       if (success) {
         return data;

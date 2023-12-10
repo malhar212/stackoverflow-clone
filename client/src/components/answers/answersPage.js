@@ -14,11 +14,25 @@ function AnswersPage() {
     const dao = DataDao.getInstance();
 
     // params is the qid of the questions
-    const { params, loggedIn, user } = useLocationContext();
+    const { params, loggedIn, user, setUser } = useLocationContext();
 
     const [selectedQuestion, setSelectedQuestion] = useState();
     const [selectedAnswers, setAnswers] = useState([]);
     useEffect(() => {
+        if (loggedIn) {
+            (async () => {
+                try {
+                    const responseData = await dao.getUserProfile();
+                    if (responseData.length === 0) {
+                        setUser(undefined);
+                        return;
+                    }
+                    setUser(responseData);
+                } catch (error) {
+                    console.error(error.message);
+                }
+            })();
+        }
         const fetchQuestion = async () => {
             try {
                 const responseData = await dao.getQuestionById(params.qid);
@@ -33,23 +47,23 @@ function AnswersPage() {
         };
 
         fetchQuestion();
-    }, [params]);
-    
+    }, []);
+
     if (selectedQuestion) {
         const showAcceptButton = user && user.username && selectedQuestion.askedBy === user.username;
         console.log(showAcceptButton)
         return (
             <MainContent>
-            <AnswerHeader
-                title = {selectedQuestion.title}
-                answers = {selectedAnswers.length} />
-            <AnswerQuestionBody 
-                question = {selectedQuestion} />
-            <h3>Answers</h3>
-            <AnswersList qid={selectedQuestion.qid} selectedAnswers={selectedAnswers} setAnswers={setAnswers} showAcceptButton={showAcceptButton}/>
-            { loggedIn ? <AnswerButton
-                question = {selectedQuestion} /> : <></> }
-         </MainContent>
+                <AnswerHeader
+                    title={selectedQuestion.title}
+                    answers={selectedAnswers.length} />
+                <AnswerQuestionBody
+                    question={selectedQuestion} />
+                <h3>Answers</h3>
+                <AnswersList qid={selectedQuestion.qid} selectedAnswers={selectedAnswers} setAnswers={setAnswers} showAcceptButton={showAcceptButton} />
+                {loggedIn ? <AnswerButton
+                    question={selectedQuestion} /> : <></>}
+            </MainContent>
         );
     }
 
