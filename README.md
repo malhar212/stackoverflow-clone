@@ -43,7 +43,7 @@ Add design docs in *images/*
     - Upvoting a question/answer increases the reputation of the corresponding user by 5. 
     - Downvoting a question/answer decreases the reputation of the corresponding user by 10. 
     - A user can vote if their reputation is 50 or higher.
-    - User who posted the question can mark one of the answers as accepted
+    - ~~User who posted the question can mark one of the answers as accepted~~
     - ~~Accepted answer should appear at top, all others appear in newest order~~
 1. New Answer:
     - Redirect to answers page
