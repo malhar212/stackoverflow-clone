@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import TagBox from './tagBox';
 import { DataDao } from '../../models/ModelDAO';
 
-function createTag(tag, editDeleteOption) {
+function createTag(tag, editDeleteOption, handleTagDelete) {
   return (
     <TagBox
       key={tag.tid}
@@ -10,6 +10,7 @@ function createTag(tag, editDeleteOption) {
       name={tag.name}
       questionCount={tag.questionCount}
       editDeleteOption={editDeleteOption}
+      onDeleteSuccess={handleTagDelete}
     />
   );
 }
@@ -46,6 +47,10 @@ function TagsList(props) {
     }
   }, [props.selectedData]);
 
+  const handleTagDelete = () => {
+    setTagCount((prevTagCount) => prevTagCount - 1);
+  };
+
   const rows = [];
   for (let i = 0; i < tagCount; i += 3) {
     const row = tags.slice(i, i + 3);
@@ -63,7 +68,7 @@ function TagsList(props) {
           </h2>
           {rows.map((row, rowIndex) => (
             <div key={rowIndex} className="tagRow">
-              {row.map((tag) => createTag(tag, editDeleteOption))}
+              {row.map((tag) => createTag(tag, editDeleteOption, handleTagDelete))}
             </div>
           ))}
         </div>

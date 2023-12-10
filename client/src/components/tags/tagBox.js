@@ -5,7 +5,7 @@ import { DataDao } from '../../models/ModelDAO';
 function TagBox(props) {
     const dao = DataDao.getInstance();
     const { setPageAndParams } = useLocationContext();
-    const { editDeleteOption} = props;
+    const { editDeleteOption, onDeleteSuccess} = props;
     const [isDeleted, setIsDeleted] = useState(false);
   
     const handleEditClick = async () => {
@@ -19,6 +19,7 @@ function TagBox(props) {
         await dao.deleteTagByName(props.name);
         console.log("Tag deleted successfully");
         setIsDeleted(true);
+        onDeleteSuccess();
       } catch (error) {
         console.error("Error deleting tag:", error);
       }
