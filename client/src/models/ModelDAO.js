@@ -571,7 +571,7 @@ async updateTagByName(tagName, { name : newTagName }) {
 
     } catch (error) {
       console.error('Error signing up:', error);
-      return false;
+      throw error;
     }
   }
 
