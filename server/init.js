@@ -47,7 +47,7 @@ function questionCreate(title, text, tags, asked_by, ask_date_time, last_activit
 }
 
 
-function userCreate(username, email, password, reputation) {
+function userCreate(username, email, password, reputation, createdAt) {
     let newUser = {
         username: username,
         email: email,
@@ -55,6 +55,7 @@ function userCreate(username, email, password, reputation) {
         reputation: reputation
     };
     if (reputation != undefined && reputation != false) newUser.reputation = reputation;
+    if (createdAt != undefined) newUser.createdAt = createdAt;
     let user = new User(newUser)
     return user.save();
 }
@@ -81,7 +82,8 @@ const populate = async () => {
     
     // Create Users
     let userOne = await userCreate("samZ", "samZ@gmail.com", 'examplePass');
-    let userTwo = await userCreate("newGuy", "newGuy@gmail.com", 'passExample', 60);
+    let createdAtDate = new Date(new Date() - (420 * 24 * 60 * 60 * 1000));
+    let userTwo = await userCreate("newGuy", "newGuy@gmail.com", 'passExample', 60, createdAtDate);
     let userThree = await userCreate("newGuy2", "copiedUsername@gmail.com", 'askdjalskdj', 55);
 
     // Create tags
