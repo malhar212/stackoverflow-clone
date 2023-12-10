@@ -53,9 +53,7 @@ const Login = ({ handleButtonClick }) => {
       setUser(userData.data); // saving state of who is logged in
       // console.log("In login: " + loggedIn)
       // console.log("User is: " + JSON.stringify(user, null, 4))
-      setTimeout(() => {
-        { setPageAndParams('questions', '') }
-      }, 1000);
+      setPageAndParams('questions', '');
     } else {
       // Handle login failure
       handleError("login failed");
