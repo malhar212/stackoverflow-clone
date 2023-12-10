@@ -9,7 +9,7 @@ const isLoggedIn = async (req, res, next) => {
 
       if (user) {
         console.log('User found:', user);
-        res.locals.user = user; 
+        req.user = user; 
         // User exists
         next();
       } else {
