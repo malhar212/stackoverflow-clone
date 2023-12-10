@@ -536,10 +536,12 @@ exports.updateQuestionById = async (req, res) => {
         return res.status(404).json({ success: false, message: 'Question not found.' });
       }
       // deleting associated comments
-      const commentDeletion = await Comment.deleteMany({ associatedObjectId: id});
+      // const commentDeletion = await Comment.deleteMany({ associatedObjectId: id});
+      await Comment.deleteMany({ associatedObjectId: id});
       // console.log("Comment deletion: " + commentDeletion)
       // deleting associated answers
-      const answerDeletion = await Answer.deleteMany({ qid : id})
+      // const answerDeletion = await Answer.deleteMany({ qid : id})
+      await Answer.deleteMany({ qid : id})
       // console.log("Answer deletion: " + answerDeletion)
       res.status(200).json({ success: true, data: deletedQuestion });
     } catch (error) {
