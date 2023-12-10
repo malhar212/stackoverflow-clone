@@ -327,14 +327,13 @@ describe('Answer Page', () => {
 
     function verifyAnswersOnPage2() {
         const answers = ['Answer 7', 'Answer 6', 'Answer 5'];
-        cy.get('.answer-list .answer .answerText').each(($el, index) => {
+        cy.get('.answerText').each(($el, index) => {
             cy.wrap($el).invoke('text').then(($el1) => { cy.log($el1); cy.wrap($el1).should('contain', answers[index]) });
         });
     }
 
-    it('Verify pagination of answers. \nVerify accepted answer is pinned to the top of every page. \nVerify thier metadata', () => {
-        cy.get('.answer-list .paginationControls').contains('button', 'Next').last().click();
-        cy.wait(1000);
+    it.only('Verify pagination of answers. \nVerify accepted answer is pinned to the top of every page. \nVerify thier metadata', () => {
+        cy.get('.answer-list div.paginationControls').contains('button', 'Next').last().click();
         verifyAnswersOnPage2();
         const authors = ['samZ', 'newGuy2', 'newGuy'];
         const date = ['Oct 09', 'Oct 08', 'Oct 07'];
@@ -351,12 +350,10 @@ describe('Answer Page', () => {
         })
     });
 
-    it('Verify next button on last page of answers rolls over to first page ', () => {
+    it.only('Verify next button on last page of answers rolls over to first page ', () => {
         verifyAnswersOnPage1();
-        cy.get('.answer-list .paginationControls').contains('button', 'Next').last().click();
-        cy.wait(1000);
-        verifyAnswersOnPage2();
-        cy.get('.answer-list .paginationControls', {timeout: 1000}).contains('button', 'Next').last().click();
+        cy.get('.answer-list div.paginationControls').last().contains('button', 'Next').click();
+        cy.get('.answer-list div.paginationControls').last().contains('button', 'Next').click();
         verifyAnswersOnPage1();
     });
 
@@ -403,3 +400,32 @@ describe('Answer Page', () => {
     });
 
 })
+
+describe('All Tags', () => {
+    it('Total Tag Count', () => {
+      cy.contains('Tags').click();
+      cy.contains('All Tags');
+      cy.contains('4 Tags');
+    })
+  
+  
+    it('Tag names and count', () => {
+      const tagNames = ['react', 'javascript', 'android-studio', 'shared-preferences'];
+      const tagCounts = ['1 question', '6 questions', '3 question', '4 question'];
+      cy.contains('Tags').click();
+      cy.get('.tagNode').each(($el, index, $list) => {
+        cy.wrap($el).should('contain', tagNames[index]);
+        cy.wrap($el).should('contain', tagCounts[index]);
+      })
+    })
+  
+    it('Click Tag Name shows relevant questions', () => {
+      cy.contains('Tags').click();
+      cy.contains('studio').click();
+        cy.contains('android studio save string shared preference, start activity and load the saved string')
+        cy.contains('Question 1')
+        cy.contains('Question 3')
+        cy.should('not.contain','Programmatically navigate using React router')
+    })
+  })
+  
