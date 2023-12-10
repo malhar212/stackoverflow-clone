@@ -491,6 +491,7 @@ exports.updateQuestionById = async (req, res) => {
       if (!updatedQuestion) {
         return res.status(404).json({ success: false, message: 'Question not found.' });
       }
+      await Question.findByIdAndUpdate(updatedQuestion.qid, { $set: { last_activity : Date.now}}, { new: true });
       res.status(200).json({ success: true, data: updatedQuestion });
     } catch (error) {
       console.error('Error updating question:', error);
