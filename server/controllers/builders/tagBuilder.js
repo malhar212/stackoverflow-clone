@@ -20,6 +20,11 @@ class TagBuilder {
         return this;
     }
 
+    setEditable(editable) {
+        this.tag.editable = editable;
+        return this;
+    }
+
     build() {
         return this.tag;
     }
