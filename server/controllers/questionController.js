@@ -395,32 +395,24 @@ exports.incrementViewCount = async (req, res) => {
 // '/add'
 exports.addNewQuestion = async (req, res) => {
     try {
-        // console.log("+++++++++++ 1")
         if (req.body === undefined || req.body.question === undefined) {
-            // console.log("+++++++++++ 2")
             res.status(500).json({ success: false, error: "Question body not provided" });
             return;
         }
-        // console.log("+++++++++++ 3")
         const formData = req.body.question;
-        // console.log("+++++++++++ 4 "  + JSON.stringify(formData, null, 4))
         const { isValid, error } = validateQuestion(formData);
-        // console.log("+++++++++++ 5" + isValid + error)
         if (!isValid) {
-            // console.log("+++++++++++ 6")
             res.status(500).json({ success: false, error });
             return;
         }
-        // console.log("+++++++++++ 7")
         // extracting username from formData
         const username = formData.askedBy
-        // console.log("+++++++++++ 8")
         // finding the user object from database based on username
         const user = await User.findOne({ username });
-        // console.log("+++++++++++ 9")
         let tagIds = [];
+        // if there are tags to be added to this question
         if (formData.tags !== undefined && formData.tags.length > 0) {
-            // console.log("++++there are tags to be created +++++++ 10")
+            console.log("++++there are tags to be created +++++++ ")
             formData.tags = removeDuplicatesIgnoreCase(formData.tags);
             const result = await Tag.aggregate([
                 {
@@ -451,25 +443,19 @@ exports.addNewQuestion = async (req, res) => {
                     },
                 },
             ]);
-            // console.log("+++++++++++ 11")
-            // console.log(result)
-            // console.log(JSON.stringify(result, null, 4))
             if (result !== undefined && result[0] !== undefined) {
-                // console.log("++++++ in the result !== undefined if");
-                // console.log("Matched Tags:", result[0].matchedTags);
-                // console.log("Unmatched Tags:", result[0].unmatchedTags);
             
                 tagIds = tagIds.concat(result[0].matchedTags.map((obj) => obj._id));
                 const tagsToAdd = [];
             
                 // Creating tags for unmatchedTags
                 result[0].unmatchedTags.forEach((tagName) => {
-                    // console.log("Creating tag for unmatched tag:", tagName);
+                    console.log("Creating tag for unmatched tag:", tagName);
                     const tagBuilder = new BuilderFactory().createBuilder({ builderType: 'tag' });
                     tagsToAdd.push(tagBuilder.setName(tagName).setCreatedBy(user).build());
                 });
             
-                // console.log("Tags to add:", tagsToAdd);
+                console.log("Tags to add:", tagsToAdd);
             
                 if (tagsToAdd.length > 0) {
                     try {
@@ -481,9 +467,7 @@ exports.addNewQuestion = async (req, res) => {
                     } catch (error) {
                         console.error("Error inserting tags:", error);
                     }
-                } else {
-                    // console.log("No tags to insert.");
-                }
+                } 
             } else {
                 // console.log("______ in the else");
                 const tagsToAdd = [];
@@ -500,14 +484,15 @@ exports.addNewQuestion = async (req, res) => {
                 // console.log("Inserted Tags:", insertedTags);
             
                 tagIds = tagIds.concat(insertedTags);
-            }
-            
+            } 
         }
-        // console.log("++++++++++++++ 12")
+        console.log("Tags to add: ", tagIds);
+        console.log("++++++++++++++ 12")
         const qBuilder = new BuilderFactory().createBuilder({ builderType: 'question' });
         // console.log("++++++++++++++ 13")
         const question = qBuilder.setTitle(formData.title).setText(formData.text).setTagIds(tagIds).setAskedBy(user).setAskDate(new Date()).build();
-        // console.log("++++++++++++++ 14")
+        console.log("++++++++++++++ 14")
+        console.log(JSON.stringify(question, null, 4))
         const savedQuestion = await question.save();
         res.status(200).json({ success: true, data: savedQuestion });
     } catch (err) {

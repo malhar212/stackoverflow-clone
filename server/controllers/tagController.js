@@ -43,12 +43,13 @@ exports.getAllTags = async (req, res) => {
 
 exports.getTagById = async (req, res) => {
   try {
-    const id = req.params.id;
-    if (id === undefined || id.length <= 0) {
+    console.log("in get TagByID "+ req.params.ids)
+    const ids = req.params.ids;
+    if (ids === undefined || ids.length <= 0) {
       res.status(404).json({ success: false, error: "No TID provided" });
       return;
     }
-    const tags = await Tag.findById(id);
+    const tags = await Tag.findById(ids);
     const formattedTags = formatTagsForUI([tags]);
     res.status(200).json({ success: true, data: formattedTags });
   } catch (err) {

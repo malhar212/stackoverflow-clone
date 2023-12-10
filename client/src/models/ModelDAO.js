@@ -365,12 +365,14 @@ async updateAnswerById(ansId, { text: answerText }) {
 
     // Get Tags by ID
     async getTagsById(tagIds) {
+      console.log("++++ IN MODEL TAO GET TAGS BY ID")
       try {
         const response = await this.instance.get(`tags`, {
           params: {
             ids: tagIds.join(',')
           }
         });
+        console.log("+++ REPSONSE IS: " + JSON.stringify(response.data, null, 4))
         const { success, data } = response.data;
         if (success)
           return data;
