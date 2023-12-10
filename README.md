@@ -90,7 +90,7 @@ Add design docs in *images/*
             - ~~Repost/Delete of answer makes question active. i.e. update lastActivity date~~
 
 Bugs:
-    - When new question is created with no tags, all tags are added to it
+    - ~~When new question is created with no tags, all tags are added to it~~
     - First population of ProfilePage gets error in front-end console but still functions
     - ~~whietspace is saved in new Answers~~
 
