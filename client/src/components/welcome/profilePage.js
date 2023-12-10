@@ -4,6 +4,7 @@ import MainContent from '../mainContent.js';
 import './stylesheets/profilePage.css'
 import '../questions/questionList.js'
 import { DataDao } from '../../models/ModelDAO';
+import PaginationComponent from '../paginationComponent.js';
 import TagsList from '../tags/tagList.js';
 
 const ProfilePage = () => {
@@ -14,7 +15,7 @@ const ProfilePage = () => {
   const [selectedData, setSelectedData] = useState();
   // the selection of which data (questions, answeers or tags) should be on the page
   const [dataType, setDataType] = useState();
-  const [itemsToShow, setItemsToShow] = useState(5);
+  const itemsToShow = 5;
 
 
   // depending on button clicked will set selectedData to questions, answers or tags of the user
@@ -84,9 +85,6 @@ function handleQuestionClick(questionId) {
   }
 }
 
-const handleShowMoreClick = () => {
-  setItemsToShow(itemsToShow + 5); // Increase the number of items to show
-};
 
 // for upper banner w/ welcome and user stats
   // const createdAt = user.createdAt;
@@ -118,7 +116,7 @@ const handleShowMoreClick = () => {
         </ul>
       )}
 
-      {dataType === 'profileQuestions' && selectedData && (
+      {/* {dataType === 'profileQuestions' && selectedData && (
         <ul>
             {selectedData.slice(0, itemsToShow).map((question) => (
           <li key={question.id}>
@@ -129,17 +127,31 @@ const handleShowMoreClick = () => {
           
       ))}
         </ul>
-    )}
+    )} */}
+
+{/* (console.log(JSON.stringify(selectedData, null, 4))) && */}
+      {dataType === 'profileQuestions' && selectedData  && (
+        <PaginationComponent
+          items={selectedData}
+          itemsPerPage={itemsToShow}
+          renderItem={(question) => (
+            <li key={question.id}>
+              <a href='' title={question.title} onClick={handleQuestionClick(question._id)}>
+                {question.title && question.title.slice(0, 50)} {question.title && question.title.length > 50 ? '...' : ''}
+              </a>
+            </li>
+          )}
+        />
+      )}
 
 
       {dataType === "profileTags" && selectedData && (
           <TagsList selectedData={selectedData} />
       )}
               </div>
-              {/* Show more button */}
-              {selectedData && itemsToShow < selectedData.length && (
-          <button onClick={handleShowMoreClick}>Show More</button>
-        )}
+
+
+
     </MainContent>
   );
 

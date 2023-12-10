@@ -9,6 +9,8 @@ const PaginationComponent = ({ items, itemsPerPage, renderItem }) => {
     // const indexOfLastItem = currentPage * itemsPerPage;
     // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
+    console.log("in pagination!==================")
+
     const getPaginatedItems = () => {
         let nonAcceptedItems = [...items];
         let perPage = itemsPerPage;
