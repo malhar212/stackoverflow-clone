@@ -3,7 +3,7 @@ beforeEach(() => {
   cy.exec('node ../server/init.js');
   console.log("Done insert");
   cy.visit('http://localhost:3000');
-  cy.get('input[name="username"]').type('newGuy2'); // Replace with your username/email
+  cy.get('input[name="username"]').type('newGuy2');
   cy.get('input[name="password"]').type('askdjalskdj');
   cy.contains('button', 'Login').click();
 })
@@ -139,6 +139,69 @@ describe('Answers Page', () => {
         cy.wrap($comment).should('contain', votes[index]);
       });
     });
+    cy.contains('#sideBarNav a', 'Questions').click();
+    const qTitles = ['Programmatically navigate using React router', 'android studio save string shared preference, start activity and load the saved string', 'Question 5', 'Question 4', 'Question 3'];
+    cy.contains('Active').click();
+    cy.contains('7 questions');
+    cy.get('.postTitle').each(($el, index, $list) => {
+      cy.wrap($el).should('contain', qTitles[index]);
+    })
+  })
+
+  it('User does not see accept answer button on other user\'s questions', () => {
+    cy.get('button').contains('Accept Answer').should('not.exist');
+    cy.contains('#sideBarNav a', 'Questions').click();
+  })
+
+  it('User does not see accept answer button on own question with already accepted answer', () => {
+    cy.contains('#sideBarNav a', 'Logout').click();
+    cy.get('input[name="username"]').type('newGuy');
+    cy.get('input[name="password"]').type('passExample');
+    cy.contains('button', 'Login').click();
+    cy.contains('android studio save string shared preference, start activity and load the saved string').click();
+    cy.get('button').contains('Accept Answer').should('not.exist');
+  })
+
+  it('User sees accept answer button on own question', () => {
+    cy.contains('#sideBarNav a', 'Logout').click();
+    cy.get('input[name="username"]').type('samZ');
+    cy.get('input[name="password"]').type('examplePass');
+    cy.contains('button', 'Login').click();
+    cy.contains('Programmatically navigate using React router').click();
+    cy.get('button').contains('Accept Answer').should('exist');
+  })
+
+  it('User accepts answer should mark pin the accepted answer to top', () => {
+    cy.contains('#sideBarNav a', 'Logout').click();
+    cy.get('input[name="username"]').type('samZ');
+    cy.get('input[name="password"]').type('examplePass');
+    cy.contains('button', 'Login').click();
+    cy.contains('Programmatically navigate using React router').click();
+    // Before
+    const answers = ['On my end, I like to have a single history object that I can carry even outside components.', 'React Router is mostly a wrapper around the history library.'];
+    cy.get('.answerText').each(($el, index) => {
+      cy.wrap($el).should('contain', answers[index]);
+    });
+    cy.contains('.answer', 'React Router is mostly a wrapper around the history library.').within(() => {
+      cy.get('button').contains('Accept Answer').click();
+    })
+    // After
+    const answersAfter = ['React Router is mostly a wrapper around the history library.', 'On my end, I like to have a single history object that I can carry even outside components.'];
+    cy.get('.answerText').each(($el, index) => {
+      cy.wrap($el).should('contain', answersAfter[index]);
+    });
+  })
+
+  it('User accepts answer should mark the question active', () => {
+    cy.contains('#sideBarNav a', 'Logout').click();
+    cy.get('input[name="username"]').type('samZ');
+    cy.get('input[name="password"]').type('examplePass');
+    cy.contains('button', 'Login').click();
+    cy.contains('Programmatically navigate using React router').click();
+    cy.contains('.answer', 'React Router is mostly a wrapper around the history library.').within(() => {
+      cy.get('button').contains('Accept Answer').click();
+    })
+    // After
     cy.contains('#sideBarNav a', 'Questions').click();
     const qTitles = ['Programmatically navigate using React router', 'android studio save string shared preference, start activity and load the saved string', 'Question 5', 'Question 4', 'Question 3'];
     cy.contains('Active').click();
