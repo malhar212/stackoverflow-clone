@@ -402,7 +402,7 @@ exports.addNewQuestion = async (req, res) => {
         }
         console.log("+++++++++++ 3")
         const formData = req.body.question;
-        console.log("+++++++++++ 4 "  + formData)
+        console.log("+++++++++++ 4 "  + JSON.stringify(formData, null, 4))
         const { isValid, error } = validateQuestion(formData);
         console.log("+++++++++++ 5" + isValid + error)
         if (!isValid) {
@@ -419,7 +419,7 @@ exports.addNewQuestion = async (req, res) => {
         console.log("+++++++++++ 9")
         let tagIds = [];
         if (formData.tags !== undefined && formData.tags.length > 0) {
-            console.log("+++++++++++ 10")
+            console.log("++++there are tags to be created +++++++ 10")
             formData.tags = removeDuplicatesIgnoreCase(formData.tags);
             const result = await Tag.aggregate([
                 {
@@ -451,25 +451,56 @@ exports.addNewQuestion = async (req, res) => {
                 },
             ]);
             console.log("+++++++++++ 11")
+            console.log(result)
+            console.log(JSON.stringify(result, null, 4))
             if (result !== undefined && result[0] !== undefined) {
+                console.log("++++++ in the result !== undefined if");
+                console.log("Matched Tags:", result[0].matchedTags);
+                console.log("Unmatched Tags:", result[0].unmatchedTags);
+            
                 tagIds = tagIds.concat(result[0].matchedTags.map((obj) => obj._id));
                 const tagsToAdd = [];
+            
+                // Creating tags for unmatchedTags
                 result[0].unmatchedTags.forEach((tagName) => {
-                    const tagBuilder = new BuilderFactory().createBuilder({ builderType: 'tag' });
-                    tagsToAdd.push(tagBuilder.setName(tagName).build());
-                })
-                const insertedTags = await Tag.insertMany(tagsToAdd);
-                tagIds = tagIds.concat(insertedTags);
-            }
-            else {
-                const tagsToAdd = [];
-                formData.tags.forEach((tagName) => {
+                    console.log("Creating tag for unmatched tag:", tagName);
                     const tagBuilder = new BuilderFactory().createBuilder({ builderType: 'tag' });
                     tagsToAdd.push(tagBuilder.setName(tagName).setCreatedBy(user).build());
-                })
+                });
+            
+                console.log("Tags to add:", tagsToAdd);
+            
+                if (tagsToAdd.length > 0) {
+                    try {
+                        const insertedTags = await Tag.insertMany(tagsToAdd);
+                        console.log("Inserted Tags:", insertedTags);
+                    
+                        const insertedTagIds = insertedTags.map(tag => tag._id);
+                        tagIds = tagIds.concat(insertedTagIds);
+                    } catch (error) {
+                        console.error("Error inserting tags:", error);
+                    }
+                } else {
+                    console.log("No tags to insert.");
+                }
+            } else {
+                console.log("______ in the else");
+                const tagsToAdd = [];
+            
+                formData.tags.forEach((tagName) => {
+                    console.log("Creating tag for tag:", tagName);
+                    const tagBuilder = new BuilderFactory().createBuilder({ builderType: 'tag' });
+                    tagsToAdd.push(tagBuilder.setName(tagName).setCreatedBy(user).build());
+                });
+            
+                console.log("Tags to add:", tagsToAdd);
+            
                 const insertedTags = await Tag.insertMany(tagsToAdd);
+                console.log("Inserted Tags:", insertedTags);
+            
                 tagIds = tagIds.concat(insertedTags);
             }
+            
         }
         console.log("++++++++++++++ 12")
         const qBuilder = new BuilderFactory().createBuilder({ builderType: 'question' });
