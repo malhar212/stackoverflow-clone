@@ -7,8 +7,7 @@ const User = require("../models/users");
 // uses uid to get the username
 exports.vote = async (req, res) => {
     try {
-        // console.log(res.locals.user.reputation);
-        if (res.locals.user.reputation < 50) {
+        if (req.user.reputation < 50) {
             return res.status(403).json({ success: false, error: "Not enough reputation" });
         }
         if (req.body === undefined || req.body.vote === undefined) {
