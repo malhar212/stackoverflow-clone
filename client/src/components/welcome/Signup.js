@@ -80,10 +80,13 @@ function Signup({ handleButtonClick }) {
         }, 1000);
       }
     } catch (error) {
+      console.log(error);
+      error.message = error.response.data.error;
+      console.log(error.message);
       // Handle failure with more detailed messages
-      if (error.message === "Username already exists") {
+      if (error.message.includes("E11000 duplicate key error collection: fake_so.users index: username_1")) {
         handleError("Username is already taken. Please choose another one.");
-      } else if (error.message === "Email already exists") {
+      } else if (error.message.includes("E11000 duplicate key error collection: fake_so.users index: email_1")) {
         handleError("Email is already registered. Please use a different email.");
       } else {
         handleError("Signup failed. Please try again.");
