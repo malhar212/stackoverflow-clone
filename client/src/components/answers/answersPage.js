@@ -14,7 +14,7 @@ function AnswersPage() {
     const dao = DataDao.getInstance();
 
     // params is the qid of the questions
-    const { params, loggedIn } = useLocationContext();
+    const { params, loggedIn, user } = useLocationContext();
 
     const [selectedQuestion, setSelectedQuestion] = useState();
     const [selectedAnswers, setAnswers] = useState([]);
@@ -33,9 +33,11 @@ function AnswersPage() {
         };
 
         fetchQuestion();
-    }, []);
-
+    }, [params]);
+    
     if (selectedQuestion) {
+        const showAcceptButton = user && user.username && selectedQuestion.askedBy === user.username;
+        console.log(showAcceptButton)
         return (
             <MainContent>
             <AnswerHeader
@@ -44,7 +46,7 @@ function AnswersPage() {
             <AnswerQuestionBody 
                 question = {selectedQuestion} />
             <h3>Answers</h3>
-            <AnswersList qid={selectedQuestion.qid} selectedAnswers={selectedAnswers} setAnswers={setAnswers}/>
+            <AnswersList qid={selectedQuestion.qid} selectedAnswers={selectedAnswers} setAnswers={setAnswers} showAcceptButton={showAcceptButton}/>
             { loggedIn ? <AnswerButton
                 question = {selectedQuestion} /> : <></> }
          </MainContent>

@@ -10,6 +10,7 @@ router.post('/add', isLoggedIn, answerController.addAnswer);
 router.get('/fetchUserAnswers', answerController.fetchUserAnswers);
 router.put('/:ansId', answerController.updateAnswerById);
 router.delete('/:ansId', answerController.deleteAnswerById);
+router.put('/accept/:ansId', isLoggedIn, answerController.acceptAnswer);
 
 
 module.exports = router;
