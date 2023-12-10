@@ -140,7 +140,6 @@ Bugs:
 
 ### Running Tests in Cypress:
 
-
 1. **Navigate to the client folder:**
    ```bash
    cd testing
@@ -151,10 +150,16 @@ Bugs:
    npm install
    ```
 
+1. **Run the client using the following command to enable code coverage:**
+    ```bash
+   npm test
+   ```
 3. **Run the React app:**
    ```bash
    npx cypress run --config watchForFileChanges=false
    ```
+1. **Find code coverage report in /testing/coverage/lcov-report**
+
 ## Team Member 1 Contribution
 1. Profile Page, Add/Edit/Delete for Questions, Answers, Tags.
 2. Tests for Add/Edit/Delete for Questions, Answers, Tags.

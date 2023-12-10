@@ -74,10 +74,8 @@ function Signup({ handleButtonClick }) {
 
       if (userData) {
         handleSuccess("Success!");
-        setTimeout(() => {
           // if successful signup, redirect to login page
-          handleButtonClick(e);
-        }, 1000);
+        handleButtonClick(e);
       }
     } catch (error) {
       console.log(error);

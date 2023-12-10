@@ -30,13 +30,62 @@ describe('Home Page', () => {
 })
 
 describe('User Profile', () => {
-  beforeEach(() => { 
-    cy.contains('#sideBarNav a', 'Profile').click();
+  beforeEach(() => {
+    cy.get('button[class^="Toastify__close-button"]').click({ multiple: true });
+    cy.contains('#sideBarNav a', 'Logout').click();
+    cy.get('input[name="username"]').type('newGuy');
+    cy.get('input[name="password"]').type('passExample');
+    cy.contains('button', 'Login').click();
+    cy.get('button[class^="Toastify__close-button"]').click({ multiple: true });
+    cy.get('#sideBarNav a').contains('Profile').click();
   });
 
-  it('successfully shows menu options of a Logged In user', () => {
-    cy.contains('.profilePageUserBanner h1', 'Welcome newGuy2!').should('exist');
-    cy.contains('.profilePageUserBanner span', 'Your reputation is: 55').should('exist');
+  it('Successfully shows info and options of a Logged In user on Profile Page', () => {
+    cy.contains('.profilePageUserBanner h1', 'Welcome newGuy!').should('exist');
+    cy.contains('.profilePageUserBanner span', 'Your reputation is: 60').should('exist');
+    cy.contains('.profilePageUserBanner span', 'Your account was created 420 day(s) ago.').should('exist');
+    cy.get('#profileAnswersButton').should('exist');
+    cy.get('#profileQuestionsButton').should('exist');
+    cy.get('#profileTagsButton').should('exist');
+  })
+
+  it('Successfully shows users answers correctly', () => {
+    cy.get('#profileAnswersButton').click();
+    const expectedTitles = [
+      "On my end, I like to have a single history object  ...",
+      "I just found all the above examples just too confu ...",
+      "Answer 5",
+    ];
+    cy.get('.profileContent li a').each(($a, index) => {
+      cy.wrap($a).invoke('text').should('contain', expectedTitles[index]);
+    });
+  })
+
+  it('Successfully shows users questions correctly', () => {
+    cy.get('#profileQuestionsButton').click();
+    const expectedTitles = [
+      "android studio save string shared preference, star ...",
+      "Question 5",
+      "Question 4",
+      "Question 2",
+      "Question 1",
+    ];
+    cy.get('.profileContent li a').each(($a, index) => {
+      cy.wrap($a).invoke('text').should('contain', expectedTitles[index]);
+    });
+  })
+
+  it('Successfully shows users tags correctly', () => {
+    cy.get('#profileTagsButton').click();
+    const tagNames = ['android-studio', 'shared-preferences'];
+    const tagCounts = ['3 question', '4 question'];
+    const buttonsState = [false, true];
+    cy.get('.tagNode').each(($el, index, $list) => {
+      cy.wrap($el).should('contain', tagNames[index]);
+      cy.wrap($el).should('contain', tagCounts[index]);
+      cy.wrap($el).find('button').eq(0).should(buttonsState[index] ? 'not.be.disabled' : 'be.disabled');
+      cy.wrap($el).find('button').eq(1).should(buttonsState[index] ? 'not.be.disabled' : 'be.disabled');
+    })
   })
 })
 
