@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import TagBox from './tagBox';
 import { DataDao } from '../../models/ModelDAO';
 
-function createTag(tag) {
+function createTag(tag, editDeleteOption) {
   return (
     <TagBox
       key={tag.tid}
       tid={tag.tid}
       name={tag.name}
       questionCount={tag.questionCount}
+      editDeleteOption={editDeleteOption}
     />
   );
 }
@@ -16,25 +17,32 @@ function createTag(tag) {
 function TagsList(props) {
   const [tags, setTags] = useState([]);
   const [tagCount, setTagCount] = useState(0);
+  const [editDeleteOption, setEditDeleteOption] = useState();
 
   useEffect(() => {
     const dao = DataDao.getInstance();
 
     const fetchData = async () => {
       try {
+        // retrieve all the tags form the dao call
         const responseData = await dao.getTagsAndQuestionCount();
         setTags(responseData);
         setTagCount(responseData.length);
+        setEditDeleteOption(false)
       } catch (error) {
         console.error('Error fetching tags:', error);
       }
     };
 
-    if (!props.selectedData || props.selectedData.length === 0) {
+    // if there were not props passed in
+    if (!props.selectedData) {
       fetchData();
-    } else {
+    }
+    // if there WERE props pass in 
+    else {
       setTags(props.selectedData);
       setTagCount(props.selectedData.length);
+      setEditDeleteOption(true)
     }
   }, [props.selectedData]);
 
@@ -55,7 +63,7 @@ function TagsList(props) {
           </h2>
           {rows.map((row, rowIndex) => (
             <div key={rowIndex} className="tagRow">
-              {row.map(createTag)}
+              {row.map((tag) => createTag(tag, editDeleteOption))}
             </div>
           ))}
         </div>
