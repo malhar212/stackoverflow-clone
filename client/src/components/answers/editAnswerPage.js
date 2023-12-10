@@ -17,7 +17,7 @@ const EditAnswerPage = () => {
       const existingAnswerData = existingAnswerDataList[0];
       // // console.log(JSON.stringify(existingAnswerData, null, 4))
       // Update the answer text
-      setAnswerText(existingAnswerData.text);
+      setAnswerText(existingAnswerData.text.trim());
     };
     fetchAnswerData();
   }, [params]);

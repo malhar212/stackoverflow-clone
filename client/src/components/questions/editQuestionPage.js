@@ -19,7 +19,7 @@ const EditQuestionPage = () => {
       // console.log("now the text property:")
       // console.log(JSON.stringify(existingQuestionData.text, null, 4))
       // Update Question Text
-      setQuestionText(existingQuestionData.text);
+      setQuestionText(existingQuestionData.text.trim());
     };
     fetchQuestionData();
   }, [params]);
