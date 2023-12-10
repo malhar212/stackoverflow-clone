@@ -347,6 +347,22 @@ async updateAnswerById(ansId, { text: answerText }) {
     return [];
   }
 
+  async acceptAnswer(ansId) {
+    try {
+      console.log(ansId);
+      const response = await this.instance.put(`/answers/accept/${ansId}`);
+      const { success, data } = response.data;
+      if (success) {
+        console.log('Answer accepted successfully:', data);
+        return data;
+      } else {
+        console.error('Failed to accept answer:', data.message);
+      }
+    } catch (error) {
+      console.error('Error deleting answer:', error);
+    }
+    return null;
+  }
 
   // Tags Methods
 

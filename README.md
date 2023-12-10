@@ -53,10 +53,10 @@ Add design docs in *images/*
     - ~~Comments displayed 3 at a time~~
     - ~~Show text, username, vote.~~
     - ~~Pagination with next and prev buttons. Same behaviour like questions~~
-    - For registerd user, new comment input field below the pagination
-    - New comment is added on pressing enter
-    - Comments limited to 140 characters
-    - Can only be added by users with reputation 50 or more.
+    - ~~For registerd user, new comment input field below the pagination~~
+    - ~~New comment is added on pressing enter~~
+    - ~~Comments limited to 140 characters~~
+    - ~~Can only be added by users with reputation 50 or more.~~
     - Comments only have upvotes. Increments by 1.
     - Upvoting comment has no impact on reputation.
     - Upvoting a comment makes corresponsing question active
