@@ -1,94 +1,6 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/hxTav0v1)
 Login with your Northeastern credentials and read the Project Specifications [here](https://northeastern-my.sharepoint.com/:w:/g/personal/j_mitra_northeastern_edu/EcUflH7GXMBEjXGjx-qRQMkB7cfHNaHk9LYqeHRm7tgrKg?e=oZEef3).
 
-Add design docs in *images/*
-
-## To-Do
-1. Fetch reputation after loading add question, answer or comments page
-1. Welcome page options to register or login or continue as guest user
-1. Create Account
-    - ~~Create Account Form Fields: username, email, and a secret password, repeat password~~
-    - ~~email and username unique~~
-    - ~~valid email~~
-    - ~~password shouldn't contain username or email~~
-2. Login
-    - ~~Enter username, password~~
-    - ~~Redirect to homepage~~
-1. Logout
-    - ~~If logout issues stay on same page, else redirect to welcome page~~
-1. HomePage: 
-    - ~~Show question summary~~
-    - ~~number of votes on the querstion~~
-    - ~~number of answers on the querstion~~
-    - ~~Display 5 questions at a time.~~
-    - ~~Next and Prev buttons~~
-    - ~~Next should cycle over on last page~~
-    - ~~but prev is disabled on first page~~
-1. Search:
-    - ~~Search results can be ordered according to sort buttons~~
-1. New Question:
-    - ~~New tags can only be added by users with reputation of 50 or more piazza.com/class/lm9ji6ba2ct7ew/post/218~~
-1. Answers: 
-    - ~~Show set of tags of the question~~
-    - ~~No. of votes of the question~~
-    - ~~Set of comments of the question below question text and tag set~~
-    - ~~Scrollable answers~~
-    - ~~Most recent first~~
-    - ~~Show no. of votes of each answer~~
-    - ~~Show comments of each answer~~
-    - ~~pagination like questions 5 at  a time~~
-    - ~~Only logged in Users see new answer button~~
-    - ~~Question, Answer have button to upvote or downvote~~
-    - ~~Upvoting increases the vote by 1 and downvoting decreases the vote by 1.~~
-    - ~~Upvoting a question/answer increases the reputation of the corresponding user by 5.~~
-    - ~~Downvoting a question/answer decreases the reputation of the corresponding user by 10.~~
-    - ~~A user can vote if their reputation is 50 or higher.~~
-    - ~~User who posted the question can mark one of the answers as accepted~~
-    - ~~Accepted answer should appear at top, all others appear in newest order~~
-1. New Answer:
-    - ~~Redirect to answers page~~
-    - ~~update question's lastActivity date~~
-1. Comments:
-    - ~~Most recent comment displayed on top~~
-    - ~~Comments displayed 3 at a time~~
-    - ~~Show text, username, vote.~~
-    - ~~Pagination with next and prev buttons. Same behaviour like questions~~
-    - ~~For registerd user, new comment input field below the pagination~~
-    - ~~New comment is added on pressing enter~~
-    - ~~Comments limited to 140 characters~~
-    - ~~Can only be added by users with reputation 50 or more.~~
-    - ~~Comments only have upvotes. Increments by 1.~~
-    - ~~Upvoting comment has no impact on reputation.~~
-    - ~~Upvoting a comment makes corresponsing question active~~
-1. Voting:
-    - ~~user can vote any number of times @180 piazza~~
-    - ~~voting on question/answer/comment updates question's lastActivity date~~
-1. User Profile Page:
-    - ~~User Information: No. days since user joined, reputation points~~
-    - Menu: 
-        - ~~Link to view all questions of user~~
-        - ~~Link to view all tags of user~~
-        - ~~Link to view all answers of user~~
-    - Sub views, show/hide based on link clicked:
-        - Questions posted by the user:
-            - ~~Display question titles~~
-            - ~~Display 5 at a time, prev and next button like homepage~~
-            - ~~Clicking on question title takes to edit form pre-filled, user can repost or delete.~~
-            - ~~original date does not change in reposting~~
-            - ~~reposting updated lastActivity date~~
-            - ~~Deleting question deletes answers and comments~~ ~~and tag if not used in other questions~~
-        - Tags created by the user:
-            - ~~Display in same manner as tags page~~
-            - ~~User has options to edit or delete tag~~
-            - ~~Editing/Deleting tag is allowed only if it is not in use by other users. It is allowed if it's used by only this user.~~
-        - Answers posted by the user:
-            - ~~All answers displayed as links of 50 characters~~
-            - ~~Newest order~~
-            - ~~licking link shows answer form pre-filled, user can repost or delete~~
-            - ~~Deleting answer deletes it's votes and comments~~
-            - ~~Deleting answer has no effect on reputation~~
-            - ~~Repost/Delete of answer makes question active. i.e. update lastActivity date~~
-
 ## Instructions to setup and run project
 ### Make sure your MongoDB instance is running.
 
@@ -158,7 +70,7 @@ Add design docs in *images/*
    npx cypress run --config watchForFileChanges=false
    ```
 
-1. **Find code coverage report in /testing/coverage/lcov-report**
+1. **Find code coverage report in /testing/coverage/lcov-report/index.html**
 
 ## Team Member 1 Contribution
 1. Profile Page, Add/Edit/Delete for Questions, Answers, Tags.
@@ -177,14 +89,6 @@ Add design docs in *images/*
 1. Tests for Login and Sign-up and Profile Page, Edit/Delete Tags & Answers
 1. Code Coverage
 
-## Test cases
-
-| Use-case Name   | Test case Name |
-|-----------------|----------------|
-| Home Page       | Test-1         |
-|                 | Test-2         |
-| Login           | Test-1         |
-|                 | Test-2         |
 
 ## Design Patterns Used
 1. 
@@ -208,3 +112,150 @@ Add design docs in *images/*
     - Problem Solved: By delegating the creation process to the factory, it encapsulates the logic to determine which specific builder class to instantiate. This enables the system to create objects (builders in this case) without exposing the intricacies of their instantiation, enhancing flexibility and maintainability.
 
     - Location in code where pattern is used: server\controllers\builders\builderFactory.js formatQuestionsForUI line 12
+    
+## Test cases
+
+| Use-case Name   | Test case Name |
+|-----------------|----------------|
+| Home Page | Successfully shows All Questions string                                                    |
+| Home Page | Should not show Ask a Question button to Guest                                             |
+| Home Page | successfully shows menu items                                                              |
+| Home Page | Should not show options of a Logged In user                                                |
+| Home Page | successfully shows total questions number                                                  |
+| Home Page | successfully shows filter buttons                                                          |
+| Home Page | successfully shows search bar                                                              |
+| Home Page | successfully shows page title                                                              |
+| Home Page | successfully shows all questions on page 1                                                 |
+| Home Page | Does not show questions supposed to be on page 1                                           |
+| Home Page | Successfully shows all question stats on page 1                                            |
+| Home Page | Successfully shows all question summary on page 1                                          |
+| Home Page | Successfully shows all question tags on page 1                                             |
+| Home Page | successfully shows all question authors and date time                                      |
+| Home Page | Disable prev button when on page 1                                                         |
+| Home Page | Successfully move to page 2 and verify Questions on page 2                                 |
+| Home Page | Verify Prev goes to previous page                                                          |
+| Home Page | Verify Next on last page goes to first page                                                |
+| Home Page | successfully shows questions in active order                                               |
+| Home Page | successfully shows unanswered questions                                                    |
+| Home Page | Search string in question text                                                             |
+| Home Page | Search string matches tag and text                                                         |
+| Home Page | Search string matches multiple tags                                                        |
+| Home Page | Search and sort by newest                                                                  |
+| Home Page | Search and sort using newest button                                                        |
+| Home Page | Search and sort using active button                                                        |
+| Home Page | Search and sort using unanswered button                                                    |
+| Answer Page | Answer Page displays expected header                                                       |
+| Answer Page | Answer Page should not show vote buttons to guest                                          |
+| Answer Page | Answer Page should not show add comment field to guest                                     |
+| Answer Page | Answer Page should not show Add answer button to guest                                     |
+| Answer Page | Answer Page displays expected question text and metadata                                   |
+| Answer Page | Answer Page displays expected question tags                                                |
+| Answer Page | Answer Page displays expected comments on the question and its stats                       |
+| Answer Page | Answer Page displays expected answers                                                      |
+| Answer Page | Answer Page displays expected metadata and stats and vote                                  |
+| Answer Page | Verify pagination of answers.                                                              |
+| Answer Page | Verify next button on last page of answers rolls over to first page                        |
+| Answer Page | Verify accepted answer is marked.                                                          |
+| Answer Page | Verify comments on answer.                                                                 |
+| Answer Page | Verify pagination of comments                                                              |
+| All Tags | Total Tag Count                                                                            |
+| All Tags | Tag names and count                                                                        |
+| All Tags | Click Tag Name shows relevant questions                                                    |
+| Add Question Page | Should show question form.                                                                 |
+| Add Question Page | Should have question text form input                                                       |
+| Add Question Page | Should have question text form input                                                       |
+| Add Question Page | Should have question text form input                                                       |
+| Add Question Page | Should contain Ask a Question Text                                                         |
+| Add Question Page | Submits form with all empty fields                                                         |
+| Add Question Page | displays an error for title with over 100 characters                                       |
+| Add Question Page | displays an error for title with over 100 characters w/ correct QuestionText               |
+| Add Question Page | creates only one instance of a tag if entered several times                                |
+| Add Question Page | tag text converted to lower case                                                           |
+| Add Question Page | Ask a Question creates and displays in All Questions                                       |
+| Add Question Page | Ask a Question creates and displays expected meta data in Unanswered                       |
+| Add Question Page | Ask a Question creates new question and shows up in Active order                           |
+| Add Question Page | Ask a Question creates and displays in All Questions with necessary tags                   |
+| Add Question Page | Ask a Question creates and displays in All Questions with necessary tags                   |
+| Add Question Page | Ask a Question with empty title shows error                                                |
+| Add Question Page | Ask a Question with long title shows error                                                 |
+| Add Question Page | Ask a Question with empty text shows error                                                 |
+| Add Question Page | Ask a Question with more than 5 tags shows error                                           |
+| Add Question Page | Ask a Question with a long new tag                                                         |
+| Home Page       | Should show Ask a Question button to LoggedIn user                                         |
+| Home Page       | successfully shows menu options of a Logged In user                                        |
+| User Profile    | Successfully shows info and options of a Logged In user on Profile Page                    |
+| User Profile    | Successfully shows users answers correctly                                                 |
+| User Profile    | Successfully shows users questions correctly                                               |
+| User Profile    | Successfully shows users tags correctly                                                    |
+| Answers Page    | Answer Page displays expected header                                                       |
+| Answers Page    | Answer Page should show vote buttons to guest                                              |
+| Answers Page    | Answer Page should show add comment field to guest                                         |
+| Answers Page    | Answer Page should show Add answer button to guest                                         |
+| Answers Page    | User with low reputation cannot Add a new comment                                          |
+| Answers Page    | User cannot Add a empty comment                                                            |
+| Answers Page    | User cannot Add a comment longer than 140 characters                                       |
+| Answers Page    | Add a new comment to question                                                              |
+| Answers Page    | Add a new comment to answer                                                                |
+| Answers Page    | Comment should have only upvote button                                                     |
+| Answers Page    | Adding comment to Question should make Question active                                     |
+| Answers Page    | Adding comment to Answer should make Question active                                       |
+| Answers Page    | User does not see accept answer button on other user's questions                           |
+| Answers Page    | User does not see accept answer button on own question with already accepted answer        |
+| Answers Page    | User sees accept answer button on own question                                             |
+| Answers Page    | User accepts answer should mark pin the accepted answer to top                             |
+| Answers Page    | User accepts answer should mark the question active                                        |
+| Answers Page    | User with low reputation cannot vote on Question                                           |
+| Answers Page    | User with low reputation cannot vote on Answer                                             |
+| Answers Page    | User with low reputation cannot vote on Comment                                            |
+| Answers Page    | Upvoting Question increments by 1                                                          |
+| Answers Page    | Downvoting Question decrements by 1                                                        |
+| Answers Page    | Upvoting an Answer increments by 1                                                         |
+| Answers Page    | Downvoting an Answer decrements by 1                                                       |
+| Answers Page    | Upvoting a Comment on a Question increments by 1                                           |
+| Answers Page    | Upvoting a Comment on An answer increments by 1                                            |
+| Answers Page    | Upvoting Question makes it active                                                          |
+| Answers Page    | Downvoting Question makes it active                                                        |
+| Answers Page    | Upvoting an Answer makes corresponding Question active                                     |
+| Answers Page    | Downvoting an Answer makes corresponding Question makes it active                          |
+| Answers Page    | Upvoting a Comment makes corresponding Question active                                     |
+| Answers Page    | Upvoting a Comment on An answer makes corresponding Question active                        |
+| Answers Page    | Upvoting Question increments corresponding user reputation by 5                            |
+| Answers Page    | Downvoting Question decrements corresponding user reputation by 10                         |
+| Answers Page    | Upvoting an Answer increments corresponding user reputation by 5                           |
+| Answers Page    | Downvoting an Answer decrements corresponding user reputation by 10                        |
+| Answers Page    | Upvoting a Comment has no impact on user reputation                                        |
+| Answers Page    | Upvoting a Comment on An answer has no impact on user reputation                           |
+| Editing/Deleting Tags | Make sure tags in use by other users are not editable                                      |
+| Editing/Deleting Tags | Deleting tag deletes it from all questions                                                 |
+| Editing/Deleting Tags | Editing tag updates it for all questions                                                   |
+| Editing/Deleting Tags | Empty tag name is rejected                                                                 |
+| Add Answer      | Create new answer should be displayed at the top of the answers page                       |
+| Add Answer      | Answer is mandatory when creating a new answer                                             |
+| Add Answer      | Adds an answer with a hyperlink and verifies                                               |
+| Add Answer      | Attempts to add an answer with an invalid hyperlink and verifies failure                   |
+| Add Answer      | Create new answer marks the question active                                                |
+| Edit/Delete Answer | Deleting answer should remove answer from profile. Should not affect user reputation       |
+| Edit/Delete Answer | Deleting answer should mark question active                                                |
+| Edit/Delete Answer | Answer is mandatory when editing new answer                                                |
+| Edit/Delete Answer | Edit an answer with a hyperlink and verifies                                               |
+| Edit/Delete Answer | Attempts to update answer with an invalid hyperlink and verifies failure                   |
+| Edit/Delete Answer | Editing an answer marks the question active                                                |
+| Editing / Deleting Questions | Deleting question should delete from profile page                                          |
+| Welcome Page    | Should contains Login, Signup and Guest buttons                                            |
+| Welcome Page    | Should show Login form fields                                                              |
+| Welcome Page    | Should show Signup form when Need Signup button click                                      |
+| Welcome Page    | Should show Login form again after Already signed up button click                          |
+| Login Page      | User doesn't input anything                                                                |
+| Login Page      | User doesn't input username                                                                |
+| Login Page      | User doesn't input password                                                                |
+| Login Page      | Check successful login and redirection of a user                                           |
+| Login Page      | User puts invalid password                                                                 |
+| Login Page      | User doesn't exist                                                                         |
+| Create Account  | User doesn't input anything                                                                |
+| Create Account  | User inputs invalid email                                                                  |
+| Create Account  | User passwords do not match                                                                |
+| Create Account  | User passwords should not contain username                                                 |
+| Create Account  | User passwords should not contain email                                                    |
+| Create Account  | Username already taken                                                                     |
+| Create Account  | Email already registered                                                                   |
+| Create Account  | Successful Registration and redirection to login page and try login with new user          |
