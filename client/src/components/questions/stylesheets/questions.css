@@ -1,0 +1,71 @@
+/* Styling for the Questions page */
+/* Style for sort button group */
+.btn-group button:hover {
+  background-color: #0056b3;
+}
+
+.btn-group button {
+  background-color: #c6dde7;
+  border: 1px solid rgb(0, 0, 0); 
+  color: rgb(15, 15, 15); /* text color */
+  padding: 10px 24px;
+  cursor: pointer; /* Pointer/hand icon */
+  float: left; /* Float the buttons side by side */
+}
+
+.btn-group button.active {
+  background-color: #0056b3;
+}
+
+.btn-group button:not(:last-child) {
+  border-right: none; /* Prevent double borders */
+}
+
+/* Styling for the question list */
+.question-list {
+  border-top: 1px dotted #ccc;
+  overflow-y: auto;
+}
+
+/* Styling for individual questions */
+.question {
+  border-bottom: dotted;
+}
+
+.postTitle {
+  font-weight: bold;
+  margin-bottom: 5px;
+  overflow-wrap: break-word;
+  word-break: break-all;
+}
+
+.postStats {
+  color: #555;
+  margin-bottom: 5px;
+}
+
+/* Define styles for pills */
+.pill {
+  display: inline-block;
+  padding: 5px 10px;
+  margin: 5px;
+  background-color: #007BFF;
+  color: white;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+
+.lastActivity {
+  color: #777;
+}
+
+/* Styling for question stats and sorting buttons */
+#questionStats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #ccc;
+}

@@ -1,0 +1,35 @@
+/* sort buttons */
+.buttonColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Optional: Center buttons horizontally */
+    gap: 10px; /* Optional: Add some spacing between buttons */
+  }
+
+
+  /* Banner on all pages: Fake Stack Overflow' + searchBar */
+  .banner { 
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    text-align: center;
+    background: linear-gradient(to right, #c3ced3, #6297cf);
+    color : rgb(30, 21, 21);
+    font-size: 40px;
+    font-weight: bold;
+    border-width: 5px;
+    border-color: black;
+    border-style : solid;
+    /* moving banner to accomodate side nav bar */
+    margin-left : 200px;
+    margin-bottom: 20px;
+  }
+
+  .banner #searchBar {
+    /* float: right; */
+    padding: 30px;
+    border: none;
+    /* margin-top: 8px;
+    margin-right: 8px; */
+    font-size: 20px;
+  }
