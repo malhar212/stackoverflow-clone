@@ -14,7 +14,7 @@ afterEach(() => {
   console.log("Done destroy")
 });
 
-describe('Add Question Page', () => {
+describe.only('Add Question Page', () => {
   beforeEach(() => {
     cy.get('#askButton').click();
   })
@@ -101,25 +101,46 @@ describe('Add Question Page', () => {
     cy.get('.postTitle').each(($el, index, $list) => {
       cy.wrap($el).should('contain', qTitles[index]);
     });
+  })
 
-    it('Ask a Question creates and displays expected meta data', () => {
-      cy.get('#formTitleInput').type('Test Question 1');
-      cy.get('#formTextInput').type('Test Question 1 Text');
-      cy.get('#formTagInput').type('javascript');
-      cy.contains('Post Question').click();
-      cy.contains('Fake Stack Overflow');
-      cy.contains('4 questions');
-      cy.contains('joym asked 0 seconds ago');
-      const answers = ['0 answers', '0 answers', '3 answers', '2 answers'];
-      const views = ['0 views', '0 views', '121 views', '0 views'];
-      cy.get('.postStats').each(($el, index, $list) => {
-        cy.wrap($el).should('contain', answers[index]);
-        cy.wrap($el).should('contain', views[index]);
-      });
-      cy.contains('Unanswered').click();
-      cy.get('.postTitle').should('have.length', 2);
-      cy.contains('2 question');
-    })
+  it('Ask a Question creates and displays expected meta data in Unanswered', () => {
+    cy.get('#formTitleInput').type('Test Question 1');
+    cy.get('#formTextInput').type('Test Question 1 Text');
+    cy.get('#formTagInput').type('javascript');
+    cy.contains('Post Question').click();
+    cy.contains('Fake Stack Overflow');
+    cy.contains('8 questions');
+    cy.contains('newGuy2 asked 0 seconds ago');
+    const answers = ['0 answers', '2 answers', '7 answers', '0 answers', '0 answers'];
+    const views = ['0 views', '0 views', '121 views', '14 views', '141 views' ];
+    cy.get('.postStats').each(($el, index, $list) => {
+      cy.wrap($el).should('contain', answers[index]);
+      cy.wrap($el).should('contain', views[index]);
+    });
+    cy.contains('Unanswered').click();
+    cy.get('.postTitle').should('have.length', 5);
+    cy.get('.postTitle').first().should('contain', 'Test Question 1');
+    cy.contains('6 question');
+  })
+
+  it('Ask a Question creates new question and shows up in Active order', () => {
+    cy.get('#formTitleInput').type('Test Question 1');
+    cy.get('#formTextInput').type('Test Question 1 Text');
+    cy.get('#formTagInput').type('javascript');
+    cy.contains('Post Question').click();
+    cy.contains('Fake Stack Overflow');
+    cy.contains('8 questions');
+    cy.contains('newGuy2 asked 0 seconds ago');
+    const answers = ['0 answers', '2 answers', '7 answers', '0 answers', '0 answers'];
+    const views = ['0 views', '0 views', '121 views', '14 views', '141 views' ];
+    cy.get('.postStats').each(($el, index, $list) => {
+      cy.wrap($el).should('contain', answers[index]);
+      cy.wrap($el).should('contain', views[index]);
+    });
+    cy.contains('Active').click();
+    cy.get('.postTitle').should('have.length', 5);
+    cy.get('.postTitle').first().should('contain', 'Test Question 1');
+    cy.contains('8 question');
   })
 
   it('Ask a Question creates and displays in All Questions with necessary tags', () => {

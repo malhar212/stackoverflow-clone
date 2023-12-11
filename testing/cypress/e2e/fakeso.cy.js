@@ -1,12 +1,18 @@
 before(() => {// Clear the database after each test
     cy.exec('node ../server/destroy.js');
-    console.log("Done destroy")})
+    console.log("Done destroy")
+})
 beforeEach(() => {
     // Seed the database before each test
     cy.exec('node ../server/init.js');
     console.log("Done insert");
     cy.visit('http://localhost:3000');
-    cy.writeFile('logs.txt', `| ${Cypress.currentTest.titlePath[0].padEnd(15)} | ${Cypress.currentTest.titlePath[1].padEnd(90)} |\n`, { flag: 'a+' });
+    // cy.writeFile('logs.txt', `| ${Cypress.currentTest.titlePath[0].padEnd(15)} | ${Cypress.currentTest.titlePath[1].padEnd(90)} |\n`, { flag: 'a+' });
+    const testTitle = Cypress.currentTest.titlePath
+        .map((title, index) => (index === 0 ? title : title.padEnd(90)))
+        .join(' | ');
+    cy.writeFile('logs.txt', `| ${testTitle} |\n`, { flag: 'a+' });
+
     cy.contains('Guest').click();
 })
 afterEach(() => {
@@ -94,6 +100,7 @@ describe('Home Page', () => {
 
     it('Successfully shows all question tags on page 1', () => {
         const tags = [['react', 'javascript'], ['javascript', 'android-studio', 'shared-preferences'], ['javascript', 'shared-preferences'], ['javascript', 'shared-preferences'], ['android-studio']];
+        cy.wait(1000);
         cy.get('.pillContainer').each(($el, index, $list) => {
             cy.wrap($el).find('.pill').each(($el2, index2, $list) => {
                 cy.wrap($el2).should('contain', tags[index][index2]);
@@ -327,14 +334,13 @@ describe('Answer Page', () => {
 
     function verifyAnswersOnPage2() {
         const answers = ['Answer 7', 'Answer 6', 'Answer 5'];
-        cy.get('.answerText').each(($el, index) => {
-            cy.wrap($el).invoke('text').then(($el1) => { cy.log($el1); cy.wrap($el1).should('contain', answers[index]) });
+        answers.forEach(($el, index) => {
+            cy.contains(answers[index])
         });
     }
 
     it('Verify pagination of answers. \nVerify accepted answer is pinned to the top of every page. \nVerify thier metadata', () => {
         cy.get('.answer-list div.paginationControls').contains('button', 'Next').last().click();
-        cy.wait(1000);
         verifyAnswersOnPage2();
         const authors = ['samZ', 'newGuy2', 'newGuy'];
         const date = ['Oct 09', 'Oct 08', 'Oct 07'];
@@ -354,6 +360,7 @@ describe('Answer Page', () => {
     it('Verify next button on last page of answers rolls over to first page ', () => {
         verifyAnswersOnPage1();
         cy.get('.answer-list div.paginationControls').last().contains('button', 'Next').click();
+        verifyAnswersOnPage2();
         cy.get('.answer-list div.paginationControls').last().contains('button', 'Next').click();
         verifyAnswersOnPage1();
     });
@@ -373,8 +380,8 @@ describe('Answer Page', () => {
 
     it('Verify comments on answer.', () => {
         const text = ['Comment 2. Some more text', 'Comment 1', 'Comment 3'];
-        const username = ['newGuy2','newGuy2','samZ' ];
-        const votes = ['10 votes', '10 votes', '0 votes' ];
+        const username = ['newGuy2', 'newGuy2', 'samZ'];
+        const votes = ['10 votes', '10 votes', '0 votes'];
         cy.contains('.answer', 'Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background.').within(() => {
             cy.get('.comment-list').should('exist');
             cy.get('.comment-list .comment').each(($comment, index) => {
@@ -387,8 +394,8 @@ describe('Answer Page', () => {
 
     it('Verify pagination of comments', () => {
         const text = ['Comment 2', 'Comment 4'];
-        const username = ['newGuy', 'newGuy2' ];
-        const votes = ['1 votes', '10 votes' ];
+        const username = ['newGuy', 'newGuy2'];
+        const votes = ['1 votes', '10 votes'];
         cy.contains('.answer', 'Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background.').within(() => {
             cy.get('.comment-list').should('exist');
             cy.get('.comment-list .paginationControls').contains('button', 'Next').click();
@@ -404,29 +411,28 @@ describe('Answer Page', () => {
 
 describe('All Tags', () => {
     it('Total Tag Count', () => {
-      cy.contains('Tags').click();
-      cy.contains('All Tags');
-      cy.contains('4 Tags');
+        cy.contains('Tags').click();
+        cy.contains('All Tags');
+        cy.contains('4 Tags');
     })
-  
-  
+
+
     it('Tag names and count', () => {
-      const tagNames = ['react', 'javascript', 'android-studio', 'shared-preferences'];
-      const tagCounts = ['1 question', '6 questions', '3 question', '4 question'];
-      cy.contains('Tags').click();
-      cy.get('.tagNode').each(($el, index, $list) => {
-        cy.wrap($el).should('contain', tagNames[index]);
-        cy.wrap($el).should('contain', tagCounts[index]);
-      })
+        const tagNames = ['react', 'javascript', 'android-studio', 'shared-preferences'];
+        const tagCounts = ['1 question', '6 questions', '3 question', '4 question'];
+        cy.contains('Tags').click();
+        cy.get('.tagNode').each(($el, index, $list) => {
+            cy.wrap($el).should('contain', tagNames[index]);
+            cy.wrap($el).should('contain', tagCounts[index]);
+        })
     })
-  
+
     it('Click Tag Name shows relevant questions', () => {
-      cy.contains('Tags').click();
-      cy.contains('studio').click();
+        cy.contains('Tags').click();
+        cy.contains('studio').click();
         cy.contains('android studio save string shared preference, start activity and load the saved string')
         cy.contains('Question 1')
         cy.contains('Question 3')
-        cy.should('not.contain','Programmatically navigate using React router')
+        cy.should('not.contain', 'Programmatically navigate using React router')
     })
-  })
-  
+})
