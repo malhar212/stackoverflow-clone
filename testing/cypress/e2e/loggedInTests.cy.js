@@ -296,6 +296,30 @@ describe('Answers Page', () => {
 
   // Comment related tests
 
+  it.only('User with low reputation cannot Add a new comment', () => {
+    cy.get('button[class^="Toastify__close-button"]').click({ multiple: true });
+    cy.contains('#sideBarNav a', 'Logout').click();
+    cy.get('input[name="username"]').type('samZ');
+    cy.get('input[name="password"]').type('examplePass');
+    cy.contains('button', 'Login').click();
+    cy.get('button[class^="Toastify__close-button"]').click({ multiple: true });
+    cy.contains('Programmatically navigate using React router').click();
+    cy.get('#questionBody .comment-form input').type('New Comment{enter}');
+    cy.get('#textError').should('have.text', "You don't have enough reputation to comment");
+  })
+
+  it.only('User cannot Add a empty comment', () => {
+    cy.get('#questionBody .comment-form input').type('{enter}');
+    cy.get('#textError').should('have.text', "Comment text cannot be empty");
+  })
+
+  it.only('User cannot Add a comment longer than 140 characters', () => {
+    cy.get('#questionBody .comment-form input').type('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.{enter}');
+    cy.get('#textError').should('have.text', "Comment cannot be more than 140 characters");
+  })
+  
+  // TODO invalid hyperlink test
+
   it('Add a new comment to question', () => {
     const text = 'New Comment';
     const username = 'newGuy2';
