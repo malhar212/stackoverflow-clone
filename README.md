@@ -76,11 +76,11 @@ Add design docs in *images/*
             - ~~Clicking on question title takes to edit form pre-filled, user can repost or delete.~~
             - ~~original date does not change in reposting~~
             - ~~reposting updated lastActivity date~~
-            - ~~Deleting question deletes answers and comments~~ and tag if not used in other questions
+            - ~~Deleting question deletes answers and comments~~ ~~and tag if not used in other questions~~
         - Tags created by the user:
             - ~~Display in same manner as tags page~~
             - ~~User has options to edit or delete tag~~
-            - Editing/Deleting tag is allowed only if it is not in use by other users. It is allowed if it's used by only this user.
+            - ~~Editing/Deleting tag is allowed only if it is not in use by other users. It is allowed if it's used by only this user.~~
         - Answers posted by the user:
             - ~~All answers displayed as links of 50 characters~~
             - ~~Newest order~~
@@ -88,11 +88,6 @@ Add design docs in *images/*
             - ~~Deleting answer deletes it's votes and comments~~
             - ~~Deleting answer has no effect on reputation~~
             - ~~Repost/Delete of answer makes question active. i.e. update lastActivity date~~
-
-Bugs:
-    - ~~When new question is created with no tags, all tags are added to it~~
-    - First population of ProfilePage gets error in front-end console but still functions
-    - ~~whietspace is saved in new Answers~~
 
 ## Instructions to setup and run project
 ### Navigate to the Project folder in terminal.
