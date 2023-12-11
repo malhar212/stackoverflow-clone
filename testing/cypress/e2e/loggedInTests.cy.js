@@ -536,3 +536,67 @@ describe('Answers Page', () => {
   })
 
 })
+
+describe('Editing/Deleting Tags', () => {
+  beforeEach(() => {
+    cy.get('button[class^="Toastify__close-button"]').click({ multiple: true });
+    cy.contains('#sideBarNav a', 'Logout').click();
+    cy.get('input[name="username"]').type('newGuy');
+    cy.get('input[name="password"]').type('passExample');
+    cy.contains('button', 'Login').click();
+    cy.get('button[class^="Toastify__close-button"]').click({ multiple: true });
+    cy.get('#sideBarNav a').contains('Profile').click();
+    cy.get('#profileTagsButton').click();
+  });
+
+  it('Make sure tags in use by other users are not editable', () => {
+    const tagNames = ['android-studio', 'shared-preferences'];
+    const tagCounts = ['3 question', '4 question'];
+    const buttonsState = [false, true];
+    cy.get('.tagNode').each(($el, index, $list) => {
+      cy.wrap($el).should('contain', tagNames[index]);
+      cy.wrap($el).should('contain', tagCounts[index]);
+      cy.wrap($el).find('button').eq(0).should(buttonsState[index] ? 'not.be.disabled' : 'be.disabled');
+      cy.wrap($el).find('button').eq(1).should(buttonsState[index] ? 'not.be.disabled' : 'be.disabled');
+    })
+  })
+
+  it('Deleting tag deletes it from all questions', () => {
+    cy.contains('.tagNode', 'shared-preference')
+      .find('button:contains("Delete")')
+      .click();
+    cy.contains('.tagNode', 'shared-preference').should('not.exist');
+    cy.get('#sideBarNav a').contains('Questions').click();
+    cy.contains('.pill', 'shared-preference').should('not.exist');
+  })
+
+  it('Editing tag updates it for all questions', () => {
+    cy.contains('.tagNode', 'shared-preference')
+      .find('button:contains("Edit")')
+      .click();
+    cy.get('#content textarea').should('have.value', 'shared-preferences');
+    cy.get('#content textarea').clear().type('new-tag-name');
+    cy.get('#content button[type="submit"]').click();
+    cy.get('#profileTagsButton').click();
+    cy.contains('.tagNode', 'shared-preference').should('not.exist');
+    cy.contains('.tagNode', 'new-tag-name').should('exist');
+    cy.get('#sideBarNav a').contains('Questions').click();
+    cy.contains('.pill', 'shared-preference').should('not.exist');
+    cy.contains('.pill', 'new-tag-name').should('exist');
+  })
+
+  it('Empty tag name is rejected', () => {
+    cy.contains('.tagNode', 'shared-preference')
+      .find('button:contains("Edit")')
+      .click();
+    cy.get('#content textarea').should('have.value', 'shared-preferences');
+    cy.get('#content textarea').clear();
+    cy.get('#content button[type="submit"]').click();
+    cy.get('.Toastify__toast-body').should('contain', 'Tag Name should not be empty');
+    cy.get('#sideBarNav a').contains('Profile').click();
+    cy.get('#profileTagsButton').click();
+    cy.contains('.tagNode', 'shared-preference').should('exist');
+    cy.get('#sideBarNav a').contains('Questions').click();
+    cy.contains('.pill', 'shared-preference').should('exist');
+  })
+})

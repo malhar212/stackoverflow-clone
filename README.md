@@ -95,7 +95,10 @@ Bugs:
     - ~~whietspace is saved in new Answers~~
 
 ## Instructions to setup and run project
+### Make sure your MongoDB instance is running.
+
 ### Navigate to the Project folder in terminal.
+
 ### Server Side (Node.js/Express):
 
 1. **Navigate to the server folder:**
@@ -137,6 +140,11 @@ Bugs:
    ```bash
    npm start
    ```
+   
+1. **Run the client using the following command to enable Code Coverage:**
+    ```bash
+   npm test
+   ```
 
 ### Running Tests in Cypress:
 
@@ -150,14 +158,11 @@ Bugs:
    npm install
    ```
 
-1. **Run the client using the following command to enable code coverage:**
-    ```bash
-   npm test
-   ```
 3. **Run the React app:**
    ```bash
    npx cypress run --config watchForFileChanges=false
    ```
+
 1. **Find code coverage report in /testing/coverage/lcov-report**
 
 ## Team Member 1 Contribution
@@ -174,7 +179,7 @@ Bugs:
 7. Conditional routing without modifying URL.
 1. Questions, Search, Answers, Comments and Voting functionality.
 1. Questions, Search, Answers, Comments and Voting tests for Guest and LoggedIn user.
-1. Tests for Login and Sign-up and Profile Page
+1. Tests for Login and Sign-up and Profile Page, Edit/Delete Tags
 
 ## Test cases
 
