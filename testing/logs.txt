@@ -896,3 +896,54 @@ Verify thier metadata |
 | Add Question Page | Ask a Question with empty text shows error                                                 |
 | Add Question Page | Ask a Question with more than 5 tags shows error                                           |
 | Add Question Page | Ask a Question with a long new tag                                                         |
+| Home Page       | Should show Ask a Question button to LoggedIn user                                         |
+| Home Page       | successfully shows menu options of a Logged In user                                        |
+| User Profile    | Successfully shows info and options of a Logged In user on Profile Page                    |
+| User Profile    | Successfully shows users answers correctly                                                 |
+| User Profile    | Successfully shows users questions correctly                                               |
+| User Profile    | Successfully shows users tags correctly                                                    |
+| Answers Page    | Answer Page displays expected header                                                       |
+| Answers Page    | Answer Page should show vote buttons to guest                                              |
+| Answers Page    | Answer Page should show add comment field to guest                                         |
+| Answers Page    | Answer Page should show Add answer button to guest                                         |
+| Answers Page    | Add a new comment to question                                                              |
+| Answers Page    | Add a new comment to answer                                                                |
+| Answers Page    | Comment should have only upvote button                                                     |
+| Answers Page    | Adding comment to Question should make Question active                                     |
+| Answers Page    | Adding comment to Answer should make Question active                                       |
+| Answers Page    | User does not see accept answer button on other user's questions                           |
+| Answers Page    | User does not see accept answer button on own question with already accepted answer        |
+| Answers Page    | User sees accept answer button on own question                                             |
+| Answers Page    | User accepts answer should mark pin the accepted answer to top                             |
+| Answers Page    | User accepts answer should mark the question active                                        |
+| Answers Page    | User with low reputation cannot vote on Question                                           |
+| Answers Page    | User with low reputation cannot vote on Answer                                             |
+| Answers Page    | User with low reputation cannot vote on Comment                                            |
+| Answers Page    | Upvoting Question increments by 1                                                          |
+| Answers Page    | Downvoting Question decrements by 1                                                        |
+| Answers Page    | Upvoting an Answer increments by 1                                                         |
+| Answers Page    | Downvoting an Answer decrements by 1                                                       |
+| Answers Page    | Upvoting a Comment on a Question increments by 1                                           |
+| Answers Page    | Upvoting a Comment on An answer increments by 1                                            |
+| Answers Page    | Upvoting Question makes it active                                                          |
+| Answers Page    | Downvoting Question makes it active                                                        |
+| Answers Page    | Upvoting an Answer makes corresponding Question active                                     |
+| Answers Page    | Downvoting an Answer makes corresponding Question makes it active                          |
+| Answers Page    | Upvoting a Comment makes corresponding Question active                                     |
+| Answers Page    | Upvoting a Comment on An answer makes corresponding Question active                        |
+| Answers Page    | Upvoting Question increments corresponding user reputation by 5                            |
+| Answers Page    | Downvoting Question decrements corresponding user reputation by 10                         |
+| Answers Page    | Upvoting an Answer increments corresponding user reputation by 5                           |
+| Answers Page    | Downvoting an Answer decrements corresponding user reputation by 10                        |
+| Answers Page    | Upvoting a Comment has no impact on user reputation                                        |
+| Answers Page    | Upvoting a Comment on An answer has no impact on user reputation                           |
+| Add Question Page | Should show question form.                                                                 |
+| Add Question Page | Should have question text form input                                                       |
+| Add Question Page | Should have question text form input                                                       |
+| Add Question Page | Should have question text form input                                                       |
+| Add Question Page | Ask a Question creates and displays in All Questions                                       |
+| Add Question Page | Ask a Question creates and displays in All Questions                                       |
+| Add Question Page | Ask a Question creates and displays in All Questions                                       |
+| Add Question Page | Should show question form.                                                                 |
+| Add Question Page | Should have question text form input                                                       |
+| Add Question Page | Should have question text form input                                                       |

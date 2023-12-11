@@ -97,7 +97,7 @@ describe('Add Question Page', () => {
       cy.get('#formTagInput').type('javascript');
       cy.contains('Post Question').click();
       cy.contains('Fake Stack Overflow');
-      const qTitles = ['Test Question 1', 'android studio save string shared preference, start activity and load the saved string', 'Programmatically navigate using React router'];
+      const qTitles = ['Test Question 1', 'Programmatically navigate using React router', 'android studio save string shared preference', 'Question 5', 'Question 4'];
       cy.get('.postTitle').each(($el, index, $list) => {
           cy.wrap($el).should('contain', qTitles[index]);
       });
