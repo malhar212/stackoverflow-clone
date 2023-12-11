@@ -170,16 +170,17 @@ Bugs:
 2. Tests for Add/Edit/Delete for Questions, Answers, Tags.
 5. CSS stylings
 4. Server implementation.
+4. Implement Authentication and Login.
 
 ## Team Member 2 Contribution
 1. Singleton object to interface with server APIs.
 2. Builder pattern in server to build objects in appropriate format for database document or UI objects.
 3. Factory pattern in server to create Builder objects without specifying their concrete classes.
 4. Fix issues with Authentication and Login.
-7. Conditional routing without modifying URL.
 1. Questions, Search, Answers, Comments and Voting functionality.
-1. Questions, Search, Answers, Comments and Voting tests for Guest and LoggedIn user.
+1. Questions, Search, Answers, Comments and Voting Tests for Guest and LoggedIn user.
 1. Tests for Login and Sign-up and Profile Page, Edit/Delete Tags
+1. Code Coverage
 
 ## Test cases
 
