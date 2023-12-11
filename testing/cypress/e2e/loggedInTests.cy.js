@@ -14,6 +14,186 @@ afterEach(() => {
   console.log("Done destroy")
 });
 
+describe('Add Question Page', () => {
+  beforeEach(() => {
+    cy.get('#askButton').click();
+  })
+
+  // checks components of add question page 
+  it('Should show question form.', () => {
+    cy.get('#questionForm').should('exist');
+  });
+
+
+  it('Should have question text form input', () => {
+    cy.get('#formTextInput').should('exist');
+  });
+
+
+  it('Should have question text form input', () => {
+    cy.get('#formTitleInput').should('exist');
+  });
+
+  it('Should have question text form input', () => {
+    cy.get('#formTagInput').should('exist');
+  });
+
+  it('Should contain Ask a Question Text', () => {
+    cy.get('.form h1').should('contain', 'Ask a Question');
+  })
+
+  // Submit the form
+  it('Submits form with all empty fields', () => {
+    cy.get('button#postQuestionButton').click();
+    cy.get('#titleError').should('contain', 'Title cannot be empty');
+    cy.get('#textError').should('contain', 'Question text cannot be empty');
+  });
+
+  // Entering text over 100 characters should raise error
+  it('displays an error for title with over 100 characters', () => {
+    const longTitle = '0'.repeat(101);
+    cy.get('input[name="title"]').type(longTitle);
+    cy.get('#postQuestionButton').click();
+    cy.get('#titleError').should('contain', 'Title cannot be more than 100 characters');
+  });
+
+  // Entering text over 100 characters should raise error
+  it('displays an error for title with over 100 characters w/ correct QuestionText', () => {
+      const longTitle = '0'.repeat(101);
+      cy.get('input[name="title"]').type(longTitle);
+      cy.get('#formTextInput').type("I am an acceptable question text");
+      cy.get('#postQuestionButton').click();
+      cy.get('#titleError').should('contain', 'Title cannot be more than 100 characters');
+  });
+
+
+    it('creates only one instance of a tag if entered several times', () => {
+      cy.get('#formTitleInput').type('Test Question 1');
+      cy.get('#formTextInput').type('Test Question 1 Text');
+      // Enter the same tag multiple times into the tags input
+      const duplicateTag = 'cypresstag';
+      cy.get('#formTagInput').type(`${duplicateTag} ${duplicateTag} ${duplicateTag}`);
+      // Submit the form
+      cy.contains('Post Question').click();
+      // Check that only one instance of the tag is created
+      cy.contains('cypresstag');
+  });
+
+  it('tag text converted to lower case', () => {
+    cy.get('#formTitleInput').type('Test Question 1');
+    cy.get('#formTextInput').type('Test Question 1 Text');
+    // Enter the same tag multiple times into the tags input
+    const duplicateTag = 'cypressTag';
+    cy.get('#formTagInput').type(`${duplicateTag} ${duplicateTag} ${duplicateTag}`);
+    // Submit the form
+    cy.contains('Post Question').click();
+    // Check that only one instance of the tag is created
+    cy.contains('cypresstag');
+    });
+
+    it('Ask a Question creates and displays in All Questions', () => {
+      cy.get('#formTitleInput').type('Test Question 1');
+      cy.get('#formTextInput').type('Test Question 1 Text');
+      cy.get('#formTagInput').type('javascript');
+      cy.contains('Post Question').click();
+      cy.contains('Fake Stack Overflow');
+      const qTitles = ['Test Question 1', 'Programmatically navigate using React router', 'android studio save string shared preference', 'Question 5', 'Question 4'];
+      cy.get('.postTitle').each(($el, index, $list) => {
+          cy.wrap($el).should('contain', qTitles[index]);
+      });
+
+      it('Ask a Question creates and displays expected meta data', () => {
+        cy.get('#formTitleInput').type('Test Question 1');
+        cy.get('#formTextInput').type('Test Question 1 Text');
+        cy.get('#formTagInput').type('javascript');
+        cy.contains('Post Question').click();
+        cy.contains('Fake Stack Overflow');
+        cy.contains('4 questions');
+        cy.contains('joym asked 0 seconds ago');
+        const answers = ['0 answers', '0 answers', '3 answers','2 answers'];
+        const views = ['0 views', '0 views', '121 views','0 views'];
+        cy.get('.postStats').each(($el, index, $list) => {
+            cy.wrap($el).should('contain', answers[index]);
+            cy.wrap($el).should('contain', views[index]);
+        });
+        cy.contains('Unanswered').click();
+        cy.get('.postTitle').should('have.length', 2);
+        cy.contains('2 question');
+    })
+  })
+
+  it('Ask a Question creates and displays in All Questions with necessary tags', () => {
+    cy.get('#formTitleInput').type('Test Question 1');
+    cy.get('#formTextInput').type('Test Question 1 Text');
+    cy.get('#formTagInput').type('javascript t1 t2');
+    cy.contains('Post Question').click();
+    cy.contains('Fake Stack Overflow');
+    cy.contains('javascript');
+    cy.contains('t1');
+    cy.contains('t2');
+})
+
+it('Ask a Question creates and displays in All Questions with necessary tags', () => {
+  cy.get('#formTitleInput').type('Test Question 1');
+  cy.get('#formTextInput').type('Test Question 1 Text');
+  cy.get('#formTagInput').type('javascript t1 t2');
+  cy.contains('Post Question').click();
+  cy.contains('Fake Stack Overflow');
+  cy.contains('javascript');
+  cy.contains('android-studio');
+  cy.contains('t2');
+})
+
+it('Ask a Question with empty title shows error', () => {
+  cy.get('#formTextInput').type('Test Question 1 Text');
+  cy.get('#formTagInput').type('javascript');
+  cy.contains('Post Question').click();
+  cy.contains('Title cannot be empty');
+})
+
+it('Ask a Question with long title shows error', () => {
+  cy.get('#formTitleInput').type('Test Question 0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789');
+  cy.get('#formTextInput').type('Test Question 1 Text');
+  cy.get('#formTagInput').type('javascript');
+  cy.contains('Post Question').click();
+  cy.contains('Title cannot be more than 100 characters');
+})
+
+it('Ask a Question with empty text shows error', () => {
+  cy.get('#formTitleInput').type('Test Question 1');
+  cy.get('#formTagInput').type('javascript');
+  cy.contains('Post Question').click();
+  cy.contains('Question text cannot be empty');
+})
+
+it('Ask a Question with more than 5 tags shows error', () => {
+  cy.get('#formTitleInput').type('Test Question 1');
+  cy.get('#formTextInput').type('Test Question 1 Text');
+  cy.get('#formTagInput').type('t1 t2 t3 t4 t5 t6');
+  cy.contains('Post Question').click();
+  cy.contains('Cannot have more than 5 tags');
+})
+
+it('Ask a Question with a long new tag', () => {
+  cy.get('#formTitleInput').type('Test Question 1');
+  cy.get('#formTextInput').type('Test Question 1 Text');
+  cy.get('#formTagInput').type('t1 t2 t3t4t5t6t7t8t9t3t4t5t6t7t8t9');
+  cy.contains('Post Question').click();
+  cy.contains('New tag length cannot be more than 20');
+})
+
+
+
+
+  // END OF ADD QUESTION PAGE TESTS
+})
+
+
+
+
+
+
+
 describe('Home Page', () => {
   // Check all components of Questions page for a logged in user are present
 
