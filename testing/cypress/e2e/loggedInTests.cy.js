@@ -59,24 +59,24 @@ describe('Add Question Page', () => {
 
   // Entering text over 100 characters should raise error
   it('displays an error for title with over 100 characters w/ correct QuestionText', () => {
-      const longTitle = '0'.repeat(101);
-      cy.get('input[name="title"]').type(longTitle);
-      cy.get('#formTextInput').type("I am an acceptable question text");
-      cy.get('#postQuestionButton').click();
-      cy.get('#titleError').should('contain', 'Title cannot be more than 100 characters');
+    const longTitle = '0'.repeat(101);
+    cy.get('input[name="title"]').type(longTitle);
+    cy.get('#formTextInput').type("I am an acceptable question text");
+    cy.get('#postQuestionButton').click();
+    cy.get('#titleError').should('contain', 'Title cannot be more than 100 characters');
   });
 
 
-    it('creates only one instance of a tag if entered several times', () => {
-      cy.get('#formTitleInput').type('Test Question 1');
-      cy.get('#formTextInput').type('Test Question 1 Text');
-      // Enter the same tag multiple times into the tags input
-      const duplicateTag = 'cypresstag';
-      cy.get('#formTagInput').type(`${duplicateTag} ${duplicateTag} ${duplicateTag}`);
-      // Submit the form
-      cy.contains('Post Question').click();
-      // Check that only one instance of the tag is created
-      cy.contains('cypresstag');
+  it('creates only one instance of a tag if entered several times', () => {
+    cy.get('#formTitleInput').type('Test Question 1');
+    cy.get('#formTextInput').type('Test Question 1 Text');
+    // Enter the same tag multiple times into the tags input
+    const duplicateTag = 'cypresstag';
+    cy.get('#formTagInput').type(`${duplicateTag} ${duplicateTag} ${duplicateTag}`);
+    // Submit the form
+    cy.contains('Post Question').click();
+    // Check that only one instance of the tag is created
+    cy.contains('cypresstag');
   });
 
   it('tag text converted to lower case', () => {
@@ -89,36 +89,36 @@ describe('Add Question Page', () => {
     cy.contains('Post Question').click();
     // Check that only one instance of the tag is created
     cy.contains('cypresstag');
+  });
+
+  it('Ask a Question creates and displays in All Questions', () => {
+    cy.get('#formTitleInput').type('Test Question 1');
+    cy.get('#formTextInput').type('Test Question 1 Text');
+    cy.get('#formTagInput').type('javascript');
+    cy.contains('Post Question').click();
+    cy.contains('Fake Stack Overflow');
+    const qTitles = ['Test Question 1', 'Programmatically navigate using React router', 'android studio save string shared preference', 'Question 5', 'Question 4'];
+    cy.get('.postTitle').each(($el, index, $list) => {
+      cy.wrap($el).should('contain', qTitles[index]);
     });
 
-    it('Ask a Question creates and displays in All Questions', () => {
+    it('Ask a Question creates and displays expected meta data', () => {
       cy.get('#formTitleInput').type('Test Question 1');
       cy.get('#formTextInput').type('Test Question 1 Text');
       cy.get('#formTagInput').type('javascript');
       cy.contains('Post Question').click();
       cy.contains('Fake Stack Overflow');
-      const qTitles = ['Test Question 1', 'Programmatically navigate using React router', 'android studio save string shared preference', 'Question 5', 'Question 4'];
-      cy.get('.postTitle').each(($el, index, $list) => {
-          cy.wrap($el).should('contain', qTitles[index]);
+      cy.contains('4 questions');
+      cy.contains('joym asked 0 seconds ago');
+      const answers = ['0 answers', '0 answers', '3 answers', '2 answers'];
+      const views = ['0 views', '0 views', '121 views', '0 views'];
+      cy.get('.postStats').each(($el, index, $list) => {
+        cy.wrap($el).should('contain', answers[index]);
+        cy.wrap($el).should('contain', views[index]);
       });
-
-      it('Ask a Question creates and displays expected meta data', () => {
-        cy.get('#formTitleInput').type('Test Question 1');
-        cy.get('#formTextInput').type('Test Question 1 Text');
-        cy.get('#formTagInput').type('javascript');
-        cy.contains('Post Question').click();
-        cy.contains('Fake Stack Overflow');
-        cy.contains('4 questions');
-        cy.contains('joym asked 0 seconds ago');
-        const answers = ['0 answers', '0 answers', '3 answers','2 answers'];
-        const views = ['0 views', '0 views', '121 views','0 views'];
-        cy.get('.postStats').each(($el, index, $list) => {
-            cy.wrap($el).should('contain', answers[index]);
-            cy.wrap($el).should('contain', views[index]);
-        });
-        cy.contains('Unanswered').click();
-        cy.get('.postTitle').should('have.length', 2);
-        cy.contains('2 question');
+      cy.contains('Unanswered').click();
+      cy.get('.postTitle').should('have.length', 2);
+      cy.contains('2 question');
     })
   })
 
@@ -131,56 +131,56 @@ describe('Add Question Page', () => {
     cy.contains('javascript');
     cy.contains('t1');
     cy.contains('t2');
-})
+  })
 
-it('Ask a Question creates and displays in All Questions with necessary tags', () => {
-  cy.get('#formTitleInput').type('Test Question 1');
-  cy.get('#formTextInput').type('Test Question 1 Text');
-  cy.get('#formTagInput').type('javascript t1 t2');
-  cy.contains('Post Question').click();
-  cy.contains('Fake Stack Overflow');
-  cy.contains('javascript');
-  cy.contains('android-studio');
-  cy.contains('t2');
-})
+  it('Ask a Question creates and displays in All Questions with necessary tags', () => {
+    cy.get('#formTitleInput').type('Test Question 1');
+    cy.get('#formTextInput').type('Test Question 1 Text');
+    cy.get('#formTagInput').type('javascript t1 t2');
+    cy.contains('Post Question').click();
+    cy.contains('Fake Stack Overflow');
+    cy.contains('javascript');
+    cy.contains('android-studio');
+    cy.contains('t2');
+  })
 
-it('Ask a Question with empty title shows error', () => {
-  cy.get('#formTextInput').type('Test Question 1 Text');
-  cy.get('#formTagInput').type('javascript');
-  cy.contains('Post Question').click();
-  cy.contains('Title cannot be empty');
-})
+  it('Ask a Question with empty title shows error', () => {
+    cy.get('#formTextInput').type('Test Question 1 Text');
+    cy.get('#formTagInput').type('javascript');
+    cy.contains('Post Question').click();
+    cy.contains('Title cannot be empty');
+  })
 
-it('Ask a Question with long title shows error', () => {
-  cy.get('#formTitleInput').type('Test Question 0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789');
-  cy.get('#formTextInput').type('Test Question 1 Text');
-  cy.get('#formTagInput').type('javascript');
-  cy.contains('Post Question').click();
-  cy.contains('Title cannot be more than 100 characters');
-})
+  it('Ask a Question with long title shows error', () => {
+    cy.get('#formTitleInput').type('Test Question 0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789');
+    cy.get('#formTextInput').type('Test Question 1 Text');
+    cy.get('#formTagInput').type('javascript');
+    cy.contains('Post Question').click();
+    cy.contains('Title cannot be more than 100 characters');
+  })
 
-it('Ask a Question with empty text shows error', () => {
-  cy.get('#formTitleInput').type('Test Question 1');
-  cy.get('#formTagInput').type('javascript');
-  cy.contains('Post Question').click();
-  cy.contains('Question text cannot be empty');
-})
+  it('Ask a Question with empty text shows error', () => {
+    cy.get('#formTitleInput').type('Test Question 1');
+    cy.get('#formTagInput').type('javascript');
+    cy.contains('Post Question').click();
+    cy.contains('Question text cannot be empty');
+  })
 
-it('Ask a Question with more than 5 tags shows error', () => {
-  cy.get('#formTitleInput').type('Test Question 1');
-  cy.get('#formTextInput').type('Test Question 1 Text');
-  cy.get('#formTagInput').type('t1 t2 t3 t4 t5 t6');
-  cy.contains('Post Question').click();
-  cy.contains('Cannot have more than 5 tags');
-})
+  it('Ask a Question with more than 5 tags shows error', () => {
+    cy.get('#formTitleInput').type('Test Question 1');
+    cy.get('#formTextInput').type('Test Question 1 Text');
+    cy.get('#formTagInput').type('t1 t2 t3 t4 t5 t6');
+    cy.contains('Post Question').click();
+    cy.contains('Cannot have more than 5 tags');
+  })
 
-it('Ask a Question with a long new tag', () => {
-  cy.get('#formTitleInput').type('Test Question 1');
-  cy.get('#formTextInput').type('Test Question 1 Text');
-  cy.get('#formTagInput').type('t1 t2 t3t4t5t6t7t8t9t3t4t5t6t7t8t9');
-  cy.contains('Post Question').click();
-  cy.contains('New tag length cannot be more than 20');
-})
+  it('Ask a Question with a long new tag', () => {
+    cy.get('#formTitleInput').type('Test Question 1');
+    cy.get('#formTextInput').type('Test Question 1 Text');
+    cy.get('#formTagInput').type('t1 t2 t3t4t5t6t7t8t9t3t4t5t6t7t8t9');
+    cy.contains('Post Question').click();
+    cy.contains('New tag length cannot be more than 20');
+  })
 
 
 
@@ -296,7 +296,7 @@ describe('Answers Page', () => {
 
   // Comment related tests
 
-  it.only('User with low reputation cannot Add a new comment', () => {
+  it('User with low reputation cannot Add a new comment', () => {
     cy.get('button[class^="Toastify__close-button"]').click({ multiple: true });
     cy.contains('#sideBarNav a', 'Logout').click();
     cy.get('input[name="username"]').type('samZ');
@@ -308,16 +308,16 @@ describe('Answers Page', () => {
     cy.get('#textError').should('have.text', "You don't have enough reputation to comment");
   })
 
-  it.only('User cannot Add a empty comment', () => {
+  it('User cannot Add a empty comment', () => {
     cy.get('#questionBody .comment-form input').type('{enter}');
     cy.get('#textError').should('have.text', "Comment text cannot be empty");
   })
 
-  it.only('User cannot Add a comment longer than 140 characters', () => {
+  it('User cannot Add a comment longer than 140 characters', () => {
     cy.get('#questionBody .comment-form input').type('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.{enter}');
     cy.get('#textError').should('have.text', "Comment cannot be more than 140 characters");
   })
-  
+
   // TODO invalid hyperlink test
 
   it('Add a new comment to question', () => {
@@ -803,4 +803,157 @@ describe('Editing/Deleting Tags', () => {
     cy.get('#sideBarNav a').contains('Questions').click();
     cy.contains('.pill', 'shared-preference').should('exist');
   })
+})
+
+describe('Add Answer', () => {
+  beforeEach(() => {
+    cy.contains('Programmatically navigate using React router').click();
+    cy.get('button[class^="Toastify__close-button"]').click({ multiple: true });
+  })
+
+  it('Create new answer should be displayed at the top of the answers page', () => {
+    const answers = ["Test Answer 1", "On my end, I like to have a single history object that I can carry even outside components. I like to have a single history.js file that I import on demand, and just manipulate it. You just have to change BrowserRouter to Router, and specify the history prop. This doesn't change anything for you, except that you have your own history object that you can manipulate as you want. You need to install history, the library used by react-router.", "React Router is mostly a wrapper around the history library. history handles interaction with the browser's window.history for you with its browser and hash histories. It also provides a memory history which is useful for environments that don't have a global history. This is particularly useful in mobile app development (react-native) and unit testing with Node."];
+    cy.contains('Answer Question').click();
+    cy.get('#answerTextInput').type(answers[0]);
+    cy.contains('Post Answer').click();
+    cy.get('.answerText').each(($el, index) => {
+      cy.wrap($el).should('contain', answers[index]);
+    });
+    cy.contains('newGuy');
+    cy.contains('0 seconds ago');
+    cy.get('.answer').first().within(() => {
+      cy.get('.vote-component').should('contain', '0 votes');
+    })
+  });
+
+  it('Answer is mandatory when creating a new answer', () => {
+    cy.contains('Answer Question').click();
+    cy.contains('Post Answer').click();
+    cy.contains('Answer text cannot be empty');
+  });
+
+  it('Adds an answer with a hyperlink and verifies', () => {
+    const answers = ['Check this link for more info: [Documentation](https://docs.example.com)', "On my end, I like to have a single history object that I can carry even outside components. I like to have a single history.js file that I import on demand, and just manipulate it. You just have to change BrowserRouter to Router, and specify the history prop. This doesn't change anything for you, except that you have your own history object that you can manipulate as you want. You need to install history, the library used by react-router.", "React Router is mostly a wrapper around the history library. history handles interaction with the browser's window.history for you with its browser and hash histories. It also provides a memory history which is useful for environments that don't have a global history. This is particularly useful in mobile app development (react-native) and unit testing with Node."];
+    cy.contains('Answer Question').click();
+    cy.get('#answerTextInput').type('Check this link for more info: [Documentation](https://docs.example.com)');
+    cy.contains('Post Answer').click();
+    cy.get('.answerText').first().within(() => {
+      cy.get('a').should('have.attr', 'href', 'https://docs.example.com');
+    });
+    cy.contains('newGuy');
+    cy.contains('0 seconds ago');
+  });
+
+  it('Attempts to add an answer with an invalid hyperlink and verifies failure', () => {
+    cy.contains('Answer Question').click();
+    cy.get('#answerTextInput').type('Check this invalid link: [](https://wrong.url)');
+    cy.contains('Post Answer').click();
+    cy.contains('Invalid hyperlink');
+    cy.get('#sideBarNav a').contains('Questions').click();
+    cy.contains('Programmatically navigate using React router').click();
+    cy.get('.answerText').should('not.contain', 'https://wrong.url');
+  });
+
+  it('Create new answer marks the question active', () => {
+    const answers = ["Test Answer 1", "On my end, I like to have a single history object that I can carry even outside components. I like to have a single history.js file that I import on demand, and just manipulate it. You just have to change BrowserRouter to Router, and specify the history prop. This doesn't change anything for you, except that you have your own history object that you can manipulate as you want. You need to install history, the library used by react-router.", "React Router is mostly a wrapper around the history library. history handles interaction with the browser's window.history for you with its browser and hash histories. It also provides a memory history which is useful for environments that don't have a global history. This is particularly useful in mobile app development (react-native) and unit testing with Node."];
+    cy.contains('Answer Question').click();
+    cy.get('#answerTextInput').type(answers[0]);
+    cy.contains('Post Answer').click();
+    cy.get('.answerText').each(($el, index) => {
+      cy.wrap($el).should('contain', answers[index]);
+    });
+    cy.contains('newGuy');
+    cy.contains('0 seconds ago');
+    cy.contains('#sideBarNav a', 'Questions').click();
+    const qTitles = ['Programmatically navigate using React router', 'android studio save string shared preference, start activity and load the saved string', 'Question 5', 'Question 4', 'Question 3'];
+    cy.contains('Active').click();
+    cy.contains('7 questions');
+    cy.get('.postTitle').each(($el, index, $list) => {
+      cy.wrap($el).should('contain', qTitles[index]);
+    })
+  });
+})
+
+
+describe('Edit/Delete Answer', () => {
+  beforeEach(() => {
+    cy.get('button[class^="Toastify__close-button"]').click({ multiple: true });
+    cy.contains('#sideBarNav a', 'Logout').click();
+    cy.get('input[name="username"]').type('newGuy');
+    cy.get('input[name="password"]').type('passExample');
+    cy.contains('button', 'Login').click();
+    cy.get('button[class^="Toastify__close-button"]').click({ multiple: true });
+    cy.get('#sideBarNav a').contains('Profile').click();
+    cy.get('#profileAnswersButton').click();
+  });
+
+  it('Deleting answer should remove answer from profile. Should not affect user reputation', () => {
+    cy.get('.profileContent li a').first().click();
+    cy.get('h1').contains('Edit Answer').should('exist');
+    cy.contains('button', 'Delete Answer').should('exist').click();
+    cy.contains('.profilePageUserBanner span', 'Your reputation is: 60').should('exist');
+    cy.get('#profileAnswersButton').click();
+    const expectedTitles = [
+      "I just found all the above examples just too confu ...",
+      "Answer 5",
+    ];
+    cy.get('.profileContent li a').each(($a, index) => {
+      cy.wrap($a).invoke('text').should('contain', expectedTitles[index]);
+    });
+  });
+
+  it('Deleting answer should mark question active', () => {
+    cy.get('.profileContent li a').first().click();
+    cy.get('h1').contains('Edit Answer').should('exist');
+    cy.contains('button', 'Delete Answer').should('exist').click();
+    cy.contains('.profilePageUserBanner span', 'Your reputation is: 60').should('exist');
+    cy.contains('#sideBarNav a', 'Questions').click();
+    const qTitles = ['Programmatically navigate using React router', 'android studio save string shared preference, start activity and load the saved string', 'Question 5', 'Question 4', 'Question 3'];
+    cy.contains('Active').click();
+    cy.contains('7 questions');
+    cy.get('.postTitle').each(($el, index, $list) => {
+      cy.wrap($el).should('contain', qTitles[index]);
+    })
+  });
+
+  it('Answer is mandatory when editing new answer', () => {
+    cy.get('.profileContent li a').first().click();
+    cy.get('form').should('exist');
+    cy.get('textarea').should('exist').clear();
+    cy.get('button[type="submit"]').should('exist').click();
+    cy.contains('Answer text cannot be empty');
+  });
+
+  it('Edit an answer with a hyperlink and verifies', () => {
+    cy.get('.profileContent li a').first().click();
+    const answers = ['Check this link for more info: [Documentation](https://docs.example.com)', "On my end, I like to have a single history object that I can carry even outside components. I like to have a single history.js file that I import on demand, and just manipulate it. You just have to change BrowserRouter to Router, and specify the history prop. This doesn't change anything for you, except that you have your own history object that you can manipulate as you want. You need to install history, the library used by react-router.", "React Router is mostly a wrapper around the history library. history handles interaction with the browser's window.history for you with its browser and hash histories. It also provides a memory history which is useful for environments that don't have a global history. This is particularly useful in mobile app development (react-native) and unit testing with Node."];
+    cy.get('textarea').should('exist').clear().type('Check this link for more info: [Documentation](https://docs.example.com)');
+    cy.get('button[type="submit"]').should('exist').click();
+    cy.contains('#sideBarNav a', 'Questions').click();
+    cy.contains('Programmatically navigate using React router').click();
+    cy.get('.answerText').first().within(() => {
+      cy.get('a').should('have.attr', 'href', 'https://docs.example.com');
+    });
+  });
+
+  it('Attempts to update answer with an invalid hyperlink and verifies failure', () => {
+    cy.get('.profileContent li a').first().click();
+    cy.get('textarea').should('exist').clear().type('Check this invalid link: [](https://wrong.url)');
+    cy.get('button[type="submit"]').should('exist').click();
+    cy.contains('Invalid hyperlink');
+  });
+
+  it('Editing an answer marks the question active', () => {
+    cy.get('.profileContent li a').first().click();
+    const answers = ['Check this link for more info: [Documentation](https://docs.example.com)', "On my end, I like to have a single history object that I can carry even outside components. I like to have a single history.js file that I import on demand, and just manipulate it. You just have to change BrowserRouter to Router, and specify the history prop. This doesn't change anything for you, except that you have your own history object that you can manipulate as you want. You need to install history, the library used by react-router.", "React Router is mostly a wrapper around the history library. history handles interaction with the browser's window.history for you with its browser and hash histories. It also provides a memory history which is useful for environments that don't have a global history. This is particularly useful in mobile app development (react-native) and unit testing with Node."];
+    cy.get('textarea').should('exist').clear().type('Check this link for more info: [Documentation](https://docs.example.com)');
+    cy.get('button[type="submit"]').should('exist').click();
+    cy.contains('#sideBarNav a', 'Questions').click();
+    const qTitles = ['Programmatically navigate using React router', 'android studio save string shared preference, start activity and load the saved string', 'Question 5', 'Question 4', 'Question 3'];
+    cy.contains('Active').click();
+    cy.contains('7 questions');
+    cy.get('.postTitle').each(($el, index, $list) => {
+      cy.wrap($el).should('contain', qTitles[index]);
+    })
+  });
 })

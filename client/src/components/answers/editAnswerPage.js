@@ -2,17 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { useLocationContext } from '../locationContext.js';
 import MainContent from '../mainContent.js';
 import { DataDao } from '../../models/ModelDAO';
+import { validateLinks } from '../hyperlinkParser.js';
 
 const EditAnswerPage = () => {
   const dao = DataDao.getInstance();
   const { params, setPageAndParams } = useLocationContext();
   const [answerText, setAnswerText] = useState('');
-
+  const [formErrors, setFormErrors] = useState({
+    // usernameError: '',
+    textError: ''
+  });
   // // console.log("in edit answer page with params: " + params)
 
   useEffect(() => {
     const fetchAnswerData = async () => {
-      const answerId = params; 
+      const answerId = params;
       const existingAnswerDataList = await dao.filterAnswersBasedOnAnsIds([answerId]);
       const existingAnswerData = existingAnswerDataList[0];
       // // console.log(JSON.stringify(existingAnswerData, null, 4))
@@ -24,11 +28,37 @@ const EditAnswerPage = () => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    // params is the answerID, the text from the form is answerText
-    await dao.updateAnswerById(params, { text: answerText.trim() });
+    // Reset error messages
+    setFormErrors({
+      textError: '',
+      // usernameError: '',
+    });
 
-    // after submitting update to answer, redirects to 
-    setPageAndParams('profile');
+    let isValid = true;
+
+    // Validate text
+    if (answerText.trim() === '') {
+      isValid = false;
+      setFormErrors((prevState) => ({
+        ...prevState,
+        textError: 'Answer text cannot be empty',
+      }));
+    }
+
+    if (!validateLinks(answerText.trim())) {
+      isValid = false;
+      setFormErrors((prevState) => ({
+        ...prevState,
+        textError: 'Invalid hyperlink',
+      }));
+    }
+    
+    if (isValid) {
+      // params is the answerID, the text from the form is answerText
+      await dao.updateAnswerById(params, { text: answerText.trim() });
+      // after submitting update to answer, redirects to 
+      setPageAndParams('profile');
+    }
   };
 
   const handleDelete = async () => {
@@ -49,6 +79,7 @@ const EditAnswerPage = () => {
             onChange={(e) => setAnswerText(e.target.value)}
           />
         </label>
+        <span id='textError' className='error'>{formErrors.textError}</span>
         <button type="submit">Submit</button>
       </form>
       <button onClick={handleDelete}>Delete Answer</button>
