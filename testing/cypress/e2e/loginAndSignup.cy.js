@@ -156,7 +156,7 @@ describe.only('Create Account', () => {
     cy.get('.Toastify__toast-body').should('contain', 'Email is already registered. Please use a different email.');
   });
 
-  it('Successful Registration and redirection to login page', () => {
+  it('Successful Registration and redirection to login page and try login with new user', () => {
     cy.get('input[name="username"]').type('newG');
     cy.get('input[name="email"]').type('d@d.com');
     cy.get('input[name="password"]').type('askdjalskd');
@@ -167,5 +167,10 @@ describe.only('Create Account', () => {
     cy.get('input[name="password"]').should('exist');
     cy.get('input[name="username"]').should('exist');
     cy.get('input[name="email"]').should('not.exist');
+    cy.get('input[name="username"]').type('newG');
+    cy.get('input[name="password"]').type('askdjalskd');
+    cy.contains('button', 'Login').click();
+    cy.get('.Toastify__toast-body').should('contain', 'Success!');
+    cy.contains('All Questions');
   });
 })

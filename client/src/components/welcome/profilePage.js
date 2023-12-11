@@ -107,7 +107,7 @@ function handleQuestionClick(questionId) {
       {dataType === 'profileAnswers' && selectedData && (
         <ul>
           {selectedData.map((answer) => (
-          <li key={answer.id}> 
+          <li key={answer._id}> 
           <a href='' title={answer.text} onClick={handleAnswerClick(answer._id)}>
           {answer.text && answer.text.slice(0, 50)} {answer.text && answer.text.length > 50 ? '...' : ''}
           </a>
@@ -122,7 +122,7 @@ function handleQuestionClick(questionId) {
           items={selectedData}
           itemsPerPage={itemsToShow}
           renderItem={(question) => (
-            <li key={question.id}>
+            <li key={question._id}>
               <a href='' title={question.title} onClick={handleQuestionClick(question._id)}>
                 {question.title && question.title.slice(0, 50)} {question.title && question.title.length > 50 ? '...' : ''}
               </a>

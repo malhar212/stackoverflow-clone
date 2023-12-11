@@ -98,6 +98,7 @@ exports.getTagsByUsername = async (req, res) => {
       },
       {
         $addFields: {
+          questionCount: { $size: "$associatedQuestions" },
           editable: {
             $not: {
               $gt: [
@@ -127,6 +128,11 @@ exports.getTagsByUsername = async (req, res) => {
         $unset:
           "associatedQuestions",
       },
+      {
+        $sort: {
+          _id: 1
+        }
+      }
     ]);
     res.status(200).json({ success: true, data: formatTagsForUI(tags) });
   } catch (error) {
@@ -267,6 +273,11 @@ const deleteTagHelper = async (tagName, user) => {
       {
         $unset: "associatedQuestions",
       },
+      {
+        $sort: {
+          _id: 1
+        }
+      }
     ];
 
     // Execute the aggregation pipeline
