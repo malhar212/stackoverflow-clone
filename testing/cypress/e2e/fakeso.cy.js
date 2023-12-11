@@ -332,7 +332,7 @@ describe('Answer Page', () => {
         });
     }
 
-    it.only('Verify pagination of answers. \nVerify accepted answer is pinned to the top of every page. \nVerify thier metadata', () => {
+    it('Verify pagination of answers. \nVerify accepted answer is pinned to the top of every page. \nVerify thier metadata', () => {
         cy.get('.answer-list div.paginationControls').contains('button', 'Next').last().click();
         verifyAnswersOnPage2();
         const authors = ['samZ', 'newGuy2', 'newGuy'];
@@ -350,7 +350,7 @@ describe('Answer Page', () => {
         })
     });
 
-    it.only('Verify next button on last page of answers rolls over to first page ', () => {
+    it('Verify next button on last page of answers rolls over to first page ', () => {
         verifyAnswersOnPage1();
         cy.get('.answer-list div.paginationControls').last().contains('button', 'Next').click();
         cy.get('.answer-list div.paginationControls').last().contains('button', 'Next').click();

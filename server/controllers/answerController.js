@@ -259,7 +259,7 @@ exports.deleteAnswerById = async (req, res) => {
     if (!deletedAnswer) {
       return res.status(404).json({ success: false, message: 'Answer not found.' });
     }
-    await Question.findByIdAndUpdate(qid, { $set: { last_activity : Date.now}}, { new: true });
+    await Question.findByIdAndUpdate(qid, { $set: { last_activity : Date.now() }}, { new: true });
     // console.log("About to send success!")
     res.status(200).json({ success: true, data: deletedAnswer });
   } catch (error) {
