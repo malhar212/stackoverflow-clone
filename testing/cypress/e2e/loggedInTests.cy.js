@@ -14,6 +14,9 @@ afterEach(() => {
   console.log("Done destroy")
 });
 
+
+
+
 describe('Add Question Page', () => {
   beforeEach(() => {
     cy.get('#askButton').click();
@@ -181,10 +184,6 @@ it('Ask a Question with a long new tag', () => {
   cy.contains('Post Question').click();
   cy.contains('New tag length cannot be more than 20');
 })
-
-
-
-
   // END OF ADD QUESTION PAGE TESTS
 })
 
@@ -714,5 +713,86 @@ describe('Answers Page', () => {
     cy.contains('#sideBarNav a', 'Profile').click();
     cy.get('.profilePageUserBanner').contains('Your reputation is: 60');
   })
+
+})
+
+
+
+
+
+
+
+// Editing and Deleting Questions
+
+describe('Editing / Deleting Questions', () => {
+  beforeEach(() => {
+    cy.get('button[class^="Toastify__close-button"]').click({ multiple: true });
+    // logging out
+    cy.contains('#sideBarNav a', 'Logout').click();
+    // logging in to edit / delete questions
+    cy.get('input[name="username"]').type('newGuy');
+    cy.get('input[name="password"]').type('passExample');
+    cy.contains('button', 'Login').click();
+    cy.get('button[class^="Toastify__close-button"]').click({ multiple: true });
+    // navigate to profile page to edit questions
+    cy.get('#sideBarNav a').contains('Profile').click();
+    cy.get('#profileQuestionsButton').click();
+  });
+
+  it('Deleting question should delete from profile page', () => {
+    cy.get('.profileContent li a').first().click();
+    cy.get('h1').contains('Edit Question').should('exist');
+    // should contain text populated from current question state
+    cy.get('textarea').contains('I am using bottom navigation view but am using custom navigation, so my fragments are not recreated every time i switch to a different view. I just hide/show my fragments depending on the icon selected. The problem i am facing is that whenever a config change happens (dark/light theme), my app crashes. I have 2 fragments in this activity and the below code is what i am using to refrain them from being recreated.')
+    // deleting the question
+    cy.contains('button', 'Delete Question').should('exist').click();
+    cy.get('#profileQuestionsButton').click();
+    // remaining questions
+    const expectedTitles = [
+      'Question 5',
+      'Question 4', 
+      'Question 2', 
+      'Question 1'
+    ];
+    cy.get('.profileContent li a').each(($a, index) => {
+      cy.wrap($a).invoke('text').should('contain', expectedTitles[index]);
+    });
+  });
+
+
+
+
+
+
+  // deleting question should delete associated comments
+  it.only('Deleting question deletes associated comments', () => {
+    cy.contains('#sideBarNav a', 'Questions').click();
+    // make a new question with a new tag
+    // click askQuestion button
+    cy.get('#askButton').click();
+    // fill out new question form
+    cy.get('#formTitleInput').type('New Question 1');
+    cy.get('#formTextInput').type('New Question text');
+    const newTag = "should-be-deleted";
+    const oldTag = "react";
+    cy.get('#formTagInput').type(`${newTag} ${oldTag}`);
+    cy.contains('Post Question').click();
+    // add a comment to the new question
+    cy.get(':nth-child(1) > .question > .postTitle').click();
+    cy.get('.comment-form > input').type("I'm a new comment assocaited with the new question{enter}");
+    cy.contains('#sideBarNav a', 'Questions').click();
+    // navigating to the question in profile list
+    cy.get('#sideBarNav > :nth-child(3)').click();
+    cy.get('#profileQuestionsButton').click();
+    // navigating to the edit question page
+    cy.get(':nth-child(1) > li > a').click();
+    // delete the question
+    cy.get('#content > :nth-child(3)').click();
+    // navigating back to profile page
+    cy.get('#sideBarNav > :nth-child(3)').click();
+    cy.get('#profileTagsButton').click();
+    // Make sure the tag is gone
+    cy.contains('.tag', newTag).should('not.exist');
+    })
 
 })
