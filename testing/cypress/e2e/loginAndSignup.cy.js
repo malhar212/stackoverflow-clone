@@ -93,7 +93,7 @@ describe('Login Page', () => {
 
 })
 
-describe.only('Create Account', () => {
+describe('Create Account', () => {
   beforeEach(() => {
     cy.contains('button', 'Need to Signup?').click();
   })

@@ -92,15 +92,6 @@ export class DataDao {
     }
   }
 
-  // Get the most recent answer date for each question
-  #getMostRecentAnswerDate(ansIds) {
-    const relevantAnswers = this.getAllAnswers().filter(answer => ansIds.includes(answer.aid));
-    return relevantAnswers.reduce((mostRecentDate, answer) => {
-      const answerDate = new Date(answer.ansDate).getTime();
-      return answerDate > mostRecentDate ? answerDate : mostRecentDate;
-    }, 0);
-  }
-
   // Sort the questions based on the most recent answer date
   async sortQuestionsByActivity() {
     try {
@@ -350,19 +341,6 @@ async updateAnswerById(ansId, { text: answerText }) {
 
   // Tags Methods
 
-  // Get a tag by ID
-  async getTagById(tagId) {
-    try {
-      const response = await this.instance.get(`tags/${tagId}`);
-      const { success, data } = response.data;
-      if (success)
-        return data;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-    return [];
-  }
-
     // Get Tags by ID
     async getTagsById(tagIds) {
       console.log("++++ IN MODEL TAO GET TAGS BY ID")
@@ -592,34 +570,5 @@ async updateTagByName(tagName, { name : newTagName }) {
     }
     return null;
   }
-
-  async checkLoginGetUsername(credentials) {
-    try {
-      const response = await this.instance.post('auth/checkLoginGetUsername', credentials);
-      const { success, data } = response.data
-      if (success) {
-        return success, data;
-      }
-    } catch (error) {
-      console.error('Error logging in:', error);
-    }
-    return null;
-  }
-
-  async test() {
-    try {
-      fetch('http://localhost:8000/auth/csrf-token', {
-        method: 'GET',
-        credentials: 'include',
-      })
-        .then(response => response.json())
-        .then(data => console.log('In test - CSRF Token:', data.csrfToken))
-        .catch(error => console.error('Error fetching CSRF token:', error));
-    }
-    catch {
-      console.log("in test catch");
-    }
-  }
-
 
 }

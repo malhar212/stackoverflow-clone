@@ -188,7 +188,7 @@ describe('Home Page', () => {
     it('Search string matches multiple tags', () => {
         const qTitles = ["Programmatically navigate using React router", 'android studio save string shared preference, start activity and load the saved string', 'Question 3', 'Question 1'];
         cy.get('#searchBar').type('[React][android-studio]{enter}');
-        cy.contains('4 questions');
+        cy.contains('4 questions').should('be.visible');;
         cy.get('.postTitle').each(($el, index, $list) => {
             cy.wrap($el).should('contain', qTitles[index]);
         })
@@ -334,8 +334,8 @@ describe('Answer Page', () => {
 
     function verifyAnswersOnPage2() {
         const answers = ['Answer 7', 'Answer 6', 'Answer 5'];
-        answers.forEach(($el, index) => {
-            cy.contains(answers[index])
+        cy.get('.answerText').each(($el, index) => {
+            cy.wrap($el).should('be.visible').should('contain', answers[index]);
         });
     }
 

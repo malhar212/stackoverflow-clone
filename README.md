@@ -174,7 +174,7 @@ Add design docs in *images/*
 4. Fix issues with Authentication and Login.
 1. Questions, Search, Answers, Comments and Voting functionality.
 1. Questions, Search, Answers, Comments and Voting Tests for Guest and LoggedIn user.
-1. Tests for Login and Sign-up and Profile Page, Edit/Delete Tags
+1. Tests for Login and Sign-up and Profile Page, Edit/Delete Tags & Answers
 1. Code Coverage
 
 ## Test cases
