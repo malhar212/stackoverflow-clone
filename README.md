@@ -90,7 +90,10 @@ Add design docs in *images/*
             - ~~Repost/Delete of answer makes question active. i.e. update lastActivity date~~
 
 ## Instructions to setup and run project
+### Make sure your MongoDB instance is running.
+
 ### Navigate to the Project folder in terminal.
+
 ### Server Side (Node.js/Express):
 
 1. **Navigate to the server folder:**
@@ -132,6 +135,11 @@ Add design docs in *images/*
    ```bash
    npm start
    ```
+   
+1. **Run the client using the following command to enable Code Coverage:**
+    ```bash
+   npm test
+   ```
 
 ### Running Tests in Cypress:
 
@@ -145,14 +153,11 @@ Add design docs in *images/*
    npm install
    ```
 
-1. **Run the client using the following command to enable code coverage:**
-    ```bash
-   npm test
-   ```
 3. **Run the React app:**
    ```bash
    npx cypress run --config watchForFileChanges=false
    ```
+
 1. **Find code coverage report in /testing/coverage/lcov-report**
 
 ## Team Member 1 Contribution
@@ -160,16 +165,17 @@ Add design docs in *images/*
 2. Tests for Add/Edit/Delete for Questions, Answers, Tags.
 5. CSS stylings
 4. Server implementation.
+4. Implement Authentication and Login.
 
 ## Team Member 2 Contribution
 1. Singleton object to interface with server APIs.
 2. Builder pattern in server to build objects in appropriate format for database document or UI objects.
 3. Factory pattern in server to create Builder objects without specifying their concrete classes.
 4. Fix issues with Authentication and Login.
-7. Conditional routing without modifying URL.
 1. Questions, Search, Answers, Comments and Voting functionality.
-1. Questions, Search, Answers, Comments and Voting tests for Guest and LoggedIn user.
-1. Tests for Login and Sign-up and Profile Page
+1. Questions, Search, Answers, Comments and Voting Tests for Guest and LoggedIn user.
+1. Tests for Login and Sign-up and Profile Page, Edit/Delete Tags
+1. Code Coverage
 
 ## Test cases
 

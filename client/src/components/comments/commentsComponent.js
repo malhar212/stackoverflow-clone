@@ -76,12 +76,11 @@ function CommentsComponent({ associatedType, associatedId }) {
                     textError: 'Comment text cannot be empty',
                 }));
             }
-
-            if (text.length > 140) {
+            if (text.trim().length > 140) {
                 isValid = false;
                 setFormErrors((prevState) => ({
                     ...prevState,
-                    titleError: 'Comment cannot be more than 140 characters',
+                    textError: 'Comment cannot be more than 140 characters',
                 }));
             }
 

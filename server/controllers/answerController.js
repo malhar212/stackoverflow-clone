@@ -1,7 +1,6 @@
 const { ObjectId } = require('mongodb');
 const Answer = require('../models/answers');
 const Question = require('../models/questions');
-const User = require("../models/users");
 const Comment = require("../models/comments");
 const BuilderFactory = require('./builders/builderFactory');
 const { validateLinks } = require('./hyperlinkParser');
@@ -123,7 +122,7 @@ exports.fetchUserAnswers = async (req, res) => {
     // console.log("11111111++====++==++==++==")
     try {
       // get the user object based on username
-      const user = await User.findOne({ username });
+      const user = req.user;
       const answers = await Answer.find({ 'ans_by': user._id }).sort({ ans_date_time: 1 });
       // console.log(answers); // Check the retrieved answers in the console
       // console.log("222222222++====++==++==++==")
@@ -177,10 +176,8 @@ exports.addAnswer = async (req, res) => {
       return;
     }
 
-    // extracting username from formData
-    const username = formData.ans_by
     // finding the user object from database based on username
-    const user = await User.findOne({ username });
+    const user = req.user;
     // console.log("++++++++ADD ANSWER 5" + (JSON.stringify(user, null, 4)))
     const answerBuilder = new BuilderFactory().createBuilder({ builderType: 'answer' });
     // console.log("+++++++++ADD ANSWER 6 ")
@@ -252,7 +249,7 @@ exports.deleteAnswerById = async (req, res) => {
     const qid = answerObj.qid;
     // console.log("++++++ in deleteAnswerByID 3" + JSON.stringify(answerObj, null, 5))
     // deleting associated comments
-    const status_of_comment_deletion = await Comment.deleteMany({ associatedObjectId: ansId });
+    await Comment.deleteMany({ associatedObjectId: ansId });
     // console.log(status_of_comment_deletion);
     // console.log("+++++ Comments deleted?")
     
@@ -262,7 +259,7 @@ exports.deleteAnswerById = async (req, res) => {
     if (!deletedAnswer) {
       return res.status(404).json({ success: false, message: 'Answer not found.' });
     }
-    await Question.findByIdAndUpdate(qid, { $set: { last_activity : Date.now}}, { new: true });
+    await Question.findByIdAndUpdate(qid, { $set: { last_activity : Date.now() }}, { new: true });
     // console.log("About to send success!")
     res.status(200).json({ success: true, data: deletedAnswer });
   } catch (error) {

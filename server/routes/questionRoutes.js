@@ -18,6 +18,6 @@ router.put('/:id/update', isLoggedIn, questionController.updateQuestionById);
 router.get('/:id/incrementViewCount', questionController.incrementViewCount);
 
 // User-specific routes
-router.get('/user/:username/questions', questionController.fetchUserQuestions);
+router.get('/user/:username/questions', isLoggedIn, questionController.fetchUserQuestions);
 
 module.exports = router;

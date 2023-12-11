@@ -2,7 +2,6 @@ const escapeStringRegexp = require('escape-string-regexp');
 const { ObjectId } = require('mongoose').Types;
 const Question = require('../models/questions');
 const Tag = require('../models/tags');
-const User = require("../models/users");
 const Answer = require("../models/answers");
 const Comment = require("../models/comments");
 const BuilderFactory = require('./builders/builderFactory');
@@ -60,7 +59,7 @@ exports.fetchUserQuestions = async (req, res) => {
   
       try {
         // get the user object based on username
-        const user = await User.findOne({ username });
+        const user = req.user;
         // const user = req.user;
   
         if (!user) {
@@ -406,10 +405,9 @@ exports.addNewQuestion = async (req, res) => {
             res.status(500).json({ success: false, error });
             return;
         }
-        // extracting username from formData
-        const username = formData.askedBy
+
         // finding the user object from database based on username
-        const user = await User.findOne({ username });
+        const user = req.user;
 
         // const user = req.user;
         let tagIds = [];
