@@ -663,7 +663,7 @@ describe('Answers Page', () => {
 
   it('Upvoting Question increments corresponding user reputation by 5', () => {
     cy.get('#questionBody').within(() => {
-      cy.get('.vote-component button .svg-icon.iconArrowUp').click();
+      cy.get('.vote-component button .svg-icon.iconArrowUp').first().click();
     })
     cy.get('button[class^="Toastify__close-button"]').click({ multiple: true });
     cy.contains('#sideBarNav a', 'Logout').click();
@@ -676,7 +676,7 @@ describe('Answers Page', () => {
 
   it('Downvoting Question decrements corresponding user reputation by 10', () => {
     cy.get('#questionBody').within(() => {
-      cy.get('.vote-component button .svg-icon.iconArrowDown').click();
+      cy.get('.vote-component button .svg-icon.iconArrowDown').first().click();
     })
     cy.get('button[class^="Toastify__close-button"]').click({ multiple: true });
     cy.contains('#sideBarNav a', 'Logout').click();
