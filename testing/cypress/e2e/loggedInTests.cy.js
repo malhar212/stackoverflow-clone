@@ -14,7 +14,7 @@ afterEach(() => {
   console.log("Done destroy")
 });
 
-describe.only('Add Question Page', () => {
+describe('Add Question Page', () => {
   beforeEach(() => {
     cy.get('#askButton').click();
   })
@@ -976,5 +976,41 @@ describe('Edit/Delete Answer', () => {
     cy.get('.postTitle').each(($el, index, $list) => {
       cy.wrap($el).should('contain', qTitles[index]);
     })
+  });
+})
+
+describe('Editing / Deleting Questions', () => {
+  beforeEach(() => {
+    cy.get('button[class^="Toastify__close-button"]').click({ multiple: true });
+    // logging out
+    cy.contains('#sideBarNav a', 'Logout').click();
+    // logging in to edit / delete questions
+    cy.get('input[name="username"]').type('newGuy');
+    cy.get('input[name="password"]').type('passExample');
+    cy.contains('button', 'Login').click();
+    cy.get('button[class^="Toastify__close-button"]').click({ multiple: true });
+    // navigate to profile page to edit questions
+    cy.get('#sideBarNav a').contains('Profile').click();
+    cy.get('#profileQuestionsButton').click();
+  });
+
+  it('Deleting question should delete from profile page', () => {
+    cy.get('.profileContent li a').first().click();
+    cy.get('h1').contains('Edit Question').should('exist');
+    // should contain text populated from current question state
+    cy.get('textarea').contains('I am using bottom navigation view but am using custom navigation, so my fragments are not recreated every time i switch to a different view. I just hide/show my fragments depending on the icon selected. The problem i am facing is that whenever a config change happens (dark/light theme), my app crashes. I have 2 fragments in this activity and the below code is what i am using to refrain them from being recreated.')
+    // deleting the question
+    cy.contains('button', 'Delete Question').should('exist').click();
+    cy.get('#profileQuestionsButton').click();
+    // remaining questions
+    const expectedTitles = [
+      'Question 5',
+      'Question 4', 
+      'Question 2', 
+      'Question 1'
+    ];
+    cy.get('.profileContent li a').each(($a, index) => {
+      cy.wrap($a).invoke('text').should('contain', expectedTitles[index]);
+    });
   });
 })
