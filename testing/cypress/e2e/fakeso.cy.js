@@ -334,6 +334,7 @@ describe('Answer Page', () => {
 
     it('Verify pagination of answers. \nVerify accepted answer is pinned to the top of every page. \nVerify thier metadata', () => {
         cy.get('.answer-list div.paginationControls').contains('button', 'Next').last().click();
+        cy.wait(1000);
         verifyAnswersOnPage2();
         const authors = ['samZ', 'newGuy2', 'newGuy'];
         const date = ['Oct 09', 'Oct 08', 'Oct 07'];
